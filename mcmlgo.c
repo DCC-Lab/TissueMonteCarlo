@@ -751,6 +751,5 @@ double computeAnisoptropicMus(PhotonStruct * Photon_Ptr, LayerStruct* Layer_Ptr)
     double muz = Layer_Ptr->musz * Photon_Ptr->uz;
     
     double mus = sqrt(mux*mux + muy*muy + muz*muz);
-    printf("mus : %lf\n", mus);
     return Layer_Ptr->musx;
 }
