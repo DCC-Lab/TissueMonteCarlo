@@ -20,6 +20,8 @@
   /* cosine of about 1.57 - 1e-6 rad. */
 
 
+double computeAnisoptropicMus(PhotonStruct * Photon_Ptr, LayerStruct* Layer_Ptr);
+
 /***********************************************************
  *	A random number generator from Numerical Recipes in C.
  ****/
@@ -296,6 +298,8 @@ void StepSizeInTissue(PhotonStruct * Photon_Ptr,
 					  InputStruct  * In_Ptr)
 {
   short  layer = Photon_Ptr->layer;
+  In_Ptr->layerspecs[layer].mus = computeAnisoptropicMus(Photon_Ptr, &In_Ptr->layerspecs[layer]);
+    
   double mua = In_Ptr->layerspecs[layer].mua;
   double mus = In_Ptr->layerspecs[layer].mus;
   
@@ -737,4 +741,16 @@ void HopDropSpin(InputStruct  *  In_Ptr,
   
   if( Photon_Ptr->w < In_Ptr->Wth && !Photon_Ptr->dead) 
     Roulette(Photon_Ptr);
+}
+
+
+double computeAnisoptropicMus(PhotonStruct * Photon_Ptr, LayerStruct* Layer_Ptr)
+{
+    double mux = Layer_Ptr->musx * Photon_Ptr->ux;
+    double muy = Layer_Ptr->musx * Photon_Ptr->uy;
+    double muz = Layer_Ptr->musz * Photon_Ptr->uz;
+    
+    double mus = sqrt(mux*mux + muy*muy + muz*muz);
+    printf("mus : %lf\n", mus);
+    return Layer_Ptr->musx;
 }

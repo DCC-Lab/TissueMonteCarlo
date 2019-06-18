@@ -352,18 +352,20 @@ Boolean ReadOneLayer(FILE *File_Ptr,
 					 double *Z_Ptr)
 {
   char buf[STRLEN], msg[STRLEN];
-  double d, n, mua, mus, g;	/* d is thickness. */
+  double d, n, mua, mus, musx, musz, g;	/* d is thickness. */
 
   strcpy(buf, FindDataLine(File_Ptr));
   if(buf[0]=='\0') return(1);	/* error. */
 
-  sscanf(buf, "%lf%lf%lf%lf%lf", &n, &mua, &mus, &g, &d);
-  if(d<0 || n<=0 || mua<0 || mus<0 || g<0 || g>1) 
+  sscanf(buf, "%lf%lf%lf%lf%lf%lf", &n, &mua, &musx, &musz, &g, &d);
+  if(d<0 || n<=0 || mua<0 || musx<0 || musz<0 || g<0 || g>1)
     return(1);			/* error. */
     
   Layer_Ptr->n	= n;
   Layer_Ptr->mua = mua;	
-  Layer_Ptr->mus = mus;	
+    Layer_Ptr->mus = 0.0;
+    Layer_Ptr->musx = musx;
+    Layer_Ptr->musz = musz;
   Layer_Ptr->g   = g;
   Layer_Ptr->z0	= *Z_Ptr;
   *Z_Ptr += d;
