@@ -28,6 +28,8 @@
 #define MZ 0
 #define FAC 1.0E-9
 
+double computeAnisoptropicMus(PhotonStruct * Photon_Ptr, InputStruct  * In_Ptr);
+
 float ran3(int *idum)
 {
   static int inext,inextp;
@@ -123,8 +125,8 @@ double Rspecular(LayerStruct * Layerspecs_Ptr)
 	   /(Layerspecs_Ptr[0].n + Layerspecs_Ptr[1].n);
   r1 = temp*temp;
   
-  if((Layerspecs_Ptr[1].mua == 0.0) 
-  && (Layerspecs_Ptr[1].mus == 0.0))  { /* glass layer. */
+  if((Layerspecs_Ptr[1].mua == 0.0)
+  && (Layerspecs_Ptr[1].musx == 0.0) && (Layerspecs_Ptr[1].musz == 0.0))  { /* glass layer. */
     temp = (Layerspecs_Ptr[1].n - Layerspecs_Ptr[2].n)
 		  /(Layerspecs_Ptr[1].n + Layerspecs_Ptr[2].n);
     r2 = temp*temp;
@@ -154,8 +156,10 @@ void LaunchPhoton(double Rspecular,
   Photon_Ptr->uy	= 0.0;	
   Photon_Ptr->uz	= 1.0;	
   
-  if((Layerspecs_Ptr[1].mua == 0.0) 
-  && (Layerspecs_Ptr[1].mus == 0.0))  { /* glass layer. */
+  short  layer = Photon_Ptr->layer;
+  double mus = fabs(Layerspecs_Ptr->musx * Photon_Ptr->ux + Layerspecs_Ptr->musx * Photon_Ptr->uy + Layerspecs_Ptr->musz * Photon_Ptr->uz);
+  if((Layerspecs_Ptr[1].mua == 0.0)
+  && (mus == 0.0) )  { /* glass layer. */
     Photon_Ptr->layer 	= 2;
     Photon_Ptr->z	= Layerspecs_Ptr[2].z0;	
   }
@@ -297,8 +301,8 @@ void StepSizeInTissue(PhotonStruct * Photon_Ptr,
 {
   short  layer = Photon_Ptr->layer;
   double mua = In_Ptr->layerspecs[layer].mua;
-  double mus = In_Ptr->layerspecs[layer].mus;
-  
+  double mus = computeAnisoptropicMus(Photon_Ptr, In_Ptr);
+    
   if(Photon_Ptr->sleft == 0.0) {  /* make a new step. */
     double rnd;
 
@@ -339,7 +343,7 @@ Boolean HitBoundary(PhotonStruct *  Photon_Ptr,
   if(uz != 0.0 && Photon_Ptr->s > dl_b) {
 	  /* not horizontal & crossing. */
     double mut = In_Ptr->layerspecs[layer].mua 
-				+ In_Ptr->layerspecs[layer].mus;
+				+ (In_Ptr->layerspecs[layer].musx + In_Ptr->layerspecs[layer].musz)/2.0;
 
     Photon_Ptr->sleft = (Photon_Ptr->s - dl_b)*mut;
     Photon_Ptr->s    = dl_b;
@@ -381,7 +385,7 @@ void Drop(InputStruct  *	In_Ptr,
   
   /* update photon weight. */
   mua = In_Ptr->layerspecs[layer].mua;
-  mus = In_Ptr->layerspecs[layer].mus;
+  mus = computeAnisoptropicMus(Photon_Ptr, In_Ptr);
   dwa = Photon_Ptr->w * mua/(mua+mus);
   Photon_Ptr->w -= dwa;
   
@@ -727,9 +731,10 @@ void HopDropSpin(InputStruct  *  In_Ptr,
 				 OutStruct    *  Out_Ptr)
 {
   short layer = Photon_Ptr->layer;
-
+  double mus = computeAnisoptropicMus(Photon_Ptr, In_Ptr);
+    
   if((In_Ptr->layerspecs[layer].mua == 0.0) 
-  && (In_Ptr->layerspecs[layer].mus == 0.0)) 
+  && (mus == 0.0))
 	/* glass layer. */
     HopInGlass(In_Ptr, Photon_Ptr, Out_Ptr);
   else
@@ -737,4 +742,13 @@ void HopDropSpin(InputStruct  *  In_Ptr,
   
   if( Photon_Ptr->w < In_Ptr->Wth && !Photon_Ptr->dead) 
     Roulette(Photon_Ptr);
+}
+
+double computeAnisoptropicMus(PhotonStruct * Photon_Ptr, InputStruct  * In_Ptr)
+{
+    short  layer = Photon_Ptr->layer;
+    double modulus = Photon_Ptr->ux*Photon_Ptr->ux + Photon_Ptr->uy * Photon_Ptr->uy + Photon_Ptr->uz * Photon_Ptr->uz;
+    double mus = fabs(In_Ptr->layerspecs[layer].musx * Photon_Ptr->ux + In_Ptr->layerspecs[layer].musx * Photon_Ptr->uy + In_Ptr->layerspecs[layer].musz * Photon_Ptr->uz);
+    printf("mus : %lf\n", mus);
+    return mus;
 }

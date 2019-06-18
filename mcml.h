@@ -112,7 +112,8 @@ typedef struct {
   double z0, z1;	/* z coordinates of a layer. [cm] */
   double n;			/* refractive index of a layer. */
   double mua;	    /* absorption coefficient. [1/cm] */
-  double mus;	    /* scattering coefficient. [1/cm] */
+  double musx;        /* scattering coefficient. [1/cm] */
+  double musz;	    /* scattering coefficient. [1/cm] */
   double g;		    /* anisotropy. */
   
   double cos_crit0,	cos_crit1;	
