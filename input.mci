@@ -1,0 +1,14 @@
+1.0 # file version
+1
+
+## Specifica data for run 1
+out.mco A
+1000000
+20e-4	20e-4
+10	20	30
+
+1
+#n   mua.  musx   musz  g     d
+1.0
+1.4  0.01   30.0  15.0  0.70  10.0
+1.0
