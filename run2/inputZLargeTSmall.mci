@@ -1,0 +1,264 @@
+1.0 # file version
+20 # Number of runs
+
+
+# Specific data for run 1
+Out001.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.01
+1.0
+
+
+# Specific data for run 2
+Out002.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.02
+1.0
+
+
+# Specific data for run 3
+Out003.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.03
+1.0
+
+
+# Specific data for run 4
+Out004.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.04
+1.0
+
+
+# Specific data for run 5
+Out005.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.05
+1.0
+
+
+# Specific data for run 6
+Out006.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.06
+1.0
+
+
+# Specific data for run 7
+Out007.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.07
+1.0
+
+
+# Specific data for run 8
+Out008.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.08
+1.0
+
+
+# Specific data for run 9
+Out009.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.09
+1.0
+
+
+# Specific data for run 10
+Out010.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.1
+1.0
+
+
+# Specific data for run 11
+Out011.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.11
+1.0
+
+
+# Specific data for run 12
+Out012.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.12
+1.0
+
+
+# Specific data for run 13
+Out013.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.13
+1.0
+
+
+# Specific data for run 14
+Out014.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.14
+1.0
+
+
+# Specific data for run 15
+Out015.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.15
+1.0
+
+
+# Specific data for run 16
+Out016.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.16
+1.0
+
+
+# Specific data for run 17
+Out017.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.17
+1.0
+
+
+# Specific data for run 18
+Out018.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.18
+1.0
+
+
+# Specific data for run 19
+Out019.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.19
+1.0
+
+
+# Specific data for run 20
+Out020.mco A
+1000000
+20e-4    20e-4
+10   20  30
+
+1
+#n   mua.  musx   musz  g    d
+1.0
+1.4  0.01    158    359    0.86    0.2
+1.0
+
+
