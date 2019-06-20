@@ -1023,10 +1023,11 @@ void WriteA_rz(FILE * file,
 	  "# A[nr-1][0], [nr-1][1],..[nr-1][nz-1]",
 	  "A_rz");
   
-  for(ir=0;ir<Nr;ir++)
-    for(iz=0;iz<Nz;iz++)  {
-      fprintf(file, "%12.4E ", Out_Parm.A_rz[ir][iz]);
-      if( (ir*Nz + iz + 1)%5 == 0) fprintf(file, "\n");
+    for(ir=0;ir<Nr;ir++) {
+        for(iz=0;iz<Nz;iz++)  {
+          fprintf(file, "%12.4E ", Out_Parm.A_rz[ir][iz]);
+        }
+        fprintf(file, "\n");
     }
   
   fprintf(file, "\n");
