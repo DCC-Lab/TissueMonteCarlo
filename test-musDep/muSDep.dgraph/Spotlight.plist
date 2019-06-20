@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Labels</key>
+	<string>µs Low 
+µs Med
+µs med-high
+µs high
+Fit of µs Low vs Distance
+Fit of µs Med vs Distance
+Fit of µs med-high vs Distance
+Fit of µs high vs Distance
+muVeryHigh
+Fit of muVeryHigh vs Distance
+
+FItted µ_s in early part of curve
+Fitted µ_s
+µ_s
+µsp vs expFit
+Fit of µsp vs expFit
+</string>
+	<key>Text</key>
+	<string></string>
+</dict>
+</plist>

@@ -1,0 +1,76 @@
+1.0 # file version
+6 # Number of runs
+
+
+## Specifica data for run 1
+out010.mco A
+1000000
+20e-3	20e-4  # dz,dr
+100	20	30     # No of dz, dr & da.
+
+1
+#n   mua.  mus  g     d
+1.0
+1.4  0.5   10.0  0.86  10
+1.0
+
+## Specifica data for run 2
+out020.mco A
+1000000
+20e-3	20e-4  # dz,dr
+100	20	30     # No of dz, dr & da.
+
+1
+#n   mua.  mus  g     d
+1.0
+1.4  0.5   20  0.86  10
+1.0
+
+## Specifica data for run 3
+out030.mco A
+1000000
+20e-3	20e-4  # dz,dr
+100	20	30     # No of dz, dr & da.
+
+1
+#n   mua.  mus  g     d
+1.0
+1.4  0.5   30  0.86  10
+1.0
+
+## Specifica data for run 4
+out040.mco A
+1000000
+20e-3	20e-4  # dz,dr
+100	20	30     # No of dz, dr & da.
+
+1
+#n   mua.  mus  g     d
+1.0
+1.4  0.5   40  0.86  10
+1.0
+
+## Specifica data for run 5
+out060.mco A
+1000000
+20e-3	20e-4  # dz,dr
+100	20	30     # No of dz, dr & da.
+
+1
+#n   mua.  mus  g     d
+1.0
+1.4  0.5   60  0.86  10
+1.0
+
+## Specifica data for run 6
+out080.mco A
+
+1000000
+20e-3	20e-4  # dz,dr
+100	20	30     # No of dz, dr & da.
+
+1
+#n   mua.  mus  g     d
+1.0
+1.4  0.5   80  0.86  10
+1.0
