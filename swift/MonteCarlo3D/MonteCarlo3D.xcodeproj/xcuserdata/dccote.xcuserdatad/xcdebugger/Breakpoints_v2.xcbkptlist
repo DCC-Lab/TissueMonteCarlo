@@ -1,0 +1,632 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3DTests/KDTNodeTests.swift"
+            timestampString = "478990763.862275"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "97"
+            endingLineNumber = "97"
+            landmarkName = "testTraverseKDTree()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNodeTests.testTraverseKDTree (MonteCarlo3DTests.KDTNodeTests)() -&gt; ()"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3DTests/KDTNodeTests.swift"
+                  timestampString = "478903857.213557"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93"
+                  offsetFromSymbolStart = "4777">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNodeTests.(testTraverseKDTree (MonteCarlo3DTests.KDTNodeTests) -&gt; () -&gt; ()).(implicit closure #4)"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3DTests/KDTNodeTests.swift"
+                  timestampString = "478903857.213863"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93"
+                  offsetFromSymbolStart = "32">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNodeTests.(testTraverseKDTree (MonteCarlo3DTests.KDTNodeTests) -&gt; () -&gt; ()).(implicit closure #5)"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3DTests/KDTNodeTests.swift"
+                  timestampString = "478903857.214131"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "93"
+                  endingLineNumber = "93"
+                  offsetFromSymbolStart = "32">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3DTests/KDTNodeTests.swift"
+            timestampString = "478990763.862275"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "testTraverseKDTree()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3DTests/KDTNodeTests.swift"
+            timestampString = "478990763.862275"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "96"
+            endingLineNumber = "96"
+            landmarkName = "testTraverseKDTree()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3DTests/KDTNodeTests.swift"
+            timestampString = "478990763.862275"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
+            landmarkName = "testTraverseKDTree()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3DTests/KDTNodeTests.swift"
+            timestampString = "478990763.862275"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "testTraverseKDTree()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3D/KDTNode.swift"
+            timestampString = "485143542.476407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "87"
+            endingLineNumber = "87"
+            landmarkName = "buildTree(_:triangles:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3D.KDTNode.buildTree (MonteCarlo3D.KDTNode)(MonteCarlo3D.Axis, triangles : Swift.Array&lt;MonteCarlo3D.KDTriangle&gt;) -&gt; ()"
+                  moduleName = "MonteCarlo3D"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479008901.287394"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "85"
+                  endingLineNumber = "85"
+                  offsetFromSymbolStart = "5619">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNode.buildTree (MonteCarlo3DTests.KDTNode)(MonteCarlo3DTests.Axis, triangles : Swift.Array&lt;MonteCarlo3DTests.KDTriangle&gt;) -&gt; ()"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479008901.905517"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "85"
+                  endingLineNumber = "85"
+                  offsetFromSymbolStart = "5619">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3D/KDTNode.swift"
+            timestampString = "485143542.476407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "210"
+            endingLineNumber = "210"
+            landmarkName = "hitTestWithSegmentFromPoint(_:toPoint:closestOnly:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3D.KDTNode.recursiveTraverse (MonteCarlo3D.KDTNode)(__C.SCNVector3, direction : __C.SCNVector3, t_near : CoreGraphics.CGFloat, t_far : CoreGraphics.CGFloat) -&gt; Swift.Optional&lt;(CoreGraphics.CGFloat, MonteCarlo3D.KDPrimitive)&gt;"
+                  moduleName = "MonteCarlo3D"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "478905887.428466"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "104"
+                  endingLineNumber = "104"
+                  offsetFromSymbolStart = "466">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNode.recursiveTraverse (MonteCarlo3DTests.KDTNode)(__C.SCNVector3, direction : __C.SCNVector3, t_near : CoreGraphics.CGFloat, t_far : CoreGraphics.CGFloat) -&gt; Swift.Optional&lt;(CoreGraphics.CGFloat, MonteCarlo3DTests.KDPrimitive)&gt;"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "478905888.115408"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "104"
+                  endingLineNumber = "104"
+                  offsetFromSymbolStart = "466">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3D/KDTNode.swift"
+            timestampString = "485143542.476407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "281"
+            endingLineNumber = "281"
+            landmarkName = "intersectRayWithAllPrimitives(fromPoint:toPoint:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3D.KDPrimitive.intersectWithRay (MonteCarlo3D.KDPrimitive)(__C.SCNVector3, direction : __C.SCNVector3) -&gt; Swift.Optional&lt;CoreGraphics.CGFloat&gt;"
+                  moduleName = "MonteCarlo3D"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "478905712.679374"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "212"
+                  endingLineNumber = "212"
+                  offsetFromSymbolStart = "237">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDPrimitive.intersectWithRay (MonteCarlo3DTests.KDPrimitive)(__C.SCNVector3, direction : __C.SCNVector3) -&gt; Swift.Optional&lt;CoreGraphics.CGFloat&gt;"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "478905713.33376"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "212"
+                  endingLineNumber = "212"
+                  offsetFromSymbolStart = "237">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3D/KDTNode.swift"
+            timestampString = "485143542.476407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "74"
+            endingLineNumber = "74"
+            landmarkName = "init()"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3D.KDTNode.buildTree (MonteCarlo3D.KDTNode)(MonteCarlo3D.Axis, triangles : Swift.Array&lt;MonteCarlo3D.KDTriangle&gt;) -&gt; ()"
+                  moduleName = "MonteCarlo3D"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479063183.718842"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "1057">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNode.buildTree (MonteCarlo3DTests.KDTNode)(MonteCarlo3DTests.Axis, triangles : Swift.Array&lt;MonteCarlo3DTests.KDTriangle&gt;) -&gt; ()"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479063183.719188"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "72"
+                  endingLineNumber = "72"
+                  offsetFromSymbolStart = "1057">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3DTests/KDTNodeTests.swift"
+            timestampString = "479194470.765187"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "196"
+            endingLineNumber = "196"
+            landmarkName = "testIntersectCubeTrianglesWithRayKDTree()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3D/KDTNode.swift"
+            timestampString = "485143542.476407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "buildTree(_:triangles:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3D.KDTNode.buildTree (MonteCarlo3D.KDTNode)(MonteCarlo3D.Axis, triangles : Swift.Array&lt;MonteCarlo3D.KDTriangle&gt;) -&gt; ()"
+                  moduleName = "MonteCarlo3D"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479009064.153338"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "87"
+                  endingLineNumber = "87"
+                  offsetFromSymbolStart = "5623">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNode.buildTree (MonteCarlo3DTests.KDTNode)(MonteCarlo3DTests.Axis, triangles : Swift.Array&lt;MonteCarlo3DTests.KDTriangle&gt;) -&gt; ()"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479009064.153522"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "87"
+                  endingLineNumber = "87"
+                  offsetFromSymbolStart = "5623">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3D/KDTNode.swift"
+            timestampString = "485143542.476407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "213"
+            endingLineNumber = "213"
+            landmarkName = "hitTestWithSegmentFromPoint(_:toPoint:closestOnly:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3D.KDTNode.recursiveTraverse (MonteCarlo3D.KDTNode)(fromPoint : __C.SCNVector3, toPoint : __C.SCNVector3, t_near : CoreGraphics.CGFloat, t_far : CoreGraphics.CGFloat) -&gt; Swift.Optional&lt;(CoreGraphics.CGFloat, MonteCarlo3D.KDTriangle)&gt;"
+                  moduleName = "MonteCarlo3D"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479010434.803016"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "918">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNode.recursiveTraverse (MonteCarlo3DTests.KDTNode)(fromPoint : __C.SCNVector3, toPoint : __C.SCNVector3, t_near : CoreGraphics.CGFloat, t_far : CoreGraphics.CGFloat) -&gt; Swift.Optional&lt;(CoreGraphics.CGFloat, MonteCarlo3DTests.KDTriangle)&gt;"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479010435.349711"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "130"
+                  endingLineNumber = "130"
+                  offsetFromSymbolStart = "918">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3D/KDTNode.swift"
+            timestampString = "485143542.476407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
+            landmarkName = "buildTree(_:triangles:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3D.KDTNode.chooseSplitValue (MonteCarlo3D.KDTNode)(forAxis : MonteCarlo3D.Axis, triangles : Swift.Array&lt;MonteCarlo3D.KDTriangle&gt;) -&gt; CoreGraphics.CGFloat"
+                  moduleName = "MonteCarlo3D"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479063667.73159"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107"
+                  offsetFromSymbolStart = "67">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNode.chooseSplitValue (MonteCarlo3DTests.KDTNode)(forAxis : MonteCarlo3DTests.Axis, triangles : Swift.Array&lt;MonteCarlo3DTests.KDTriangle&gt;) -&gt; CoreGraphics.CGFloat"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479063668.323658"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "107"
+                  endingLineNumber = "107"
+                  offsetFromSymbolStart = "67">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3D/KDTNode.swift"
+            timestampString = "485143542.476407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "buildTree(_:triangles:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3D.KDTNode.chooseSplitValue (MonteCarlo3D.KDTNode)(forAxis : MonteCarlo3D.Axis, triangles : Swift.Array&lt;MonteCarlo3D.KDTriangle&gt;) -&gt; CoreGraphics.CGFloat"
+                  moduleName = "MonteCarlo3D"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479063256.167352"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "1467">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3D.KDTNode.(chooseSplitValue (MonteCarlo3D.KDTNode) -&gt; (forAxis : MonteCarlo3D.Axis, triangles : Swift.Array&lt;MonteCarlo3D.KDTriangle&gt;) -&gt; CoreGraphics.CGFloat).(closure #1)"
+                  moduleName = "MonteCarlo3D"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479063256.167633"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "31">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNode.chooseSplitValue (MonteCarlo3DTests.KDTNode)(forAxis : MonteCarlo3DTests.Axis, triangles : Swift.Array&lt;MonteCarlo3DTests.KDTriangle&gt;) -&gt; CoreGraphics.CGFloat"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479063256.167876"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "1467">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNode.(chooseSplitValue (MonteCarlo3DTests.KDTNode) -&gt; (forAxis : MonteCarlo3DTests.Axis, triangles : Swift.Array&lt;MonteCarlo3DTests.KDTriangle&gt;) -&gt; CoreGraphics.CGFloat).(closure #1)"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479063256.168041"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "114"
+                  endingLineNumber = "114"
+                  offsetFromSymbolStart = "31">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.AddressBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "*0x1008a7c10">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Swift._partition &lt;A where A: Swift.MutableCollectionType, A.Index: Swift.RandomAccessIndexType&gt; (inout A, Swift.Range&lt;A.Index&gt;, inout (A.Generator.Element, A.Generator.Element) -&gt; Swift.Bool) -&gt; A.Index"
+                  moduleName = "libswiftCore.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  offsetFromSymbolStart = "1232">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MonteCarlo3D/KDTNode.swift"
+            timestampString = "485143542.476407"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
+            landmarkName = "buildTree(_:triangles:)"
+            landmarkType = "5">
+            <Locations>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3D.KDTNode.chooseSplitValue (MonteCarlo3D.KDTNode)(forAxis : MonteCarlo3D.Axis, triangles : Swift.Array&lt;MonteCarlo3D.KDTriangle&gt;) -&gt; CoreGraphics.CGFloat"
+                  moduleName = "MonteCarlo3D"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479063667.732841"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "115"
+                  endingLineNumber = "115"
+                  offsetFromSymbolStart = "1994">
+               </Location>
+               <Location
+                  shouldBeEnabled = "No"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "MonteCarlo3DTests.KDTNode.chooseSplitValue (MonteCarlo3DTests.KDTNode)(forAxis : MonteCarlo3DTests.Axis, triangles : Swift.Array&lt;MonteCarlo3DTests.KDTriangle&gt;) -&gt; CoreGraphics.CGFloat"
+                  moduleName = "MonteCarlo3DTests"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/dccote/Documents/Prog-SVN/MonteCarlo3D/MonteCarlo3D/KDTNode.swift"
+                  timestampString = "479063668.324056"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "115"
+                  endingLineNumber = "115"
+                  offsetFromSymbolStart = "1994">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>
