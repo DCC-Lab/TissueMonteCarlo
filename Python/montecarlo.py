@@ -1,6 +1,28 @@
 import numpy as np
 import scipy
 
+class Vector:
+    def __init__(self):
+        self.v = np.array([0,0,0],dtype=float)
+
+    @property
+    def x(self):
+        return self.v[0]
+
+    @property
+    def y(self):
+        return self.v[1]
+
+    @property
+    def z(self):
+        return self.v[2]
+
+    def __mul__(self, scale):
+        self.v *= scale
+
+    def __rmul__(self, scale):
+        self.v *= scale
+
 class Photon:
     def __init__(self):
         self.r = np.array([0,0,0],dtype=float)
@@ -79,6 +101,7 @@ class Material:
 if __name__ == "__main__":
     photon = Photon()
     mat = Material(mu_s=30, mu_a = 0.01, g = 0.9)
+    r = Vector()*10.0
 
     for i in range(100000):
         while photon.isAlive:
