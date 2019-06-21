@@ -38,12 +38,13 @@ class Photon {
     
 
     init?(position:Vector3D, direction:Vector3D, wavelength:CGFloat) {
-        self.originalPosition = position
-        self.originalDirection = direction
         self.wavelength = wavelength
 
         self.position = position
         self.direction = direction
+
+        self.originalPosition = position
+        self.originalDirection = direction
 
         self.weight = 1
         self.keepingExtendedStatistics = false
@@ -84,7 +85,7 @@ class Photon {
         while isAlive() {
             let (θ, φ) = material.randomScatteringAngles()
             let distance = material.randomScatteringDistance()
-            if distance == material.infiniteDistance {
+            if distance.isInfinite {
                 weight = 0
             } else {
                 changeDirectionBy(θ, φ)
@@ -93,7 +94,6 @@ class Photon {
                 decreaseWeightBy(energyLoss)
             }
             roulette()
-            statistics.append((self.position,self.weight))
         }
     }
 
