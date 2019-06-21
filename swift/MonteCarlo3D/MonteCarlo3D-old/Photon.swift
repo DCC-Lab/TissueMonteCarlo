@@ -9,73 +9,17 @@
 import Foundation
 import SceneKit
 
-
-class SCNHitTestResultExtended {
-    let hitTestResult:SCNHitTestResult
-    var direction:SCNVector3
-    var indexFrom:CGFloat?
-    var indexTo:CGFloat?
-    var Rp:CGFloat?
-    var Rs:CGFloat?
-    var Tp:CGFloat?
-    var Ts:CGFloat?
-    
-    init(hitTest:SCNHitTestResult, direction:SCNVector3) {
-        self.hitTestResult = hitTest
-        self.direction = direction
-    }
-    
-    func setFresnelCoefficients() -> Void {
-        /* Compute angles */
-        
-        indexFrom = 1
-        indexTo = 1
-        
-        for child in hitTestResult.node.childNodes {
-            if  let material = child as? BulkMaterial {
-                indexFrom = material.index
-            }
-        }
-        
-        
-        let cosThetaFrom = abs(direction.dotProduct(hitTestResult.worldNormal));
-        let sinThetaFrom = sqrt(1.0 - cosThetaFrom*cosThetaFrom);
-        
-        let m = indexTo!/indexFrom!
-        
-        if ( m == 1.0) {
-            Rp = 0.0
-            Rs = 0.0
-            Tp = 1.0
-            Ts = 1.0
-        }
-        
-        let sinThetaTo = sinThetaFrom / m;
-        
-        if (sinThetaTo >= 1.0) {
-            // Past critical angle, totally reflected
-            Rp = 1.0
-            Rs = 1.0
-            Tp = 0.0
-            Ts = 0.0
-        }
-        
-        let cosThetaTo = sqrt(1.0 - sinThetaTo*sinThetaTo);
-        
-        // Fresnel coefficients for fields (not intensities)
-        Tp = 2.0 * cosThetaFrom / (cosThetaTo + m * cosThetaFrom);
-        Ts = 2.0 * cosThetaFrom / (cosThetaFrom + m * cosThetaTo);
-        Rp = Tp! * m - 1.0
-        Rs = Ts! - 1.0
-    }
-
-}
-
 enum MonteCarloError: LocalizedError {
     case UnexpectedNil
 }
 
-class Photon:CustomStringConvertible {
+let xHat = SCNVector3(x: 1, y: 0, z: 0)
+let yHat = SCNVector3(x: 0, y: 1, z: 0)
+let zHat = SCNVector3(x: 0, y: 0, z: 1)
+let oHat = SCNVector3(x: 0, y: 0, z: 0)
+
+
+class Photon {
 
     let originalPosition:Vector3D
     let originalDirection:Vector3D
@@ -137,9 +81,8 @@ class Photon:CustomStringConvertible {
         self.statistics = [(self.originalPosition,self.weight)]
     }
     
-    func propagateInto(objectsRoot:SCNNode, distance theDistance:CGFloat) throws {
+    func propagateInto(material:BulkMaterial, distance theDistance:CGFloat) throws {
 
-        let defaultOptions:[String:AnyObject] = [SCNHitTestOption.backFaceCulling.rawValue:false as AnyObject, SCNHitTestOption.sortResults.rawValue:true as AnyObject, SCNHitTestOption.ignoreHiddenNodes.rawValue:false as AnyObject, SCNHitTestOption.rootNode.rawValue:objectsRoot]
         let SAFETY_DISTANCE:CGFloat = 1e-4
         
         while isAlive() {
@@ -150,31 +93,13 @@ class Photon:CustomStringConvertible {
             
             let theDisplacement = direction * (distance+2*SAFETY_DISTANCE)
             
-            let hitList = objectsRoot.fastHitTestWithSegmentFromPoint(thePosition, toPoint: thePosition + theDisplacement, options: defaultOptions)
-            
-            if hitList.count > 0 {
-                let hit = hitList[0]
-                
-                let distanceToInterface = (hit.worldCoordinates - thePosition).abs()
-                
-                let extendedHit = SCNHitTestResultExtended(hitTest:hit, direction:direction)
-                
-                moveBy(distanceToInterface - SAFETY_DISTANCE)
-                if try isReflectedFromInterface(extendedHit) {
-                    reflectAtInterface(extendedHit)
-                } else {
-                    try transmitThroughInterface(extendedHit)
-                    moveBy(2.0 * SAFETY_DISTANCE)
-                }
+            if distance == theMaterial.infiniteDistance {
+                weight = 0
             } else {
-                if distance == theMaterial.infiniteDistance {
-                    weight = 0
-                } else {
-                    moveBy(distance)
-                    changeDirectionBy(θ, φ:φ)
-                    let energyLoss = weight * theMaterial.albedo();
-                    decreaseWeightBy(energyLoss)
-                }
+                moveBy(distance)
+                changeDirectionBy(θ, φ:φ)
+                let energyLoss = weight * theMaterial.albedo();
+                decreaseWeightBy(energyLoss)
             }
             
             roulette()
@@ -220,11 +145,7 @@ class Photon:CustomStringConvertible {
         self.ePerp.rotateAroundAxis(u: self.direction, byAngle: φ)
         
         try! self.ePerp.normalize()
-        
-//        assert( self.ePerp.norm() != 0 ,"ePerp is null")
-//        assert(!isnan(self.ePerp.x) && !isnan(self.ePerp.y) && !isnan(self.ePerp.z),"Eperp is nan")
-        
-        self.direction.rotateAroundAxis(u: self.ePerp, byAngle: θ)
+                self.direction.rotateAroundAxis(u: self.ePerp, byAngle: θ)
         try! self.direction.normalize()
 //        assert(!isnan(self.direction.x) && !isnan(self.direction.y) && !isnan(self.direction.z),"Direction is nan")
  

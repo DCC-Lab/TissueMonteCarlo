@@ -87,7 +87,7 @@ extension SCNNode {
         let farAwayPoint = SCNVector3(0,100,0)
         let hitList = self.fastHitTestWithSegmentFromPoint(fromPoint:thePoint,
             toPoint: farAwayPoint,
-            options: [SCNHitTestBackFaceCullingKey.rawValue:false, SCNHitTestSortResultsKey:true, SCNHitTestIgnoreHiddenNodesKey:false])
+            options: [SCNHitTestBackFaceCullingKey.rawValue:false as AnyObject, SCNHitTestSortResultsKey:true as AnyObject, SCNHitTestIgnoreHiddenNodesKey:false as AnyObject])
         
         var distinctHits = [SCNHitTestResult]()
         for hit in hitList {
@@ -124,7 +124,7 @@ extension SCNNode {
         
         let hitList = self.fastHitTestWithSegmentFromPoint(fromPoint:thePoint,
             toPoint: thePoint + theDisplacement,
-            options: [SCNHitTestBackFaceCullingKey:false, SCNHitTestSortResultsKey:true, SCNHitTestIgnoreHiddenNodesKey:false])
+            options: [SCNHitTestBackFaceCullingKey.rawValue:false as AnyObject, SCNHitTestSortResultsKey.rawValue:true as AnyObject, SCNHitTestIgnoreHiddenNodesKey.rawValue:false as AnyObject])
         
         if hitList.count > 1 {
             var direction = theDisplacement

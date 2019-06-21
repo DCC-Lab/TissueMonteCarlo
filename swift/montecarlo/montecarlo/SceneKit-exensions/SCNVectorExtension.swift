@@ -10,9 +10,14 @@ import Foundation
 import SceneKit
 
 let π:CGFloat = 3.1415926535
-enum VectorError : ErrorType { case Null }
+enum VectorError: LocalizedError {
+    case UnexpectedNil
+}
 
 typealias Vector3D = SCNVector3
+enum Axis:Int {
+    case X=0,Y=1,Z=2
+}
 
 
 infix operator ×
@@ -23,31 +28,31 @@ infix operator ‖
 
 extension SCNVector3:CustomStringConvertible {
 
-    static func vectorFromString(theString:String) -> SCNVector3? {
-        let regexp = try! NSRegularExpression(pattern: "[+|-]?\\d+\\.?\\d*", options: NSRegularExpression.Options.caseInsensitive)
-        
-        let textResults = regexp.matches(in: theString, options: [], range: NSMakeRange(0,theString.lengthOfBytes(using: String.Encoding.isoLatin1)))
-        
-        var numbers = [Float]()
-        for result in textResults {
-            for i in 0..<result.numberOfRanges {
-                let startIndex = result.range(at: i).location
-                let endIndex = result.range(at: i).location+result.range(at: i).length
-                
-                let numberString = theString.substringWith(theString.startIndex.advancedBy(startIndex)..<theString.startIndex.advancedBy(endIndex))
-                let number = Float(numberString)
-                if number != nil {
-                    numbers.append(number!)
-                }
-            }
-        }
-        if numbers.count != 3 {
-            return nil
-        }
-        
-        return SCNVector3(numbers[0],numbers[1],numbers[2])
-        
-    }
+//    static func vectorFromString(theString:String) -> SCNVector3? {
+//        let regexp = try! NSRegularExpression(pattern: "[+|-]?\\d+\\.?\\d*", options: NSRegularExpression.Options.caseInsensitive)
+//        
+//        let textResults = regexp.matches(in: theString, options: [], range: NSMakeRange(0,theString.lengthOfBytes(using: String.Encoding.isoLatin1)))
+//        
+//        var numbers = [Float]()
+//        for result in textResults {
+//            for i in 0..<result.numberOfRanges {
+//                let startIndex = result.range(at: i).location
+//                let endIndex = result.range(at: i).location+result.range(at: i).length
+//                
+//                let numberString = theString.substringWith(theString.startIndex.advancedBy(startIndex)..<theString.startIndex.advancedBy(endIndex))
+//                let number = Float(numberString)
+//                if number != nil {
+//                    numbers.append(number!)
+//                }
+//            }
+//        }
+//        if numbers.count != 3 {
+//            return nil
+//        }
+//        
+//        return SCNVector3(numbers[0],numbers[1],numbers[2])
+//        
+//    }
 
     static func randomVector() -> SCNVector3 {
         let x = CGFloat(arc4random())/CGFloat(RAND_MAX)
@@ -101,7 +106,7 @@ extension SCNVector3:CustomStringConvertible {
             y = y / value
             z = z / value
         } else {
-            throw VectorError.Null
+            throw VectorError.UnexpectedNil
         }
         return self
     }
@@ -327,10 +332,5 @@ func /= ( left: inout SCNVector3, scalar: CGFloat) {
     left.z /= scalar
 }
 
-
-let xHat = SCNVector3(x: 1, y: 0, z: 0)
-let yHat = SCNVector3(x: 0, y: 1, z: 0)
-let zHat = SCNVector3(x: 0, y: 0, z: 1)
-let oHat = SCNVector3(x: 0, y: 0, z: 0)
 
 

@@ -21,6 +21,9 @@
 		754EF50C22BCDFF00018E4FA /* BulkHenyeyGreenstein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754EF50222BCDFF00018E4FA /* BulkHenyeyGreenstein.swift */; };
 		754EF50D22BCDFF00018E4FA /* MonteCarloView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754EF50322BCDFF00018E4FA /* MonteCarloView.swift */; };
 		754EF50E22BCDFF00018E4FA /* SCNVectorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754EF50422BCDFF00018E4FA /* SCNVectorExtension.swift */; };
+		754EF51222BCE4EA0018E4FA /* SCNNodeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754EF4FF22BCDFF00018E4FA /* SCNNodeExtension.swift */; };
+		754EF51322BCE5300018E4FA /* SCNGeometryExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754EF50F22BCE02F0018E4FA /* SCNGeometryExtension.swift */; };
+		754EF51422BCE5320018E4FA /* SCNSceneExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 754EF4FB22BCDFF00018E4FA /* SCNSceneExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -126,9 +129,9 @@
 		754EF51122BCE2160018E4FA /* SceneKit-exensions */ = {
 			isa = PBXGroup;
 			children = (
+				754EF50422BCDFF00018E4FA /* SCNVectorExtension.swift */,
 				754EF4FF22BCDFF00018E4FA /* SCNNodeExtension.swift */,
 				754EF4FB22BCDFF00018E4FA /* SCNSceneExtension.swift */,
-				754EF50422BCDFF00018E4FA /* SCNVectorExtension.swift */,
 				754EF50F22BCE02F0018E4FA /* SCNGeometryExtension.swift */,
 				754EF4FD22BCDFF00018E4FA /* KDTNode.swift */,
 				754EF4FC22BCDFF00018E4FA /* KDTNode+SCNNodeExtension.swift */,
@@ -239,7 +242,10 @@
 			files = (
 				754EF50B22BCDFF00018E4FA /* MonteCarloViewController.swift in Sources */,
 				754EF50722BCDFF00018E4FA /* KDTNode.swift in Sources */,
+				754EF51322BCE5300018E4FA /* SCNGeometryExtension.swift in Sources */,
+				754EF51422BCE5320018E4FA /* SCNSceneExtension.swift in Sources */,
 				754EF50622BCDFF00018E4FA /* KDTNode+SCNNodeExtension.swift in Sources */,
+				754EF51222BCE4EA0018E4FA /* SCNNodeExtension.swift in Sources */,
 				754EF50E22BCDFF00018E4FA /* SCNVectorExtension.swift in Sources */,
 				754EF50A22BCDFF00018E4FA /* BulkMaterial.swift in Sources */,
 				754EF4DE22BCDFB10018E4FA /* GameViewController.swift in Sources */,
