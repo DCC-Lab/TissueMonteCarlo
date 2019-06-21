@@ -3,7 +3,7 @@ import numpy as np
 class Vector:
     def __init__(self, x=0,y=0,z=0):
         if isinstance(x, np.ndarray):
-            self.v = x.copy() #np.array(x,dtype=float)
+            self.v = Vector(x[0],x[1],x[2]) #np.array(x,dtype=float)
         elif isinstance(x, Vector):
             self.v = Vector(x.x, x.y, x.z)
         else:

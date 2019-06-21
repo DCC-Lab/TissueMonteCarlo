@@ -5,11 +5,14 @@ from vector import *
 class Photon:
     def __init__(self):
         self.r = Vector(0,0,0)
-        self.u = Vector(0,0,1)
-        
-        self.ePara = Vector(1,0,0)
-        self.ePerp = Vector(0,1,0)
+        self.ez = Vector(0,0,1)    # Propagation
+        self.ePerp = Vector(0,1,0) # Perpendicular to scattering plane
+        self.ePara = Vector(1,0,0) # Parallel to scattering plane 
         self.weight = 1.0
+
+    @property
+    def dir(self):
+        return self.ez
 
     @property
     def isDead(self):
@@ -20,28 +23,11 @@ class Photon:
         return self.weight != 0
 
     def moveBy(self, d):
-        self.r += self.u * d
+        self.r += self.ez * d
 
     def scatterBy(self, theta, phi):
         self.rotateReferenceFrameAroundPropagationDirectionBy(phi)
         self.changePropagationDirectionAroundEPerpBy(theta)
-
-    def _scatterBy(self, theta, phi):
-        cost = np.cos(theta)
-        sint = np.sqrt(1-cost*cost)
-        cosp = np.cos(phi)
-        sinp = np.sin(phi)
-        ux = self.u[0]
-        uy = self.u[1]
-        uz = self.u[2]
-
-        if abs(uz) > 0.9999:
-            self.u = Vector(sint*cosp, sint*sinp, cost*uz/abs(uz))
-        else:
-            temp = np.sqrt(1.0 - uz*uz)
-            self.u = Vector(sint*(ux*uz*cosp - uy*sinp)/temp + ux*cost,
-                             sint*(uy*uz*cosp + ux*sinp)/temp + uy*cost,
-                             -sint*cosp*temp + uz*cost)
 
     def decreaseWeightBy(self, delta):
         self.weight -= delta
@@ -60,7 +46,7 @@ class Photon:
     def rotateReferenceFrameAroundPropagationDirectionBy(self, phi):
         el = Vector(self.ePara)
         er = Vector(self.ePerp)
-        ez = Vector(self.u)    
+        ez = Vector(self.ez)    
         cos_phi = np.cos(phi);
         sin_phi = np.sin(phi);
     
@@ -75,7 +61,7 @@ class Photon:
     def changePropagationDirectionAroundEPerpBy(self, inTheta):
         el = Vector(self.ePara)
         er = Vector(self.ePerp)
-        ez = Vector(self.u)
+        ez = Vector(self.ez)
         cos_theta = np.cos(inTheta)
         sin_theta = np.sin(inTheta)
     
@@ -83,23 +69,40 @@ class Photon:
         self.ePara.y = el.y * cos_theta + ez.y * sin_theta
         self.ePara.z = el.z * cos_theta + ez.z * sin_theta
         
-        self.u.x = - el.x * sin_theta + ez.x * cos_theta
-        self.u.y = - el.y * sin_theta + ez.y * cos_theta
-        self.u.z = - el.z * sin_theta + ez.z * cos_theta
+        self.ez.x = - el.x * sin_theta + ez.x * cos_theta
+        self.ez.y = - el.y * sin_theta + ez.y * cos_theta
+        self.ez.z = - el.z * sin_theta + ez.z * cos_theta
 
     def _checkReferenceFrame(self):
         if not self.ePara.isPerpendicularTo(self.ePerp):
             raise ValueError()
-        if not self.ePerp.isPerpendicularTo(self.u):
+        if not self.ePerp.isPerpendicularTo(self.ez):
             raise ValueError()
-        if not self.u.isPerpendicularTo(self.ePara):
+        if not self.ez.isPerpendicularTo(self.ePara):
             raise ValueError()
         if not self.ePara.isUnitary:
             raise ValueError()
         if not self.ePerp.isUnitary:
             raise ValueError()
-        if not self.u.isUnitary:
+        if not self.ez.isUnitary:
             raise ValueError()
+
+    def _scatterBy(self, theta, phi):
+        cost = np.cos(theta)
+        sint = np.sqrt(1-cost*cost)
+        cosp = np.cos(phi)
+        sinp = np.sin(phi)
+        ux = self.x
+        uy = self.y
+        uz = self.z
+
+        if abs(uz) > 0.9999:
+            self.ez = Vector(sint*cosp, sint*sinp, cost*uz/abs(uz))
+        else:
+            temp = np.sqrt(1.0 - uz*uz)
+            self.ez = Vector(sint*(ux*uz*cosp - uy*sinp)/temp + ux*cost,
+                             sint*(uy*uz*cosp + ux*sinp)/temp + uy*cost,
+                             -sint*cosp*temp + uz*cost)
 
 class Material:
     def __init__(self, mu_s, mu_a, g):
