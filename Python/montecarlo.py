@@ -1,5 +1,4 @@
 import numpy as np
-import scipy
 from vector import *
 
 class Photon:
@@ -23,6 +22,7 @@ class Photon:
         return self.weight != 0
 
     def moveBy(self, d):
+        photon._checkReferenceFrame()
         self.r += self.ez * d
 
     def scatterBy(self, theta, phi):
@@ -139,10 +139,11 @@ class Material:
         return True
 
 if __name__ == "__main__":
-    photon = Photon()
     mat = Material(mu_s=60, mu_a = 0.01, g = 0.7)
  
-    for i in range(1000000):
+    for i in range(3):
+        print("Photon {0}".format(i))
+        photon = Photon()
         while photon.isAlive and mat.contains(photon):
             d = mat.getScatteringDistance(photon)
             (theta, phi) = mat.getScatteringAngles(photon)
@@ -150,5 +151,4 @@ if __name__ == "__main__":
             photon.scatterBy(theta, phi)
             mat.absorbEnergy(photon)
             photon.roulette()
-            photon._checkReferenceFrame()
      #       print(photon.r)
