@@ -6,11 +6,11 @@ class Vector:
         if isinstance(x, np.ndarray):
             self.x = x
             self.y = y 
-            self.z = z #Vector(x[0],x[1],x[2]) #np.array(x,dtype=float)
+            self.z = z
         elif isinstance(x, Vector):
             self.x = x.x
             self.y = x.y 
-            self.z = x.z #Vector(x[0],x[1],x[2]) #np.array(x,dtype=float)
+            self.z = x.z 
         else:
             self.x = x
             self.y = y 

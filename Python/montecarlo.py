@@ -140,7 +140,7 @@ class Material:
 if __name__ == "__main__":
     mat = Material(mu_s=20, mu_a = 0.1, g = 0.7)
  
-    for i in range(1000):
+    for i in range(100):
         print("Photon {0}".format(i))
         photon = Photon()
         while photon.isAlive and mat.contains(photon):
