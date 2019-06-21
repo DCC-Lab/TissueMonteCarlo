@@ -1,8 +1,11 @@
 import numpy as np
 
 class Vector:
-    def __init__(self, array=[0,0,0]):
-        self.v = np.array(array,dtype=float)
+    def __init__(self, x=0,y=0,z=0):
+        if isinstance(x, list):
+            self.v = np.array(x,dtype=float)
+        else:
+            self.v = np.array([x,y,z],dtype=float)
 
     @property
     def x(self):

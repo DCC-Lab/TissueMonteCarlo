@@ -4,8 +4,8 @@ from vector import *
 
 class Photon:
     def __init__(self):
-        self.r = Vector()
-        self.u = Vector([0,0,1])
+        self.r = Vector(0,0,0)
+        self.u = Vector(0,0,1)
         self.weight = 1.0
 
     def moveBy(self, d):
