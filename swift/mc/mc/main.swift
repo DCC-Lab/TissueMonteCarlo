@@ -14,10 +14,10 @@ let start = Date()
 let N = 10000
 for i in 1...N {
     p!.reset()
-    try p!.propagateInto(material: material, distance: 0)
+    try p!.propagate(into: material, for: 0)
     if i % 100 == 0 {
         print("\(i)")
     }
 }
-let duration = -start.timeIntervalSinceNow/TimeInterval(N)*1000
-print(String(format: "%.1lf ms per photon", duration))
+let duration = -start.timeIntervalSinceNow/TimeInterval(N)*1000000
+print(String(format: "%.1lf µs per photon", duration))

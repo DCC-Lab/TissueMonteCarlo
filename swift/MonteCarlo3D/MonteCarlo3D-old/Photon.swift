@@ -18,26 +18,25 @@ let yHat = Vector(x: 0, y: 1, z: 0)
 let zHat = Vector(x: 0, y: 0, z: 1)
 let oHat = Vector(x: 0, y: 0, z: 0)
 
-
 class Photon {
     var position:Vector
     var direction:Vector
     var ePerp:Vector
-    var weight:CGFloat
+    var weight:Float
 
     let originalPosition:Vector
     let originalDirection:Vector
-    let wavelength:CGFloat
+    let wavelength:Float
     var keepingExtendedStatistics:Bool
-    var statistics:[(Vector,CGFloat)]
-    var distanceTraveled:CGFloat
+    var statistics:[(Vector,Float)]
+    var distanceTraveled:Float
 
     var description:String {
         return String(format: "P: ( %0.2f,%0.2f,%0.2f ) D:(%0.2f,%0.2f,%0.2f ) W:%0.2f",self.position.x,self.position.y,self.position.z,self.direction.x,self.direction.y,self.direction.z,self.weight )
     }
     
 
-    init?(position:Vector, direction:Vector, wavelength:CGFloat) {
+    init?(position:Vector, direction:Vector, wavelength:Float) {
         self.wavelength = wavelength
 
         self.position = position
@@ -81,7 +80,7 @@ class Photon {
         self.statistics = [(self.originalPosition,self.weight)]
     }
     
-    func propagateInto(material:BulkMaterial, distance theDistance:CGFloat) throws {
+    func propagate(into material:BulkMaterial, for distance:Float) throws {
         while isAlive() {
             let (θ, φ) = material.randomScatteringAngles()
             let distance = material.randomScatteringDistance()
@@ -90,23 +89,22 @@ class Photon {
             } else {
                 scatterBy(θ, φ)
                 moveBy(distance)
-                let energyLoss = material.absorbEnergy(self)
-                decreaseWeightBy(energyLoss)
+                material.absorbEnergy(self)
             }
             roulette()
         }
     }
 
-    func moveBy(_ distance:CGFloat) {
+    func moveBy(_ distance:Float) {
         // This is very slow because of temporary allocation: 
-        // self.position += self.direction * distance
+//        self.position += self.direction * distance
         // This is much faster because done in place:
         self.position.addScaledVector(self.direction, scale:distance)
         self.distanceTraveled += distance;
         self.statistics.append((self.position, self.weight))
     }
     
-    func decreaseWeightBy(_ delta:CGFloat) {
+    func decreaseWeightBy(_ delta:Float) {
         self.weight -= delta
 
         if self.weight < 0 {
@@ -114,7 +112,7 @@ class Photon {
         }
     }
 
-    func multiplyWeightBy(scale:CGFloat) {
+    func multiplyWeightBy(scale:Float) {
         self.weight *= scale
         
         if self.weight < 0 {
@@ -126,7 +124,7 @@ class Photon {
         return weight > 0
     }
     
-    func scatterBy(_ θ:CGFloat,_ φ:CGFloat ) {
+    func scatterBy(_ θ:Float,_ φ:Float ) {
         self.ePerp.rotateAroundAxis(self.direction, byAngle: φ)
         try! self.ePerp.normalize()
         self.direction.rotateAroundAxis(self.ePerp, byAngle: θ)
@@ -158,8 +156,8 @@ class Photon {
     }
     
     func roulette() {
-        let CHANCE:CGFloat = 0.1
-        let WeightThreshold:CGFloat = 1e-4
+        let CHANCE:Float = 0.1
+        let WeightThreshold:Float = 1e-4
         
         if self.weight <= WeightThreshold {
            let randomFloat = BulkMaterial.randomFloat()

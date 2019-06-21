@@ -44,7 +44,7 @@ class Photon:
 
     def scatterBy(self, theta, phi):
         el = self.ePara
-    
+        # FIXME: erroneous
         # rotateReferenceFrameAroundPropagationDirectionBy(self, phi)
         cos_phi = np.cos(phi);
         sin_phi = np.sin(phi);

@@ -9,27 +9,27 @@
 import Foundation
 import SceneKit
 
-let infiniteDistance:CGFloat = 1e4
-var randomTable = [CGFloat](repeating: 0, count: 65536)
+let infiniteDistance:Float = 1e4
+var randomTable = [Float](repeating: 0, count: 65536)
 var randomIndex:Int = 0
 
-extension CGFloat {
+extension Float {
     func isInfinite() -> Bool {
         return self > infiniteDistance
     }
 }
 
 class BulkMaterial  {
-    var mu_s:CGFloat
-    var mu_a:CGFloat
-    var mu_t:CGFloat
-    var index:CGFloat
-    var albedo:CGFloat
+    var mu_s:Float
+    var mu_a:Float
+    var mu_t:Float
+    var index:Float
+    var albedo:Float
     var description: String {
         return " µs=\(mu_s) µa=\(mu_a) index=\(index)"
     }
     
-    init(mu_s:CGFloat, mu_a:CGFloat, index:CGFloat) {
+    init(mu_s:Float, mu_a:Float, index:Float) {
         self.mu_s = mu_s
         self.mu_a = mu_a
         self.mu_t = mu_a + mu_s
@@ -39,16 +39,17 @@ class BulkMaterial  {
             self.albedo = mu_a/mu_t
         }
         for i in 0...65535 {
-            randomTable[i] = CGFloat(Float.random(in:0...1))
+            randomTable[i] = Float(Float.random(in:0...1))
         }
         randomIndex = Int.random(in: 0...65535)
     }
     
-    func absorbEnergy(_ photon:Photon) -> CGFloat {
-        return photon.weight * material.albedo
+    func absorbEnergy(_ photon:Photon) {
+        let delta = photon.weight * material.albedo
+        photon.decreaseWeightBy(delta)
     }
     
-    class func randomFloat() -> CGFloat {
+    class func randomFloat() -> Float {
         randomIndex += 1
         if randomIndex == 65536 {
             randomIndex = Int.random(in: 0...65535)
@@ -56,7 +57,7 @@ class BulkMaterial  {
         return randomTable[randomIndex]
     }
     
-    func randomScatteringDistance() -> CGFloat {
+    func randomScatteringDistance() -> Float {
         if mu_t == 0 {
             return infiniteDistance
         }
@@ -67,7 +68,7 @@ class BulkMaterial  {
         return d
     }
 
-    func randomScatteringAngles() -> (CGFloat, CGFloat) {
+    func randomScatteringAngles() -> (Float, Float) {
         return (0,0)
     }
 }
