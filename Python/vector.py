@@ -1,77 +1,73 @@
 import numpy as np
+from collections import namedtuple
 
 class Vector:
     def __init__(self, x=0,y=0,z=0):
         if isinstance(x, np.ndarray):
-            self.v = Vector(x[0],x[1],x[2]) #np.array(x,dtype=float)
+            self.x = x
+            self.y = y 
+            self.z = z
         elif isinstance(x, Vector):
-            self.v = Vector(x.x, x.y, x.z)
+            self.x = x.x
+            self.y = x.y 
+            self.z = x.z 
         else:
-            self.v = np.array([x,y,z],dtype=float)
-
-    @property
-    def x(self):
-        return self.v[0]
-
-    @property
-    def y(self):
-        return self.v[1]
-
-    @property
-    def z(self):
-        return self.v[2]
-
-    @x.setter
-    def x(self, value):
-        self.v[0] = value
-        
-    @y.setter
-    def y(self, value):
-        self.v[1] = value
-        
-    @z.setter
-    def z(self, value):
-        self.v[2] = value
+            self.x = x
+            self.y = y 
+            self.z = z
 
     @property
     def isUnitary(self):
         return abs(self.norm()-1)<1e-7
     
+    @property
+    def tuple(self):
+        Vec = namedtuple('Vec', 'x y z')
+        return Vec(self.x, self.y,self.z)
+
     def __str__(self):
         return "({0:.4f},{1:.4f},{2:.4f})".format(self.x, self.y, self.z)
 
     def __getitem__(self, index):
-        return self.v[index]
+        if index == 0:
+            return self.x
+        elif index == 1:
+            return self.y
+        else:
+            return self.z
 
     def __mul__(self, scale):
-        return self.v * scale
+        return Vector(self.x * scale, self.y * scale, self.z * scale)
 
     def __rmul__(self, scale):
-        return self.v * scale
+        return Vector(self.x * scale, self.y * scale, self.z * scale)
 
     def __div__(self, scale):
-        return self.v / scale
+        return self.v * 1/scale
 
     def __add__(self, vector):
-        return self.v + vector
+        return Vector(self.x + vector.x, self.y + vector.y, self.z + vector.z)
 
     def __radd__(self, vector):
-        return self.v + vector
+        return Vector(self.x + vector.x, self.y + vector.y, self.z + vector.z)
 
     def __sub__(self, vector):
-        return self.v - vector
+        return Vector(self.x - vector.x, self.y - vector.y, self.z - vector.z)
 
     def __rsub__(self, vector):
-        return vector - self.v
+        return Vector(-self.x + vector.x, -self.y + vector.y, -self.z + vector.z)
 
     def norm(self):
         return self.x*self.x + self.y*self.y + self.z*self.z
 
     def normalize(self):
-        self.v /= self.abs
+        length = np.sqrt(self.x*self.x + self.y*self.y + self.z*self.z)
+        self.x /= length
+        self.y /= length
+        self.z /= length
 
     def abs(self):
-        return np.sqrt(self.norm())
+        return np.sqrt(self.x*self.x + self.y*self.y + self.z*self.z)
 
     def cross(self, vector):
         return Vector(self.y*vector.z - self.z*vector.y, 
