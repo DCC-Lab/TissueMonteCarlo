@@ -24,12 +24,12 @@ class Photon:
         uz = self.u[2]
 
         if abs(uz) > 0.9999:
-            self.u = Vector([sint*cosp, sint*sinp, cost*uz/abs(uz)])
+            self.u = Vector(sint*cosp, sint*sinp, cost*uz/abs(uz))
         else:
             temp = np.sqrt(1.0 - uz*uz)
-            self.u = Vector([sint*(ux*uz*cosp - uy*sinp)/temp + ux*cost,
+            self.u = Vector(sint*(ux*uz*cosp - uy*sinp)/temp + ux*cost,
                              sint*(uy*uz*cosp + ux*sinp)/temp + uy*cost,
-                             -sint*cosp*temp + uz*cost])
+                             -sint*cosp*temp + uz*cost)
 
     def decreaseWeightBy(self, delta):
         self.weight -= delta
@@ -93,3 +93,4 @@ if __name__ == "__main__":
             photon.roulette()
         # print(p.r)
 
+    Vector(0,0,0).rotateAroundX(0.1)

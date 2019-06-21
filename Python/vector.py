@@ -2,10 +2,7 @@ import numpy as np
 
 class Vector:
     def __init__(self, x=0,y=0,z=0):
-        if isinstance(x, list):
-            self.v = np.array(x,dtype=float)
-        else:
-            self.v = np.array([x,y,z],dtype=float)
+        self.v = np.array([x,y,z],dtype=float)
 
     @property
     def x(self):
@@ -18,6 +15,18 @@ class Vector:
     @property
     def z(self):
         return self.v[2]
+
+    @x.setter
+    def x(self, value):
+        self.v[0] = value
+        
+    @y.setter
+    def y(self, value):
+        self.v[1] = value
+        
+    @z.setter
+    def z(self, value):
+        self.v[2] = value
 
     def __getitem__(self, index):
         return self.v[index]
@@ -69,43 +78,43 @@ class Vector:
     def orientedAngleBetween(self, u, v, w):
         sinPhi = u.normalizedCrossProduct(v)
         sinPhiAbs = abs(sinPhi)
-        phi = np.arcsin(sinPhiAbs);
+        phi = np.arcsin(sinPhiAbs)
     
         if u.dotProduct(v) <= 0:
-            phi = PI-phi;
+            phi = PI-phi
 
         if sinPhi.dotProduct(w) <= 0:
-            phi *= -1
+            phi *= -1 
     
         return phi;
 
-    def rotateAroundX(self, inPhi):
-        v = Vector(self.v)
+    def rotateAroundX(self, phi):
+        v = Vector(self.x, self.y, self.z)
         u = Vector()
         
-        c = np.cos(inPhi);
-        s = np.sin(inPhi);
+        c = np.cos(phi);
+        s = np.sin(phi);
     
         self.y = c * v.y - s * v.z;
         self.z = s * v.y + c * v.z;
 
-    def rotateAroundY(self, inPhi):
-        v = Vector(self.v)
+    def rotateAroundY(self, phi):
+        v = Vector(self.x, self.y, self.z)
         u = Vector()
         
-        c = np.cos(inPhi);
-        s = np.sin(inPhi);
+        c = np.cos(phi)
+        s = np.sin(phi)
     
-        self.x = c * v.y + s * v.z;
-        self.z = -s * v.y + c * v.z;
+        self.x = c * v.y + s * v.z
+        self.z = -s * v.y + c * v.z
 
-    def rotateAroundZ(self, inPhi):
-        v = Vector(self.v)
+    def rotateAroundZ(self, phi):
+        v = Vector(self.x, self.y, self.z)
         u = Vector()
         
-        c = np.cos(inPhi);
-        s = np.sin(inPhi);
+        c = np.cos(phi)
+        s = np.sin(phi)
     
-        self.x = c * v.x - s * v.y;
-        self.y = s * v.x + c * v.y;
-        self.z = v.z;
+        self.x = c * v.x - s * v.y
+        self.y = s * v.x + c * v.y
+        self.z = v.z
