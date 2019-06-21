@@ -90,7 +90,6 @@ class Photon:
         self.u.z = - el.z * sin_theta + ez.z * cos_theta
 
     def _checkReferenceFrame(self):
-        print(self.ePara, self.ePerp, self.u)
         if not self.ePara.isPerpendicularTo(self.ePerp):
             raise ValueError()
 
@@ -98,6 +97,15 @@ class Photon:
             raise ValueError()
 
         if not self.u.isPerpendicularTo(self.ePara):
+            raise ValueError()
+
+        if not self.ePara.isUnitary:
+            raise ValueError()
+
+        if not self.ePerp.isUnitary:
+            raise ValueError()
+
+        if not self.u.isUnitary:
             raise ValueError()
 
 class Material:
