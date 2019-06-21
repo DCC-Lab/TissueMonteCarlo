@@ -22,7 +22,7 @@ class Photon:
         return self.weight != 0
 
     def moveBy(self, d):
-        photon._checkReferenceFrame()
+        #photon._checkReferenceFrame()
         self.r += self.ez * d
 
     def scatterBy(self, theta, phi):
@@ -46,7 +46,6 @@ class Photon:
     def rotateReferenceFrameAroundPropagationDirectionBy(self, phi):
         el = Vector(self.ePara)
         er = Vector(self.ePerp)
-        ez = Vector(self.ez)    
         cos_phi = np.cos(phi);
         sin_phi = np.sin(phi);
     
@@ -59,19 +58,22 @@ class Photon:
         self.ePara.z = - er.z * sin_phi + el.z * cos_phi;
 
     def changePropagationDirectionAroundEPerpBy(self, inTheta):
-        el = Vector(self.ePara)
-        er = Vector(self.ePerp)
-        ez = Vector(self.ez)
+        elx = self.ePara.x
+        ely = self.ePara.y
+        elz = self.ePara.z
+        ezx = self.ez.x
+        ezy = self.ez.y
+        ezz = self.ez.z
         cos_theta = np.cos(inTheta)
         sin_theta = np.sin(inTheta)
     
-        self.ePara.x = el.x * cos_theta + ez.x * sin_theta
-        self.ePara.y = el.y * cos_theta + ez.y * sin_theta
-        self.ePara.z = el.z * cos_theta + ez.z * sin_theta
+        self.ePara.x = elx * cos_theta + ezx * sin_theta
+        self.ePara.y = ely * cos_theta + ezy * sin_theta
+        self.ePara.z = elz * cos_theta + ezz * sin_theta
         
-        self.ez.x = - el.x * sin_theta + ez.x * cos_theta
-        self.ez.y = - el.y * sin_theta + ez.y * cos_theta
-        self.ez.z = - el.z * sin_theta + ez.z * cos_theta
+        self.ez.x = - elx * sin_theta + ezx * cos_theta
+        self.ez.y = - ely * sin_theta + ezy * cos_theta
+        self.ez.z = - elz * sin_theta + ezz * cos_theta
 
     def _checkReferenceFrame(self):
         if not self.ePara.isPerpendicularTo(self.ePerp):
@@ -108,16 +110,13 @@ class Material:
     def __init__(self, mu_s, mu_a, g):
         self.mu_s = mu_s
         self.mu_a = mu_a
+        self.mu_t = self.mu_a + self.mu_s
         self.g = g
-
-    @property
-    def mu_t(self):
-        return self.mu_a + self.mu_s
     
     def getScatteringDistance(self, photon) -> float:
-        rnd = 0
-        while rnd == 0:
-            rnd = np.random.random()
+        # rnd = 0
+        # while rnd == 0:
+        rnd = np.random.random()
 
         return -np.log(rnd)/self.mu_t
 
@@ -139,9 +138,9 @@ class Material:
         return True
 
 if __name__ == "__main__":
-    mat = Material(mu_s=60, mu_a = 0.01, g = 0.7)
+    mat = Material(mu_s=20, mu_a = 0.1, g = 0.7)
  
-    for i in range(3):
+    for i in range(1000):
         print("Photon {0}".format(i))
         photon = Photon()
         while photon.isAlive and mat.contains(photon):
