@@ -1,0 +1,16 @@
+1.0 # file version
+1 # Number of runs
+
+
+## Specifica data for run 11
+out100.mco A
+1000000
+20e-3	20e-4  # dz,dr
+100	20	30     # No of dz, dr & da.
+
+1
+#n   mua.  mus  g     d
+1.0
+1.4  0.5   30  0.8  10
+1.0
+

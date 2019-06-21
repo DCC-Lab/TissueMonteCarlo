@@ -22,6 +22,7 @@ class BulkMaterial  {
     var mu_a:CGFloat
     var mu_t:CGFloat
     var index:CGFloat
+    var albedo:CGFloat
     
     var description: String {
         return " µs=\(mu_s) µa=\(mu_a) index=\(index)"
@@ -32,20 +33,16 @@ class BulkMaterial  {
         self.mu_a = mu_a
         self.mu_t = mu_a + mu_s
         self.index = index
+        self.albedo = 0
+        if mu_t != 0 {
+            self.albedo = mu_a/mu_t
+        }
     }
     
     func absorbEnergy(_ photon:Photon) -> CGFloat {
-        return photon.weight * material.albedo()
+        return photon.weight * material.albedo
     }
     
-    func albedo() -> CGFloat {
-        if mu_t != 0 {
-            return mu_a/mu_t
-        } else {
-            return 0
-        }
-    }
-
     class func randomFloat() -> CGFloat {
         return CGFloat(Float.random(in:0...1))
     }

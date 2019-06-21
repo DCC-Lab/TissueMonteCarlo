@@ -13,9 +13,9 @@ var p = Photon(position: Vector3D(0,0,0), direction: Vector3D(0,0,1), wavelength
 let start = Date()
 let N = 1000
 for i in 1...N {
-    p?.reset()
-    try p?.propagateInto(material: material, distance: 0)
-    if i % 10 == 0 {
+    p!.reset()
+    try p!.propagateInto(material: material, distance: 0)
+    if i % 100 == 0 {
         print("\(i)")
     }
 }

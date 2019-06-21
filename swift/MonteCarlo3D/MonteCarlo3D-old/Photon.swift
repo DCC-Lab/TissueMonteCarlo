@@ -88,7 +88,7 @@ class Photon {
             if distance.isInfinite {
                 weight = 0
             } else {
-                changeDirectionBy(θ, φ)
+                scatterBy(θ, φ)
                 moveBy(distance)
                 let energyLoss = material.absorbEnergy(self)
                 decreaseWeightBy(energyLoss)
@@ -126,7 +126,7 @@ class Photon {
         return weight > 0
     }
     
-    func changeDirectionBy(_ θ:CGFloat,_ φ:CGFloat ) {
+    func scatterBy(_ θ:CGFloat,_ φ:CGFloat ) {
         self.ePerp.rotateAroundAxis(self.direction, byAngle: φ)
         try! self.ePerp.normalize()
         self.direction.rotateAroundAxis(self.ePerp, byAngle: θ)
