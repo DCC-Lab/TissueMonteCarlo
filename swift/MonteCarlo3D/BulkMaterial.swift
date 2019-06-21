@@ -44,7 +44,7 @@ class BulkMaterial : SCNNode {
     }
 
     class func randomFloat() -> CGFloat {
-        return CGFloat(rand())/CGFloat(RAND_MAX)
+        return CGFloat(arc4random())/CGFloat(RAND_MAX)
     }
     
     func randomScatteringDistance() -> CGFloat {

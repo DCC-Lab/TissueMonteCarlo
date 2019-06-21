@@ -22,10 +22,10 @@ extension SCNNode {
         var triangles=[KDTriangle]()
         
         if geometry != nil {
-            for i in 0..<geometry!.geometryElementCount {
-                let element = geometry!.geometryElementAtIndex(i)
+            for i in 0..<geometry!.elementCount {
+                let element = geometry!.element(at: i)
                 
-                if element.primitiveType == SCNGeometryPrimitiveType.Triangles {
+                if element.primitiveType == SCNGeometryPrimitiveType.triangles {
                     for j in 0..<element.primitiveCount {
                         triangles.append(KDTriangle(node:self, geometryIndex:i, primitiveIndex: j)!)
                     }
@@ -322,7 +322,7 @@ struct KDTriangle {
         if node.geometry == nil {
             return nil
         } else {
-            let theVertices:[SCNVector3]? = node.geometry!.triangularSurfacePrimitiveAtIndex(geometryIndex, primitiveIndex: primitiveIndex)
+            let theVertices:[SCNVector3]? = node.geometry!.triangularSurfacePrimitiveAtIndex(geometryIndex: geometryIndex, primitiveIndex: primitiveIndex)
             if theVertices == nil {
                 return nil
             } else {

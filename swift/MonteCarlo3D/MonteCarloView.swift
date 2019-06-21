@@ -13,7 +13,7 @@ class MonteCarloView: SCNView {
     override func mouseDown(theEvent: NSEvent) {
         /* Called when a mouse click occurs */
         // check what nodes are clicked
-        let p = self.convertPoint(theEvent.locationInWindow, fromView: nil)
+        let p = self.convert(theEvent.locationInWindow, from: nil)
         let hitResults:[SCNHitTestResult] = self.hitTest(p, options: nil)
         
         if hitResults.count != 0 {
@@ -27,10 +27,10 @@ class MonteCarloView: SCNView {
                 
                 // highlight it
                 SCNTransaction.begin()
-                SCNTransaction.setAnimationDuration(0.5)
+                SCNTransaction.animationDuration(0.5)
                 
                 // on completion - unhighlight
-                SCNTransaction.setCompletionBlock() {
+                SCNTransaction.completionBlock() {
                     SCNTransaction.begin()
                     SCNTransaction.setAnimationDuration(0.5)
                     
@@ -39,13 +39,13 @@ class MonteCarloView: SCNView {
                     SCNTransaction.commit()
                 }
                 
-                material.emission.contents = NSColor.redColor()
+                material.emission.contents = NSColor.redColor
                 
                 SCNTransaction.commit()
             }
         }
         
-        super.mouseDown(theEvent)
+        super.mouseDown(with: theEvent)
     }
 
 }

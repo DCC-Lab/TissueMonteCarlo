@@ -12,7 +12,7 @@ import SceneKit
 let air = BulkHenyeyGreenstein(mu_s: 0, mu_a: 0, index: 1, g:0)
 
 extension SCNNode {
-    func dumpNode(level level:Int=0) {
+    func dumpNode(level:Int=0) {
         var spacing = ""
         for _ in 0...level {
             spacing += "\t"
@@ -22,7 +22,7 @@ extension SCNNode {
             print(spacing, name!)
             print(spacing, position)
             print(spacing, transform)
-            self.geometry?.dump(spacing+"\t")
+            self.geometry?.dump(prefix:spacing+"\t")
         } else {
             print(spacing, self)
             print(spacing, position)
@@ -35,12 +35,12 @@ extension SCNNode {
 
     func dumpAllPrimitives() {
         if geometry != nil {
-            for i in 0..<geometry!.geometryElementCount {
-                let element = geometry!.geometryElementAtIndex(i)
+            for i in 0..<geometry!.elementCount {
+                let element = geometry!.element(at: i)
                 
-                if element.primitiveType == SCNGeometryPrimitiveType.Triangles {
+                if element.primitiveType == SCNGeometryPrimitiveType.triangles {
                     for j in 0..<element.primitiveCount {
-                        print( geometry?.triangularSurfacePrimitiveAtIndex(i, primitiveIndex: j)!,"\n")
+                        print( geometry?.triangularSurfacePrimitiveAtIndex(geometryIndex: i, primitiveIndex: j)!,"\n")
                     }
                 }
             }
@@ -51,16 +51,16 @@ extension SCNNode {
         var primitives = [[SCNVector3]]()
         if geometry != nil {
             
-            for i in 0..<geometry!.geometryElementCount {
-                let element = geometry!.geometryElementAtIndex(i)
+            for i in 0..<geometry!.elementCount {
+                let element = geometry!.element(at: i)
                 
-                if element.primitiveType == SCNGeometryPrimitiveType.Triangles {
+                if element.primitiveType == SCNGeometryPrimitiveType.triangles {
                     for j in 0..<element.primitiveCount {
-                        let primitive = geometry?.triangularSurfacePrimitiveAtIndex(i, primitiveIndex: j)
+                        let primitive = geometry?.triangularSurfacePrimitiveAtIndex(geometryIndex: i, primitiveIndex: j)
                         
                         if primitive != nil {
                             if world {
-                                primitives.append( convertVerticesToWorldCoordinates(primitive!) )
+                                primitives.append( convertVerticesToWorldCoordinates(vertices: primitive!) )
                             } else {
                                 primitives.append( primitive! )
                             }
@@ -76,7 +76,7 @@ extension SCNNode {
         var worldVertices = [SCNVector3]()
         
         for vertex in vertices {
-            let worldVertex = convertPosition(vertex, toNode: nil)
+            let worldVertex = convertPosition(vertex, to: nil)
             worldVertices.append(worldVertex)
         }
         
@@ -85,9 +85,9 @@ extension SCNNode {
     
     func nodeContainingPoint(thePoint:SCNVector3) -> SCNNode? {
         let farAwayPoint = SCNVector3(0,100,0)
-        let hitList = self.fastHitTestWithSegmentFromPoint(thePoint,
+        let hitList = self.fastHitTestWithSegmentFromPoint(fromPoint:thePoint,
             toPoint: farAwayPoint,
-            options: [SCNHitTestBackFaceCullingKey:false, SCNHitTestSortResultsKey:true, SCNHitTestIgnoreHiddenNodesKey:false])
+            options: [SCNHitTestBackFaceCullingKey.rawValue:false, SCNHitTestSortResultsKey:true, SCNHitTestIgnoreHiddenNodesKey:false])
         
         var distinctHits = [SCNHitTestResult]()
         for hit in hitList {
@@ -122,7 +122,7 @@ extension SCNNode {
     func nodesAtInterface(thePoint:SCNVector3, theDisplacement:SCNVector3) throws -> SCNNode? {
         var node:SCNNode?
         
-        let hitList = self.fastHitTestWithSegmentFromPoint(thePoint,
+        let hitList = self.fastHitTestWithSegmentFromPoint(fromPoint:thePoint,
             toPoint: thePoint + theDisplacement,
             options: [SCNHitTestBackFaceCullingKey:false, SCNHitTestSortResultsKey:true, SCNHitTestIgnoreHiddenNodesKey:false])
         
@@ -140,7 +140,7 @@ extension SCNNode {
     }
     
     func propertiesAtPosition(thePoint:SCNVector3) -> BulkMaterial {
-        let node:SCNNode? = nodeContainingPoint(thePoint)
+        let node:SCNNode? = nodeContainingPoint(thePoint: thePoint)
         
         if node != nil {
             for child in node!.childNodes {

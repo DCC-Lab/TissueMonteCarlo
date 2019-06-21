@@ -15,26 +15,26 @@ enum VectorError : ErrorType { case Null }
 typealias Vector3D = SCNVector3
 
 
-infix operator ×{}
-infix operator •{}
-infix operator ⟂{}
-infix operator ‖{}
+infix operator ×
+infix operator •
+infix operator ⟂
+infix operator ‖
 
 
 extension SCNVector3:CustomStringConvertible {
 
     static func vectorFromString(theString:String) -> SCNVector3? {
-        let regexp = try! NSRegularExpression(pattern: "[+|-]?\\d+\\.?\\d*", options: NSRegularExpressionOptions.CaseInsensitive)
+        let regexp = try! NSRegularExpression(pattern: "[+|-]?\\d+\\.?\\d*", options: NSRegularExpression.Options.caseInsensitive)
         
-        let textResults = regexp.matchesInString(theString, options: [], range: NSMakeRange(0,theString.lengthOfBytesUsingEncoding(NSISOLatin1StringEncoding)))
+        let textResults = regexp.matches(in: theString, options: [], range: NSMakeRange(0,theString.lengthOfBytes(using: String.Encoding.isoLatin1)))
         
         var numbers = [Float]()
         for result in textResults {
             for i in 0..<result.numberOfRanges {
-                let startIndex = result.rangeAtIndex(i).location
-                let endIndex = result.rangeAtIndex(i).location+result.rangeAtIndex(i).length
+                let startIndex = result.range(at: i).location
+                let endIndex = result.range(at: i).location+result.range(at: i).length
                 
-                let numberString = theString.substringWithRange(theString.startIndex.advancedBy(startIndex)..<theString.startIndex.advancedBy(endIndex))
+                let numberString = theString.substringWith(theString.startIndex.advancedBy(startIndex)..<theString.startIndex.advancedBy(endIndex))
                 let number = Float(numberString)
                 if number != nil {
                     numbers.append(number!)
@@ -50,9 +50,9 @@ extension SCNVector3:CustomStringConvertible {
     }
 
     static func randomVector() -> SCNVector3 {
-        let x = CGFloat(rand())/CGFloat(RAND_MAX)
-        let y = CGFloat(rand())/CGFloat(RAND_MAX)
-        let z = CGFloat(rand())/CGFloat(RAND_MAX)
+        let x = CGFloat(arc4random())/CGFloat(RAND_MAX)
+        let y = CGFloat(arc4random())/CGFloat(RAND_MAX)
+        let z = CGFloat(arc4random())/CGFloat(RAND_MAX)
         
         return SCNVector3(x: x, y: y, z: z)
     }
@@ -112,11 +112,11 @@ extension SCNVector3:CustomStringConvertible {
         z += theVector.z * theScale;
     }
     
-    func dotProduct( theVector : SCNVector3 ) -> CGFloat {
+    func dotProduct(_ theVector : SCNVector3 ) -> CGFloat {
         return x * theVector.x + y * theVector.y + z * theVector.z;
     }
     
-    func normalizedDotProduct( theVector: SCNVector3 ) -> CGFloat {
+    func normalizedDotProduct(_ theVector: SCNVector3 ) -> CGFloat {
         var prod = self.dotProduct(theVector)
         
         let norm_u = norm()
@@ -135,11 +135,11 @@ extension SCNVector3:CustomStringConvertible {
         return prod;
     }
     
-    func crossProduct(v: SCNVector3) -> SCNVector3 {
+    func crossProduct(_ v: SCNVector3) -> SCNVector3 {
         return  SCNVector3(x:y * v.z - z * v.y,  y:z * v.x - x * v.z,  z: x * v.y - y * v.x)
     }
     
-    func normalizedCrossProduct(v: SCNVector3) -> SCNVector3 {
+    func normalizedCrossProduct(_ v: SCNVector3) -> SCNVector3 {
         var t = self.crossProduct(v)
         
         let norm_u = self.norm()
@@ -169,7 +169,7 @@ extension SCNVector3:CustomStringConvertible {
         var phi = asin(sinPhi.abs())
         
         if self.dotProduct(y) <= 0 {
-            phi = CGFloat(M_PI) - phi
+            phi = .pi - phi
         }
         
         if sinPhi.dotProduct(r) <= 0 {
@@ -183,7 +183,7 @@ extension SCNVector3:CustomStringConvertible {
         return -(vn.x * (x - v0.x) + vn.y * (y - v0.y) + vn.z * (z - v0.z) ) / (vn.x * vd.x + vn.y * vd.y + vn.z * vd.z)
     }
     
-    func isParallelTo( v:SCNVector3 ) -> Bool {
+    func isParallelTo(_ v:SCNVector3 ) -> Bool {
         let dp = self.dotProduct(v)
         
         if fabs(dp/self.abs()/v.abs() - 1) <= 1e-5  {
@@ -193,7 +193,7 @@ extension SCNVector3:CustomStringConvertible {
         return false
     }
     
-    func isPerpendicularTo( v:SCNVector3 ) -> Bool {
+    func isPerpendicularTo(_ v:SCNVector3 ) -> Bool {
         let dp = self.dotProduct(v)
         
         if fabs(dp)/self.abs()/v.abs() <= 1e-5 {
@@ -303,25 +303,25 @@ func ‖ (left: SCNVector3, right: SCNVector3) -> Bool {
     return left.isParallelTo(right)
 }
 
-func += (inout left: SCNVector3, right: SCNVector3) {
+func += ( left: inout SCNVector3, right: SCNVector3) {
     left.x += right.x
     left.y += right.y
     left.z += right.z
 }
 
-func -= (inout left: SCNVector3, right: SCNVector3) {
+func -= ( left: inout SCNVector3, right: SCNVector3) {
     left.x -= right.x
     left.y -= right.y
     left.z -= right.z
 }
 
-func *= (inout left: SCNVector3, scalar: CGFloat) {
+func *= ( left: inout SCNVector3, scalar: CGFloat) {
     left.x *= scalar
     left.y *= scalar
     left.z *= scalar
 }
 
-func /= (inout left: SCNVector3, scalar: CGFloat) {
+func /= ( left: inout SCNVector3, scalar: CGFloat) {
     left.x /= scalar
     left.y /= scalar
     left.z /= scalar

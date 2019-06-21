@@ -71,7 +71,7 @@ class SCNHitTestResultExtended {
 
 }
 
-enum MonteCarloError: ErrorType {
+enum MonteCarloError: LocalizedError {
     case UnexpectedNil
 }
 
@@ -139,7 +139,7 @@ class Photon:CustomStringConvertible {
     
     func propagateInto(objectsRoot:SCNNode, distance theDistance:CGFloat) throws {
 
-        let defaultOptions:[String:AnyObject] = [SCNHitTestBackFaceCullingKey:false, SCNHitTestSortResultsKey:true, SCNHitTestIgnoreHiddenNodesKey:false, SCNHitTestRootNodeKey:objectsRoot]
+        let defaultOptions:[String:AnyObject] = [SCNHitTestOption.backFaceCulling.rawValue:false as AnyObject, SCNHitTestOption.sortResults.rawValue:true as AnyObject, SCNHitTestOption.ignoreHiddenNodes.rawValue:false as AnyObject, SCNHitTestOption.rootNode.rawValue:objectsRoot]
         let SAFETY_DISTANCE:CGFloat = 1e-4
         
         while isAlive() {
@@ -181,11 +181,11 @@ class Photon:CustomStringConvertible {
         }
     }
 
-    func moveBy(distance:CGFloat) {
+    func moveBy(_ distance:CGFloat) {
         // This is very slow because of temporary allocation: 
         // self.position += self.direction * distance
         // This is much faster because done in place:
-        self.position.addScaledVector(self.direction, scale:distance)
+        self.position.addScaledVector(theVector: self.direction, scale:distance)
         self.distanceTraveled += distance;
         self.statistics.append((self.position, self.weight))
     }
@@ -216,19 +216,19 @@ class Photon:CustomStringConvertible {
     }
     
     func changeDirectionBy(θ:CGFloat, φ:CGFloat ) {
-        assert(!isnan(self.ePerp.x) && !isnan(self.ePerp.y) && !isnan(self.ePerp.z),"Eperp is nan")
-        self.ePerp.rotateAroundAxis(self.direction, byAngle: φ)
+        assert(!(self.ePerp.x.isNaN) && !(self.ePerp.y.isNaN) && !(self.ePerp.z.isNaN),"Eperp is nan")
+        self.ePerp.rotateAroundAxis(u: self.direction, byAngle: φ)
         
         try! self.ePerp.normalize()
         
-        assert( self.ePerp.norm() != 0 ,"ePerp is null")
-        assert(!isnan(self.ePerp.x) && !isnan(self.ePerp.y) && !isnan(self.ePerp.z),"Eperp is nan")
+//        assert( self.ePerp.norm() != 0 ,"ePerp is null")
+//        assert(!isnan(self.ePerp.x) && !isnan(self.ePerp.y) && !isnan(self.ePerp.z),"Eperp is nan")
         
-        self.direction.rotateAroundAxis(self.ePerp, byAngle: θ)
+        self.direction.rotateAroundAxis(u: self.ePerp, byAngle: θ)
         try! self.direction.normalize()
-        assert(!isnan(self.direction.x) && !isnan(self.direction.y) && !isnan(self.direction.z),"Direction is nan")
+//        assert(!isnan(self.direction.x) && !isnan(self.direction.y) && !isnan(self.direction.z),"Direction is nan")
  
-        assert(ePerp.isPerpendicularTo(direction), "ePerp not perpendicular to direction dp= \( ePerp.normalizedDotProduct(direction))")
+//        assert(ePerp.isPerpendicularTo(direction), "ePerp not perpendicular to direction dp= \( ePerp.normalizedDotProduct(direction))")
 
     }
 
@@ -246,8 +246,8 @@ class Photon:CustomStringConvertible {
         
         do {
             try s.normalize()
-            let phi = ePerp.orientedAngleWith(s, aroundAxis: direction)
-            ePerp.rotateAroundAxis(direction, byAngle: phi)
+            let phi = ePerp.orientedAngleWith(y: s, aroundAxis: direction)
+            ePerp.rotateAroundAxis(u: direction, byAngle: phi)
             try ePerp.normalize()
         } catch {
             
@@ -258,7 +258,7 @@ class Photon:CustomStringConvertible {
     }
     
     func isReflectedFromInterface(intersect:SCNHitTestResultExtended) throws -> Bool {
-        rotateReferenceFrameInFresnelPlaneWithNormal(intersect.hitTestResult.worldNormal)
+        rotateReferenceFrameInFresnelPlaneWithNormal(theNormal: intersect.hitTestResult.worldNormal)
         intersect.setFresnelCoefficients()
         
         let probability:CGFloat
@@ -279,14 +279,14 @@ class Photon:CustomStringConvertible {
     }
     
     func reflectAtInterface(intersect:SCNHitTestResultExtended) {
-        rotateReferenceFrameInFresnelPlaneWithNormal(intersect.hitTestResult.worldNormal)
+        rotateReferenceFrameInFresnelPlaneWithNormal(theNormal: intersect.hitTestResult.worldNormal)
 
         let θi = acos(abs(self.direction.normalizedDotProduct(intersect.hitTestResult.worldNormal)))
-        changeDirectionBy(-π + 2*θi, φ: 0)
+        changeDirectionBy(θ: -π + 2*θi, φ: 0)
     }
     
     func transmitThroughInterface(intersect:SCNHitTestResultExtended) throws {
-        rotateReferenceFrameInFresnelPlaneWithNormal(intersect.hitTestResult.worldNormal)
+        rotateReferenceFrameInFresnelPlaneWithNormal(theNormal: intersect.hitTestResult.worldNormal)
     
         let θi = acos(abs(direction.normalizedDotProduct(intersect.hitTestResult.worldNormal)))
 
@@ -294,7 +294,7 @@ class Photon:CustomStringConvertible {
         
         if ( sinθt <= 1.0) {
             let θt = asin(sinθt);
-            changeDirectionBy(θi - θt, φ: 0)
+            changeDirectionBy(θ: θi - θt, φ: 0)
         } else {
             throw MonteCarloError.UnexpectedNil
         }
@@ -309,7 +309,7 @@ class Photon:CustomStringConvertible {
             
             if( randomFloat < CHANCE) {
                 /* survived the roulette.*/
-                self.multiplyWeightBy( 1.0 / CHANCE );
+                self.multiplyWeightBy( scale: 1.0 / CHANCE );
             } else {
                 self.weight = 0
             }
