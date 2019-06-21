@@ -1,12 +1,13 @@
 import numpy as np
 from vector import *
+import time
 
 class Photon:
     def __init__(self):
         self.r = Vector(0,0,0)
         self.ez = Vector(0,0,1)    # Propagation
         self.ePerp = Vector(0,1,0) # Perpendicular to scattering plane
-        self.ePara = Vector(1,0,0) # Parallel to scattering plane 
+        # self.ePara = Vector(1,0,0) # Parallel to scattering plane 
         self.weight = 1.0
 
     @property
@@ -22,7 +23,7 @@ class Photon:
         return self.weight != 0
 
     def moveBy(self, d):
-        photon._checkReferenceFrame()
+        # photon._checkReferenceFrame()
         self.r += self.ez * d
 
     def scatterBy(self, theta, phi):
@@ -44,9 +45,9 @@ class Photon:
             self.weight = 0
 
     def rotateReferenceFrameAroundPropagationDirectionBy(self, phi):
-        el = Vector(self.ePara)
+        el = self.ePerp.cross(self.ez)
         er = Vector(self.ePerp)
-        ez = Vector(self.ez)    
+        # ez = Vector(self.ez)    
         cos_phi = np.cos(phi);
         sin_phi = np.sin(phi);
     
@@ -54,20 +55,20 @@ class Photon:
         self.ePerp.y = er.y * cos_phi + el.y * sin_phi;
         self.ePerp.z = er.z * cos_phi + el.z * sin_phi;
         
-        self.ePara.x = - er.x * sin_phi + el.x * cos_phi;
-        self.ePara.y = - er.y * sin_phi + el.y * cos_phi;
-        self.ePara.z = - er.z * sin_phi + el.z * cos_phi;
+        # self.ePara.x = - er.x * sin_phi + el.x * cos_phi;
+        # self.ePara.y = - er.y * sin_phi + el.y * cos_phi;
+        # self.ePara.z = - er.z * sin_phi + el.z * cos_phi;
 
     def changePropagationDirectionAroundEPerpBy(self, inTheta):
-        el = Vector(self.ePara)
+        el = self.ePerp.cross(self.ez)
         er = Vector(self.ePerp)
         ez = Vector(self.ez)
         cos_theta = np.cos(inTheta)
         sin_theta = np.sin(inTheta)
     
-        self.ePara.x = el.x * cos_theta + ez.x * sin_theta
-        self.ePara.y = el.y * cos_theta + ez.y * sin_theta
-        self.ePara.z = el.z * cos_theta + ez.z * sin_theta
+        # self.ePara.x = el.x * cos_theta + ez.x * sin_theta
+        # self.ePara.y = el.y * cos_theta + ez.y * sin_theta
+        # self.ePara.z = el.z * cos_theta + ez.z * sin_theta
         
         self.ez.x = - el.x * sin_theta + ez.x * cos_theta
         self.ez.y = - el.y * sin_theta + ez.y * cos_theta
@@ -139,9 +140,11 @@ class Material:
         return True
 
 if __name__ == "__main__":
-    mat = Material(mu_s=60, mu_a = 0.01, g = 0.7)
- 
-    for i in range(3):
+    mat = Material(mu_s=30, mu_a = 0.5, g = 0.8)
+
+    startTime = time.time()
+    N = 100
+    for i in range(N):
         print("Photon {0}".format(i))
         photon = Photon()
         while photon.isAlive and mat.contains(photon):
@@ -151,4 +154,7 @@ if __name__ == "__main__":
             photon.scatterBy(theta, phi)
             mat.absorbEnergy(photon)
             photon.roulette()
-     #       print(photon.r)
+    
+    elapsed = time.time() - startTime
+    print('{0:.1f} ms per photon'.format(elapsed/N*1000))
+ 
