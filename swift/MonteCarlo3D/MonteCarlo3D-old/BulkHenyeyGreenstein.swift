@@ -22,13 +22,13 @@ class BulkHenyeyGreenstein : BulkMaterial {
     override func randomScatteringAngles() -> (Float, Float) {
         let g = self.g
         var θ:Float!
-        let ϕ = 2.0 * π * BulkMaterial.randomFloat()
+        let ϕ = 2.0 * π * randomFloat()
         for _ in 1...100 {
             if g != 0 {
-                let rand_frac = (1.0 - g*g) / (1.0 - g + 2.0 * BulkMaterial.randomFloat() * g)
+                let rand_frac = (1.0 - g*g) / (1.0 - g + 2.0 * randomFloat() * g)
                 θ = acos( (1.0 + g*g - rand_frac*rand_frac) / (2.0*g) )
             } else {
-                θ = acos(1.0 - 2.0 * BulkMaterial.randomFloat() )
+                θ = acos(1.0 - 2.0 * randomFloat() )
             }
             if θ >= 0 && θ <= π {
                 break

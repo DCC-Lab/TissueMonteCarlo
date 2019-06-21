@@ -13,20 +13,15 @@ enum MonteCarloError: LocalizedError {
     case UnexpectedNil
 }
 
-let xHat = Vector(x: 1, y: 0, z: 0)
-let yHat = Vector(x: 0, y: 1, z: 0)
-let zHat = Vector(x: 0, y: 0, z: 1)
-let oHat = Vector(x: 0, y: 0, z: 0)
-
 class Photon {
     var position:Vector
     var direction:Vector
     var ePerp:Vector
     var weight:Float
+    let wavelength:Float
 
     let originalPosition:Vector
     let originalDirection:Vector
-    let wavelength:Float
     var keepingExtendedStatistics:Bool
     var statistics:[(Vector,Float)]
     var distanceTraveled:Float
@@ -37,15 +32,14 @@ class Photon {
     
 
     init?(position:Vector, direction:Vector, wavelength:Float) {
-        self.wavelength = wavelength
-
         self.position = position
         self.direction = direction
+        self.weight = 1
+        self.wavelength = wavelength
 
         self.originalPosition = position
         self.originalDirection = direction
 
-        self.weight = 1
         self.keepingExtendedStatistics = false
         self.distanceTraveled = 0
         self.statistics = []
@@ -96,17 +90,13 @@ class Photon {
     }
 
     func moveBy(_ distance:Float) {
-        // This is very slow because of temporary allocation: 
-//        self.position += self.direction * distance
-        // This is much faster because done in place:
         self.position.addScaledVector(self.direction, scale:distance)
         self.distanceTraveled += distance;
-        self.statistics.append((self.position, self.weight))
+        //self.statistics.append((self.position, self.weight))
     }
     
     func decreaseWeightBy(_ delta:Float) {
         self.weight -= delta
-
         if self.weight < 0 {
             self.weight = 0
         }
@@ -114,7 +104,6 @@ class Photon {
 
     func multiplyWeightBy(scale:Float) {
         self.weight *= scale
-        
         if self.weight < 0 {
             self.weight = 0
         }
@@ -126,8 +115,9 @@ class Photon {
     
     func scatterBy(_ θ:Float,_ φ:Float ) {
         self.ePerp.rotateAroundAxis(self.direction, byAngle: φ)
-        try! self.ePerp.normalize()
         self.direction.rotateAroundAxis(self.ePerp, byAngle: θ)
+
+        try! self.ePerp.normalize()
         try! self.direction.normalize()
     }
 
@@ -160,7 +150,7 @@ class Photon {
         let WeightThreshold:Float = 1e-4
         
         if self.weight <= WeightThreshold {
-           let randomFloat = BulkMaterial.randomFloat()
+           let randomFloat = Float.random(in:0...1)
             
             if( randomFloat < CHANCE) {
                 /* survived the roulette.*/

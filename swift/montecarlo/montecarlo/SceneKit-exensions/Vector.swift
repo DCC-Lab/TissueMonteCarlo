@@ -12,8 +12,14 @@ import SceneKit
 typealias Float = CGFloat
 typealias Vector = SCNVector3
 typealias Vector3D = Vector
+typealias v⃗ = Vector
 
-let π:Float = 3.1415926535
+let π = Float(3.1415926535)
+let xHat = Vector(x: 1, y: 0, z: 0)
+let yHat = Vector(x: 0, y: 1, z: 0)
+let zHat = Vector(x: 0, y: 0, z: 1)
+let oHat = Vector(x: 0, y: 0, z: 0)
+
 enum VectorError: LocalizedError {
     case UnexpectedNil
 }
@@ -23,32 +29,36 @@ enum Axis:Int {
 }
 
 extension Vector {
+    init(_ x:Float,_ y:Float,_ z:Float) {
+        self.init(x:x, y:y, z:z)
+    }
+    
     public var description: String {
         return "(\(x),\(y),\(z))"
     }
     
     subscript(index: Axis) -> Float {
-            get {
-                switch index {
-                case .X:
-                    return x
-                case .Y:
-                    return y
-                case .Z:
-                    return z
-                }
+        get {
+            switch index {
+            case .X:
+                return x
+            case .Y:
+                return y
+            case .Z:
+                return z
             }
-        
-            set(newValue) {
-                switch index {
-                case .X:
-                    x = newValue
-                case .Y:
-                    y = newValue
-                case .Z:
-                    z = newValue
-                }
+        }
+    
+        set(newValue) {
+            switch index {
+            case .X:
+                x = newValue
+            case .Y:
+                y = newValue
+            case .Z:
+                z = newValue
             }
+        }
     }
     
     func norm() -> Float {
@@ -149,7 +159,7 @@ extension Vector {
     }
     
     func isParallelTo(_ v:Vector ) -> Bool {
-        let dp = self.dotProduct(v)
+        let dp = dotProduct(v)
         
         if Swift.abs(dp/self.abs()/v.abs() - 1) <= 1e-5  {
             return true
@@ -251,22 +261,6 @@ extension Vector {
         return Vector(x: left.x / scalar, y: left.y / scalar, z:left.z / scalar)
     }
     
-//    static func × (left: Vector, right: Vector) -> Vector {
-//        return left.crossProduct(right)
-//    }
-//    
-//    static func • (left: Vector, right: Vector) -> Float {
-//        return left.dotProduct(right)
-//    }
-//    
-//    static func ⟂ (left: Vector, right: Vector) -> Bool {
-//        return left.isPerpendicularTo(right)
-//    }
-//    
-//    static func ‖ (left: Vector, right: Vector) -> Bool {
-//        return left.isParallelTo(right)
-//    }
-//    
     static func += ( left: inout Vector, right: Vector) {
         left.x += right.x
         left.y += right.y

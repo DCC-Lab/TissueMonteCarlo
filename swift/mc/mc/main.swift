@@ -7,17 +7,27 @@
 //
 import Foundation
 
+var queue = OperationQueue()
+queue.maxConcurrentOperationCount = 10
 
-var material = BulkHenyeyGreenstein(mu_s: 30, mu_a: 0.5, index: 1.4, g: 0.8)
-var p = Photon(position: Vector3D(x:0,y:0,z:0), direction: Vector3D(x:0,y:0,z:1), wavelength: 632)
+let N = 1000000
+let M = 10
 let start = Date()
-let N = 10000
-for i in 1...N {
-    p!.reset()
-    try p!.propagate(into: material, for: 0)
-    if i % 100 == 0 {
-        print("\(i)")
+for _ in 1...M {
+    queue.addOperation {
+        do {
+            let material = BulkHenyeyGreenstein(mu_s: 30, mu_a: 0.5, index: 1.4, g: 0.8)
+            let photon = Photon(position: v⃗(0,0,0), direction: v⃗(0,0,1), wavelength: 632)!
+            for _ in 1...N/M {
+                photon.reset()
+                try photon.propagate(into: material, for: 0)
+            }
+        } catch {
+        
+        }
     }
 }
-let duration = -start.timeIntervalSinceNow/TimeInterval(N)*1000000
-print(String(format: "%.1lf µs per photon", duration))
+queue.waitUntilAllOperationsAreFinished()
+let duration = -start.timeIntervalSinceNow
+let rate = duration/TimeInterval(N)*1000000
+print(String(format: "Total %.1lf s, %.1lf µs per photon", duration, rate))
