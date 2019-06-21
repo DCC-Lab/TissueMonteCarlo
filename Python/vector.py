@@ -25,6 +25,9 @@ class Vector:
     def __rmul__(self, scale):
         return self.v * scale
 
+    def __div__(self, scale):
+        return self.v / scale
+
     def __add__(self, vector):
         return self.v + vector
 
