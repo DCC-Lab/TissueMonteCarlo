@@ -28,10 +28,6 @@ class Photon:
     def moveBy(self, d):
         self.r += self.ez * d
 
-    def scatterBy(self, theta, phi):
-        self.rotateReferenceFrameAroundPropagationDirectionBy(phi)
-        self.changePropagationDirectionAroundEPerpBy(theta)
-
     def decreaseWeightBy(self, delta):
         self.weight -= delta
         if self.weight < 0:
@@ -46,21 +42,39 @@ class Photon:
         else:
             self.weight = 0
 
-    def rotateReferenceFrameAroundPropagationDirectionBy(self, phi):
+    def scatterBy(self, theta, phi):
         el = self.ePara
-        er = Vector(self.ePerp)
+    
+        # rotateReferenceFrameAroundPropagationDirectionBy(self, phi)
         cos_phi = np.cos(phi);
         sin_phi = np.sin(phi);
+        self.ePerp.x = self.ePerp.x * cos_phi + el.x * sin_phi;
+        self.ePerp.y = self.ePerp.y * cos_phi + el.y * sin_phi;
+        self.ePerp.z = self.ePerp.z * cos_phi + el.z * sin_phi;
+        self.ePerp.normalize()
     
-        self.ePerp.x = er.x * cos_phi + el.x * sin_phi;
-        self.ePerp.y = er.y * cos_phi + el.y * sin_phi;
-        self.ePerp.z = er.z * cos_phi + el.z * sin_phi;
+        # def changePropagationDirectionAroundEPerpBy(self, theta)    
+        cos_theta = np.cos(theta)
+        sin_theta = np.sin(theta)
+        self.ez.x = - el.x * sin_theta + self.ez.x * cos_theta
+        self.ez.y = - el.y * sin_theta + self.ez.y * cos_theta
+        self.ez.z = - el.z * sin_theta + self.ez.z * cos_theta
+        self.ez.normalize()
+
+    def rotateReferenceFrameAroundPropagationDirectionBy(self, phi):
+        cos_phi = np.cos(phi);
+        sin_phi = np.sin(phi);
+        el = self.ePara
+    
+        self.ePerp.x = self.ePerp.x * cos_phi + el.x * sin_phi;
+        self.ePerp.y = self.ePerp.y * cos_phi + el.y * sin_phi;
+        self.ePerp.z = self.ePerp.z * cos_phi + el.z * sin_phi;
         self.ePerp.normalize()
         
-    def changePropagationDirectionAroundEPerpBy(self, inTheta):
+    def changePropagationDirectionAroundEPerpBy(self, theta):
+        cos_theta = np.cos(theta)
+        sin_theta = np.sin(theta)
         el = self.ePara 
-        cos_theta = np.cos(inTheta)
-        sin_theta = np.sin(inTheta)
     
         self.ez.x = - el.x * sin_theta + self.ez.x * cos_theta
         self.ez.y = - el.y * sin_theta + self.ez.y * cos_theta
@@ -120,7 +134,7 @@ if __name__ == "__main__":
     startTime = time.time()
     N = 100
     for i in range(N):
-        print("Photon {0}".format(i))
+        # print("Photon {0}".format(i))
         photon = Photon()
         while photon.isAlive and mat.contains(photon):
             d = mat.getScatteringDistance(photon)
