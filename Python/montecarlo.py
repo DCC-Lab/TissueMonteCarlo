@@ -11,6 +11,14 @@ class Photon:
         self.ePerp = Vector(0,1,0)
         self.weight = 1.0
 
+    @property
+    def isDead(self):
+        return self.weight == 0
+
+    @property
+    def isAlive(self):
+        return self.weight != 0
+
     def moveBy(self, d):
         self.r += self.u * d
 
@@ -40,19 +48,9 @@ class Photon:
         if self.weight < 0:
             self.weight = 0
 
-    @property
-    def isDead(self):
-        return self.weight == 0
-
-    @property
-    def isAlive(self):
-        return self.weight != 0
-
     def roulette(self):
         chance = 0.1
-        if self.weight >= 1e-4:
-            return
-        elif self.weight == 0:
+        if self.weight >= 1e-4 or self.weight == 0:
             return
         elif np.random.random() < chance:
             self.weight /= chance
@@ -90,8 +88,17 @@ class Photon:
         self.u.x = - el.x * sin_theta + ez.x * cos_theta
         self.u.y = - el.y * sin_theta + ez.y * cos_theta
         self.u.z = - el.z * sin_theta + ez.z * cos_theta
-    
 
+    def _checkReferenceFrame(self):
+        print(self.ePara, self.ePerp, self.u)
+        if not self.ePara.isPerpendicularTo(self.ePerp):
+            raise ValueError()
+
+        if not self.ePerp.isPerpendicularTo(self.u):
+            raise ValueError()
+
+        if not self.u.isPerpendicularTo(self.ePara):
+            raise ValueError()
 
 class Material:
     def __init__(self, mu_s, mu_a, g):
@@ -130,6 +137,8 @@ class Material:
 if __name__ == "__main__":
     photon = Photon()
     mat = Material(mu_s=60, mu_a = 0.01, g = 0.7)
+    #print(Vector(0,1,0).isPerpendicularTo(Vector(1,0,0)))
+    print(Vector(0,1,0).dot(Vector(0,1,0)))
 
     for i in range(1000000):
         while photon.isAlive and mat.contains(photon):
@@ -139,4 +148,5 @@ if __name__ == "__main__":
             photon.scatterBy(theta, phi)
             mat.absorbEnergy(photon)
             photon.roulette()
-            print(photon.r)
+            photon._checkReferenceFrame()
+     #       print(photon.r)
