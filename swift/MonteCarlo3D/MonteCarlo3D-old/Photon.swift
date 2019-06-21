@@ -20,14 +20,14 @@ let oHat = SCNVector3(x: 0, y: 0, z: 0)
 
 
 class Photon {
-
-    let originalPosition:Vector3D
-    let originalDirection:Vector3D
-    let wavelength:CGFloat
     var position:Vector3D
     var direction:Vector3D
     var ePerp:Vector3D
     var weight:CGFloat
+
+    let originalPosition:Vector3D
+    let originalDirection:Vector3D
+    let wavelength:CGFloat
     var keepingExtendedStatistics:Bool
     var statistics:[(Vector3D,CGFloat)]
     var distanceTraveled:CGFloat
@@ -69,7 +69,6 @@ class Photon {
         }
 
     }
-
     
     func reset() {
         self.position = self.originalPosition
@@ -82,23 +81,16 @@ class Photon {
     }
     
     func propagateInto(material:BulkMaterial, distance theDistance:CGFloat) throws {
-
-        let SAFETY_DISTANCE:CGFloat = 1e-4
-        
         while isAlive() {
-            let thePosition = position
-            let theMaterial = objectsRoot.propertiesAtPosition(thePosition)
-            let (θ, φ) = theMaterial.randomScatteringAngles()
-            let distance = theMaterial.randomScatteringDistance()
+            let (θ, φ) = material.randomScatteringAngles()
+            let distance = material.randomScatteringDistance()
             
-            let theDisplacement = direction * (distance+2*SAFETY_DISTANCE)
-            
-            if distance == theMaterial.infiniteDistance {
+            if distance == material.infiniteDistance {
                 weight = 0
             } else {
                 moveBy(distance)
-                changeDirectionBy(θ, φ:φ)
-                let energyLoss = weight * theMaterial.albedo();
+                changeDirectionBy(θ, φ)
+                let energyLoss = weight * material.albedo();
                 decreaseWeightBy(energyLoss)
             }
             
@@ -110,52 +102,40 @@ class Photon {
         // This is very slow because of temporary allocation: 
         // self.position += self.direction * distance
         // This is much faster because done in place:
-        self.position.addScaledVector(theVector: self.direction, scale:distance)
+        self.position.addScaledVector(self.direction, scale:distance)
         self.distanceTraveled += distance;
         self.statistics.append((self.position, self.weight))
     }
     
-    func decreaseWeightBy(delta:CGFloat) -> CGFloat {
+    func decreaseWeightBy(_ delta:CGFloat) {
         self.weight -= delta
 
-        if self.weight > 0 {
-            return self.weight
-        } else {
+        if self.weight < 0 {
             self.weight = 0
-            return self.weight
         }
     }
 
-    func multiplyWeightBy(scale:CGFloat) -> CGFloat {
+    func multiplyWeightBy(scale:CGFloat) {
         self.weight *= scale
         
         if self.weight < 0 {
             self.weight = 0
         }
-        
-        return self.weight;
     }
 
     func isAlive() -> Bool {
         return weight > 0
     }
     
-    func changeDirectionBy(θ:CGFloat, φ:CGFloat ) {
-        assert(!(self.ePerp.x.isNaN) && !(self.ePerp.y.isNaN) && !(self.ePerp.z.isNaN),"Eperp is nan")
-        self.ePerp.rotateAroundAxis(u: self.direction, byAngle: φ)
-        
+    func changeDirectionBy(_ θ:CGFloat,_ φ:CGFloat ) {
+        self.ePerp.rotateAroundAxis(self.direction, byAngle: φ)
         try! self.ePerp.normalize()
-                self.direction.rotateAroundAxis(u: self.ePerp, byAngle: θ)
+        self.direction.rotateAroundAxis(self.ePerp, byAngle: θ)
         try! self.direction.normalize()
-//        assert(!isnan(self.direction.x) && !isnan(self.direction.y) && !isnan(self.direction.z),"Direction is nan")
- 
-//        assert(ePerp.isPerpendicularTo(direction), "ePerp not perpendicular to direction dp= \( ePerp.normalizedDotProduct(direction))")
-
     }
 
     
     func rotateReferenceFrameInFresnelPlaneWithNormal( theNormal:Vector3D ) {
-        
         /* We always want the "s hat" vector in the same orientation
         compared to dir, regardless of the normal (i.e the normal
         could be pointing in or out) */
@@ -167,8 +147,8 @@ class Photon {
         
         do {
             try s.normalize()
-            let phi = ePerp.orientedAngleWith(y: s, aroundAxis: direction)
-            ePerp.rotateAroundAxis(u: direction, byAngle: phi)
+            let phi = ePerp.orientedAngleWith(s, aroundAxis: direction)
+            ePerp.rotateAroundAxis(direction, byAngle: phi)
             try ePerp.normalize()
         } catch {
             
@@ -176,49 +156,6 @@ class Photon {
     
         assert(ePerp.isPerpendicularTo(direction), "ePerp not perpendicular to direction")
         assert(ePerp.isPerpendicularTo(theNormal), "ePerp not perpendicular to normal")
-    }
-    
-    func isReflectedFromInterface(intersect:SCNHitTestResultExtended) throws -> Bool {
-        rotateReferenceFrameInFresnelPlaneWithNormal(theNormal: intersect.hitTestResult.worldNormal)
-        intersect.setFresnelCoefficients()
-        
-        let probability:CGFloat
-        if ( intersect.Rp != nil && intersect.Rs != nil ) {
-            probability = (intersect.Rp! * intersect.Rp! / 2.0 + intersect.Rs! * intersect.Rs! / 2.0);
-        } else {
-            throw MonteCarloError.UnexpectedNil
-        }
-    
-        let num = BulkMaterial.randomFloat()
-    
-        if num < probability {
-            return true
-        } else {
-            return false
-        }
-    
-    }
-    
-    func reflectAtInterface(intersect:SCNHitTestResultExtended) {
-        rotateReferenceFrameInFresnelPlaneWithNormal(theNormal: intersect.hitTestResult.worldNormal)
-
-        let θi = acos(abs(self.direction.normalizedDotProduct(intersect.hitTestResult.worldNormal)))
-        changeDirectionBy(θ: -π + 2*θi, φ: 0)
-    }
-    
-    func transmitThroughInterface(intersect:SCNHitTestResultExtended) throws {
-        rotateReferenceFrameInFresnelPlaneWithNormal(theNormal: intersect.hitTestResult.worldNormal)
-    
-        let θi = acos(abs(direction.normalizedDotProduct(intersect.hitTestResult.worldNormal)))
-
-        let sinθt = sin(θi) / (intersect.indexFrom!/intersect.indexTo!)
-        
-        if ( sinθt <= 1.0) {
-            let θt = asin(sinθt);
-            changeDirectionBy(θ: θi - θt, φ: 0)
-        } else {
-            throw MonteCarloError.UnexpectedNil
-        }
     }
     
     func roulette() {

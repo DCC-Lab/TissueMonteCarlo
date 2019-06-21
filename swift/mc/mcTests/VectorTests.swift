@@ -9,6 +9,7 @@
 import Cocoa
 import SceneKit
 import XCTest
+@testable import mc
 
 class VectorTests: XCTestCase {
     
@@ -53,20 +54,20 @@ class VectorTests: XCTestCase {
         
     }
     
-    func testInitFromText() {
-        var vector = SCNVector3.vectorFromString("(1,2,3)")
-        XCTAssertNotNil(vector)
-        XCTAssert(vector! == SCNVector3(1,2,3))
-        vector = SCNVector3.vectorFromString("(-1,2.0,0.3)")
-        XCTAssertNotNil(vector)
-        XCTAssert(vector! == SCNVector3(-1,2,0.3))
-
-        vector = SCNVector3.vectorFromString("(1,2)")
-        XCTAssertNil(vector)
-        vector = SCNVector3.vectorFromString("(1,2,3,4)")
-        XCTAssertNil(vector)
-
-    }
+//    func testInitFromText() {
+//        var vector = SCNVector3.vectorFromString("(1,2,3)")
+//        XCTAssertNotNil(vector)
+//        XCTAssert(vector! == SCNVector3(1,2,3))
+//        vector = SCNVector3.vectorFromString("(-1,2.0,0.3)")
+//        XCTAssertNotNil(vector)
+//        XCTAssert(vector! == SCNVector3(-1,2,0.3))
+//
+//        vector = SCNVector3.vectorFromString("(1,2)")
+//        XCTAssertNil(vector)
+//        vector = SCNVector3.vectorFromString("(1,2,3,4)")
+//        XCTAssertNil(vector)
+//
+//    }
     
     func testNorm() {
         var aVector = SCNVector3(0,1,2)
@@ -118,7 +119,7 @@ class VectorTests: XCTestCase {
     }
 
     func testTripleProduct() {
-        XCTAssert(xHat.tripleProduct(yHat, w: zHat) == 1)
+        XCTAssert(xHat.tripleProduct(v:yHat, w: zHat) == 1)
         
     }
     

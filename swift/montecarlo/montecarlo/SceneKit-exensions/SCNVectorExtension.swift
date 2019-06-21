@@ -98,7 +98,7 @@ extension SCNVector3:CustomStringConvertible {
         return sqrt(x*x + y*y + z*z)
     }
     
-    mutating func normalize() throws -> SCNVector3 {
+    mutating func normalize() throws {
         let value = sqrt(x*x + y*y + z*z)
 
         if value != 0 {
@@ -108,10 +108,9 @@ extension SCNVector3:CustomStringConvertible {
         } else {
             throw VectorError.UnexpectedNil
         }
-        return self
     }
     
-    mutating func addScaledVector(theVector:SCNVector3, scale theScale:CGFloat) {
+    mutating func addScaledVector(_ theVector:SCNVector3, scale theScale:CGFloat) {
         x += theVector.x * theScale;
         y += theVector.y * theScale;
         z += theVector.z * theScale;
@@ -168,7 +167,7 @@ extension SCNVector3:CustomStringConvertible {
         return cp.dotProduct(w)
     }
     
-    func orientedAngleWith( y:SCNVector3 , aroundAxis r:SCNVector3 ) -> CGFloat {
+    func orientedAngleWith(_ y:SCNVector3 , aroundAxis r:SCNVector3 ) -> CGFloat {
         let sinPhi = self.normalizedCrossProduct(y)
         
         var phi = asin(sinPhi.abs())
@@ -191,7 +190,7 @@ extension SCNVector3:CustomStringConvertible {
     func isParallelTo(_ v:SCNVector3 ) -> Bool {
         let dp = self.dotProduct(v)
         
-        if fabs(dp/self.abs()/v.abs() - 1) <= 1e-5  {
+        if Swift.abs(dp/self.abs()/v.abs() - 1) <= 1e-5  {
             return true
         }
         
@@ -201,14 +200,14 @@ extension SCNVector3:CustomStringConvertible {
     func isPerpendicularTo(_ v:SCNVector3 ) -> Bool {
         let dp = self.dotProduct(v)
         
-        if fabs(dp)/self.abs()/v.abs() <= 1e-5 {
+        if Swift.abs(dp)/self.abs()/v.abs() <= 1e-5 {
             return true
         }
         
         return false
     }
     
-    mutating func rotateAroundX( inPhi: CGFloat) {
+    mutating func rotateAroundX(_ inPhi: CGFloat) {
         let c = cos(inPhi)
         let s = sin(inPhi)
         let tempY = y
@@ -217,7 +216,7 @@ extension SCNVector3:CustomStringConvertible {
         z = s * tempY + c * z
     }
     
-    mutating func rotateAroundY( inPhi: CGFloat) {
+    mutating func rotateAroundY(_ inPhi: CGFloat) {
         let c = cos(inPhi)
         let s = sin(inPhi)
         let tempZ = z
@@ -226,7 +225,7 @@ extension SCNVector3:CustomStringConvertible {
         x = s * tempZ + c * x
     }
     
-    mutating func rotateAroundZ( inPhi: CGFloat) {
+    mutating func rotateAroundZ(_ inPhi: CGFloat) {
         let c = cos(inPhi)
         let s = sin(inPhi)
         let tempX = x
@@ -235,7 +234,7 @@ extension SCNVector3:CustomStringConvertible {
         y = s * tempX + c * y
     }
     
-    mutating func rotateAroundAxis(u:SCNVector3, byAngle theta:CGFloat) {
+    mutating func rotateAroundAxis(_ u:SCNVector3, byAngle theta:CGFloat) {
         //http://en.wikipedia.org/wiki/Rotation_matrix
         
         let cosTheta = cos(theta)
