@@ -14,20 +14,13 @@ enum VectorError: LocalizedError {
     case UnexpectedNil
 }
 
-typealias Vector3D = SCNVector3
+typealias Vector = SCNVector3
+typealias Vector3D = Vector
 enum Axis:Int {
     case X=0,Y=1,Z=2
 }
 
-extension SCNVector3 {
-    static func randomVector() -> SCNVector3 {
-        let x = CGFloat(arc4random())/CGFloat(RAND_MAX)
-        let y = CGFloat(arc4random())/CGFloat(RAND_MAX)
-        let z = CGFloat(arc4random())/CGFloat(RAND_MAX)
-        
-        return SCNVector3(x: x, y: y, z: z)
-    }
-
+extension Vector {
     public var description: String {
         return "(\(x),\(y),\(z))"
     }
@@ -76,17 +69,17 @@ extension SCNVector3 {
         }
     }
     
-    mutating func addScaledVector(_ theVector:SCNVector3, scale theScale:CGFloat) {
+    mutating func addScaledVector(_ theVector:Vector, scale theScale:CGFloat) {
         x += theVector.x * theScale;
         y += theVector.y * theScale;
         z += theVector.z * theScale;
     }
     
-    func dotProduct(_ theVector : SCNVector3 ) -> CGFloat {
+    func dotProduct(_ theVector : Vector ) -> CGFloat {
         return x * theVector.x + y * theVector.y + z * theVector.z;
     }
     
-    func normalizedDotProduct(_ theVector: SCNVector3 ) -> CGFloat {
+    func normalizedDotProduct(_ theVector: Vector ) -> CGFloat {
         var prod = self.dotProduct(theVector)
         
         let norm_u = norm()
@@ -105,11 +98,11 @@ extension SCNVector3 {
         return prod;
     }
     
-    func crossProduct(_ v: SCNVector3) -> SCNVector3 {
-        return  SCNVector3(x:y * v.z - z * v.y,  y:z * v.x - x * v.z,  z: x * v.y - y * v.x)
+    func crossProduct(_ v: Vector) -> Vector {
+        return  Vector(x:y * v.z - z * v.y,  y:z * v.x - x * v.z,  z: x * v.y - y * v.x)
     }
     
-    func normalizedCrossProduct(_ v: SCNVector3) -> SCNVector3 {
+    func normalizedCrossProduct(_ v: Vector) -> Vector {
         var t = self.crossProduct(v)
         
         let norm_u = self.norm()
@@ -127,13 +120,13 @@ extension SCNVector3 {
         return t;
     }
     
-    func tripleProduct(v : SCNVector3, w : SCNVector3) -> CGFloat {
+    func tripleProduct(v : Vector, w : Vector) -> CGFloat {
         let cp = crossProduct(v)
         
         return cp.dotProduct(w)
     }
     
-    func orientedAngleWith(_ y:SCNVector3 , aroundAxis r:SCNVector3 ) -> CGFloat {
+    func orientedAngleWith(_ y:Vector , aroundAxis r:Vector ) -> CGFloat {
         let sinPhi = self.normalizedCrossProduct(y)
         
         var phi = asin(sinPhi.abs())
@@ -149,11 +142,11 @@ extension SCNVector3 {
         return phi;
     }
     
-    func distanceToPlaneWithOrigin(origin v0: SCNVector3, normal vn:SCNVector3, alongVector vd:SCNVector3 )-> CGFloat {
+    func distanceToPlaneWithOrigin(origin v0: Vector, normal vn:Vector, alongVector vd:Vector )-> CGFloat {
         return -(vn.x * (x - v0.x) + vn.y * (y - v0.y) + vn.z * (z - v0.z) ) / (vn.x * vd.x + vn.y * vd.y + vn.z * vd.z)
     }
     
-    func isParallelTo(_ v:SCNVector3 ) -> Bool {
+    func isParallelTo(_ v:Vector ) -> Bool {
         let dp = self.dotProduct(v)
         
         if Swift.abs(dp/self.abs()/v.abs() - 1) <= 1e-5  {
@@ -163,7 +156,7 @@ extension SCNVector3 {
         return false
     }
     
-    func isPerpendicularTo(_ v:SCNVector3 ) -> Bool {
+    func isPerpendicularTo(_ v:Vector ) -> Bool {
         let dp = self.dotProduct(v)
         
         if Swift.abs(dp)/self.abs()/v.abs() <= 1e-5 {
@@ -200,7 +193,7 @@ extension SCNVector3 {
         y = s * tempX + c * y
     }
     
-    mutating func rotateAroundAxis(_ u:SCNVector3, byAngle theta:CGFloat) {
+    mutating func rotateAroundAxis(_ u:Vector, byAngle theta:CGFloat) {
         //http://en.wikipedia.org/wiki/Rotation_matrix
         
         let cosTheta = cos(theta)
@@ -223,7 +216,7 @@ extension SCNVector3 {
         z = z + (cosTheta + uz*uz * oneMinusCosTheta) * Z
     }
 
-    static func ==(left: SCNVector3, right: SCNVector3) -> Bool {
+    static func ==(left: Vector, right: Vector) -> Bool {
         let diff = (left-right).abs()
         
         if diff < 1e-6 {
@@ -232,65 +225,65 @@ extension SCNVector3 {
         return false
     }
     
-    static prefix func - (vector: SCNVector3) -> SCNVector3 {
-        return SCNVector3(x: -vector.x, y: -vector.y, z:-vector.z)
+    static prefix func - (vector: Vector) -> Vector {
+        return Vector(x: -vector.x, y: -vector.y, z:-vector.z)
     }
     
-    static func + (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
-        return SCNVector3(x: left.x + right.x, y: left.y + right.y, z:left.z + right.z)
+    static func + (left: Vector, right: Vector) -> Vector {
+        return Vector(x: left.x + right.x, y: left.y + right.y, z:left.z + right.z)
     }
     
-    static func - (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
-        return SCNVector3(x: left.x - right.x, y: left.y - right.y, z:left.z - right.z)
+    static func - (left: Vector, right: Vector) -> Vector {
+        return Vector(x: left.x - right.x, y: left.y - right.y, z:left.z - right.z)
     }
     
-    static func * (left: SCNVector3, scalar: CGFloat) -> SCNVector3 {
-        return SCNVector3(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
+    static func * (left: Vector, scalar: CGFloat) -> Vector {
+        return Vector(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
     }
     
-    static func * (scalar: CGFloat, left: SCNVector3) -> SCNVector3 {
-        return SCNVector3(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
+    static func * (scalar: CGFloat, left: Vector) -> Vector {
+        return Vector(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
     }
     
-    static func / (left: SCNVector3, scalar: CGFloat) -> SCNVector3 {
-        return SCNVector3(x: left.x / scalar, y: left.y / scalar, z:left.z / scalar)
+    static func / (left: Vector, scalar: CGFloat) -> Vector {
+        return Vector(x: left.x / scalar, y: left.y / scalar, z:left.z / scalar)
     }
     
-//    static func × (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
+//    static func × (left: Vector, right: Vector) -> Vector {
 //        return left.crossProduct(right)
 //    }
 //    
-//    static func • (left: SCNVector3, right: SCNVector3) -> CGFloat {
+//    static func • (left: Vector, right: Vector) -> CGFloat {
 //        return left.dotProduct(right)
 //    }
 //    
-//    static func ⟂ (left: SCNVector3, right: SCNVector3) -> Bool {
+//    static func ⟂ (left: Vector, right: Vector) -> Bool {
 //        return left.isPerpendicularTo(right)
 //    }
 //    
-//    static func ‖ (left: SCNVector3, right: SCNVector3) -> Bool {
+//    static func ‖ (left: Vector, right: Vector) -> Bool {
 //        return left.isParallelTo(right)
 //    }
 //    
-    static func += ( left: inout SCNVector3, right: SCNVector3) {
+    static func += ( left: inout Vector, right: Vector) {
         left.x += right.x
         left.y += right.y
         left.z += right.z
     }
     
-    static func -= ( left: inout SCNVector3, right: SCNVector3) {
+    static func -= ( left: inout Vector, right: Vector) {
         left.x -= right.x
         left.y -= right.y
         left.z -= right.z
     }
     
-    static func *= ( left: inout SCNVector3, scalar: CGFloat) {
+    static func *= ( left: inout Vector, scalar: CGFloat) {
         left.x *= scalar
         left.y *= scalar
         left.z *= scalar
     }
     
-    static func /= ( left: inout SCNVector3, scalar: CGFloat) {
+    static func /= ( left: inout Vector, scalar: CGFloat) {
         left.x /= scalar
         left.y /= scalar
         left.z /= scalar

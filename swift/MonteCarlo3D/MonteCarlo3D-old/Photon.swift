@@ -13,23 +13,23 @@ enum MonteCarloError: LocalizedError {
     case UnexpectedNil
 }
 
-public let xHat = SCNVector3(x: 1, y: 0, z: 0)
-public let yHat = SCNVector3(x: 0, y: 1, z: 0)
-public let zHat = SCNVector3(x: 0, y: 0, z: 1)
-public let oHat = SCNVector3(x: 0, y: 0, z: 0)
+let xHat = Vector(x: 1, y: 0, z: 0)
+let yHat = Vector(x: 0, y: 1, z: 0)
+let zHat = Vector(x: 0, y: 0, z: 1)
+let oHat = Vector(x: 0, y: 0, z: 0)
 
 
 class Photon {
-    var position:Vector3D
-    var direction:Vector3D
-    var ePerp:Vector3D
+    var position:Vector
+    var direction:Vector
+    var ePerp:Vector
     var weight:CGFloat
 
-    let originalPosition:Vector3D
-    let originalDirection:Vector3D
+    let originalPosition:Vector
+    let originalDirection:Vector
     let wavelength:CGFloat
     var keepingExtendedStatistics:Bool
-    var statistics:[(Vector3D,CGFloat)]
+    var statistics:[(Vector,CGFloat)]
     var distanceTraveled:CGFloat
 
     var description:String {
@@ -37,7 +37,7 @@ class Photon {
     }
     
 
-    init?(position:Vector3D, direction:Vector3D, wavelength:CGFloat) {
+    init?(position:Vector, direction:Vector, wavelength:CGFloat) {
         self.wavelength = wavelength
 
         self.position = position
@@ -134,7 +134,7 @@ class Photon {
     }
 
     
-    func rotateReferenceFrameInFresnelPlaneWithNormal( theNormal:Vector3D ) {
+    func rotateReferenceFrameInFresnelPlaneWithNormal( theNormal:Vector ) {
         /* We always want the "s hat" vector in the same orientation
         compared to dir, regardless of the normal (i.e the normal
         could be pointing in or out) */

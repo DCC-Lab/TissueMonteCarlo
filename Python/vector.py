@@ -3,7 +3,7 @@ from collections import namedtuple
 
 class Vector:
     def __init__(self, x=0,y=0,z=0):
-        if isinstance(x, np.ndarray):
+        if isinstance(x, (int, float)):
             self.x = x
             self.y = y 
             self.z = z
@@ -11,10 +11,12 @@ class Vector:
             self.x = x.x
             self.y = x.y 
             self.z = x.z 
-        else:
+        elif isinstance(x, np.ndarray):
             self.x = x
             self.y = y 
             self.z = z
+        else:
+            raise ValueError("No valid input for Vector")
 
     @property
     def isUnitary(self):

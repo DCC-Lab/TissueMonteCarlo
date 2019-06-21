@@ -106,9 +106,9 @@ class Material:
         self.g = g
     
     def getScatteringDistance(self, photon) -> float:
-        # rnd = 0
-        # while rnd == 0:
-        rnd = np.random.random()
+        rnd = 0
+        while rnd == 0:
+            rnd = np.random.random()
         return -np.log(rnd)/self.mu_t
 
     def getScatteringAngles(self, photon) -> (float, float):

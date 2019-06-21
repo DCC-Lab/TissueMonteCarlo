@@ -10,6 +10,8 @@ import Foundation
 import SceneKit
 
 let infiniteDistance:CGFloat = 1e4
+var randomTable = [CGFloat](repeating: 0, count: 65536)
+var randomIndex:Int = 0
 
 extension CGFloat {
     func isInfinite() -> Bool {
@@ -23,7 +25,6 @@ class BulkMaterial  {
     var mu_t:CGFloat
     var index:CGFloat
     var albedo:CGFloat
-    
     var description: String {
         return " µs=\(mu_s) µa=\(mu_a) index=\(index)"
     }
@@ -37,6 +38,10 @@ class BulkMaterial  {
         if mu_t != 0 {
             self.albedo = mu_a/mu_t
         }
+        for i in 0...65535 {
+            randomTable[i] = CGFloat(Float.random(in:0...1))
+        }
+        randomIndex = Int.random(in: 0...65535)
     }
     
     func absorbEnergy(_ photon:Photon) -> CGFloat {
@@ -44,7 +49,11 @@ class BulkMaterial  {
     }
     
     class func randomFloat() -> CGFloat {
-        return CGFloat(Float.random(in:0...1))
+        randomIndex += 1
+        if randomIndex == 65536 {
+            randomIndex = Int.random(in: 0...65535)
+        }
+        return randomTable[randomIndex]
     }
     
     func randomScatteringDistance() -> CGFloat {
