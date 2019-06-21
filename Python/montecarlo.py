@@ -26,7 +26,7 @@ class Photon:
         self.rotateReferenceFrameAroundPropagationDirectionBy(phi)
         self.changePropagationDirectionAroundEPerpBy(theta)
 
-    def explicitScatterBy(self, theta, phi):
+    def _scatterBy(self, theta, phi):
         cost = np.cos(theta)
         sint = np.sqrt(1-cost*cost)
         cosp = np.cos(phi)
@@ -58,10 +58,9 @@ class Photon:
             self.weight = 0
 
     def rotateReferenceFrameAroundPropagationDirectionBy(self, phi):
-        el = Vector(self.ePara.x, self.ePara.y, self.ePara.z)
-        er = Vector(self.ePerp.x, self.ePerp.y, self.ePerp.z)
-        ez = Vector(self.u.x, self.u.y, self.u.z)
-    
+        el = Vector(self.ePara)
+        er = Vector(self.ePerp)
+        ez = Vector(self.u)    
         cos_phi = np.cos(phi);
         sin_phi = np.sin(phi);
     
@@ -74,10 +73,9 @@ class Photon:
         self.ePara.z = - er.z * sin_phi + el.z * cos_phi;
 
     def changePropagationDirectionAroundEPerpBy(self, inTheta):
-        el = Vector(self.ePara.x, self.ePara.y, self.ePara.z)
-        er = Vector(self.ePerp.x, self.ePerp.y, self.ePerp.z)
-        ez = Vector(self.u.x, self.u.y, self.u.z)
-
+        el = Vector(self.ePara)
+        er = Vector(self.ePerp)
+        ez = Vector(self.u)
         cos_theta = np.cos(inTheta)
         sin_theta = np.sin(inTheta)
     
@@ -92,19 +90,14 @@ class Photon:
     def _checkReferenceFrame(self):
         if not self.ePara.isPerpendicularTo(self.ePerp):
             raise ValueError()
-
         if not self.ePerp.isPerpendicularTo(self.u):
             raise ValueError()
-
         if not self.u.isPerpendicularTo(self.ePara):
             raise ValueError()
-
         if not self.ePara.isUnitary:
             raise ValueError()
-
         if not self.ePerp.isUnitary:
             raise ValueError()
-
         if not self.u.isUnitary:
             raise ValueError()
 
