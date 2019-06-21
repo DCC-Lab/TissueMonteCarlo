@@ -45,7 +45,7 @@ class Photon:
             self.weight = 0
 
     def rotateReferenceFrameAroundPropagationDirectionBy(self, phi):
-        el = self.ePerp.cross(self.ez)
+        el = self.ez.cross(self.ePerp) 
         er = Vector(self.ePerp)
         # ez = Vector(self.ez)    
         cos_phi = np.cos(phi);
@@ -55,21 +55,13 @@ class Photon:
         self.ePerp.y = er.y * cos_phi + el.y * sin_phi;
         self.ePerp.z = er.z * cos_phi + el.z * sin_phi;
         
-        # self.ePara.x = - er.x * sin_phi + el.x * cos_phi;
-        # self.ePara.y = - er.y * sin_phi + el.y * cos_phi;
-        # self.ePara.z = - er.z * sin_phi + el.z * cos_phi;
-
     def changePropagationDirectionAroundEPerpBy(self, inTheta):
-        el = self.ePerp.cross(self.ez)
-        er = Vector(self.ePerp)
+        el = self.ez.cross(self.ePerp)
+        # er = Vector(self.ePerp)
         ez = Vector(self.ez)
         cos_theta = np.cos(inTheta)
         sin_theta = np.sin(inTheta)
     
-        # self.ePara.x = el.x * cos_theta + ez.x * sin_theta
-        # self.ePara.y = el.y * cos_theta + ez.y * sin_theta
-        # self.ePara.z = el.z * cos_theta + ez.z * sin_theta
-        
         self.ez.x = - el.x * sin_theta + ez.x * cos_theta
         self.ez.y = - el.y * sin_theta + ez.y * cos_theta
         self.ez.z = - el.z * sin_theta + ez.z * cos_theta
