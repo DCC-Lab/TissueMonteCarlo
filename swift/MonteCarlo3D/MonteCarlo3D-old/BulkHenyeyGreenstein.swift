@@ -13,11 +13,6 @@ class BulkHenyeyGreenstein : BulkMaterial {
     override var description: String {
         return super.description+" g=\(g)"
     }
-    
-    required init?(coder aDecoder: NSCoder) {
-        self.g = 0
-        super.init(coder: aDecoder)
-    }
 
     init(mu_s: CGFloat, mu_a: CGFloat, index: CGFloat, g:CGFloat) {
         self.g = g

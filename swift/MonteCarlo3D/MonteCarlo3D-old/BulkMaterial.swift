@@ -9,33 +9,29 @@
 import Foundation
 import SceneKit
 
-class BulkMaterial : SCNNode {
+class BulkMaterial  {
     var mu_s:CGFloat
     var mu_a:CGFloat
+    var mu_t:CGFloat
     var index:CGFloat
     let infiniteDistance:CGFloat = 1e4
 
-    override var description: String {
-        return super.description+" µs=\(mu_s) µa=\(mu_a) index=\(index)"
-    }
-
-    required init?(coder aDecoder: NSCoder) {
-        self.mu_s = 0
-        self.mu_a = 0
-        self.index = 1
-        super.init(coder: aDecoder)
+    var description: String {
+        return " µs=\(mu_s) µa=\(mu_a) index=\(index)"
     }
     
     init(mu_s:CGFloat, mu_a:CGFloat, index:CGFloat) {
         self.mu_s = mu_s
         self.mu_a = mu_a
+        self.mu_t = mu_a + mu_s
         self.index = index
-        super.init()
+    }
+    
+    func absorbEnergy(_ photon:Photon) -> CGFloat {
+        return photon.weight * material.albedo()
     }
     
     func albedo() -> CGFloat {
-        let mu_t = self.mu_s + self.mu_a;
-        
         if mu_t != 0 {
             return mu_a/mu_t
         } else {
@@ -44,11 +40,10 @@ class BulkMaterial : SCNNode {
     }
 
     class func randomFloat() -> CGFloat {
-        return CGFloat(arc4random())/CGFloat(RAND_MAX)
+        return CGFloat(Float.random(in:0...1))
     }
     
     func randomScatteringDistance() -> CGFloat {
-        let mu_t = self.mu_s + self.mu_a;
         if mu_t == 0 {
             return self.infiniteDistance
         }

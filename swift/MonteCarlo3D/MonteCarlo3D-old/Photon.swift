@@ -84,7 +84,6 @@ class Photon {
         while isAlive() {
             let (θ, φ) = material.randomScatteringAngles()
             let distance = material.randomScatteringDistance()
-            print(θ, φ)
             if distance == material.infiniteDistance {
                 weight = 0
             } else {
