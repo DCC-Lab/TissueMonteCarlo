@@ -42,3 +42,18 @@ class Vector:
 
     def __rsub__(self, vector):
         return vector - self.v
+
+    def norm(self):
+        return self.x*self.x + self.y*self.y + self.z*self.z
+
+    def normalize(self):
+        self.v /= self.abs
+
+    def abs(self):
+        return np.sqrt(self.norm())
+
+    def crossProduct(self, vector):
+        return np.cross(self.v, vector)
+
+    def dotProduct(self, vector):
+        return np.dot(self.v, vector)

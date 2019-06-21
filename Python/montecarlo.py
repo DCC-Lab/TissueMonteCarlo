@@ -6,6 +6,9 @@ class Photon:
     def __init__(self):
         self.r = Vector(0,0,0)
         self.u = Vector(0,0,1)
+        
+        self.ePara = Vector(1,0,0)
+        self.ePerp = Vector(0,1,0)
         self.weight = 1.0
 
     def moveBy(self, d):
