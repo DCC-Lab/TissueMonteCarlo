@@ -12,7 +12,7 @@ class Photon:
         self.weight = 1.0
 
     def moveBy(self, d):
-        self.r = self.r + self.u * d
+        self.r += self.u * d
 
     def scatterBy(self, theta, phi):
         cost = np.cos(theta)
@@ -46,7 +46,7 @@ class Photon:
 
     def roulette(self):
         chance = 0.1
-        if self.weight >= 1e-5:
+        if self.weight >= 1e-4:
             return
         elif self.weight == 0:
             return
@@ -61,8 +61,16 @@ class Material:
         self.mu_a = mu_a
         self.g = g
 
+    @property
+    def mu_t(self):
+        return self.mu_a + self.mu_s
+    
     def getScatteringDistance(self, photon) -> float:
-        return np.random.exponential(self.mu_s + self.mu_a)
+        rnd = 0
+        while rnd == 0:
+            rnd = np.random.random()
+
+        return -np.log(rnd)/self.mu_t
 
     def getScatteringAngles(self, photon) -> (float, float):
         phi = np.random.random()*2*np.pi
@@ -75,15 +83,14 @@ class Material:
         return (np.arccos(cost), phi)
 
     def absorbEnergy(self, photon):
-        delta = photon.weight * self.mu_a/(self.mu_a + self.mu_s)
+        delta = photon.weight * self.mu_a/self.mu_t
         photon.decreaseWeightBy(delta)
 
 if __name__ == "__main__":
     photon = Photon()
-    mat = Material(mu_s=30, mu_a = 0.01, g = 0.9)
-    r = Vector()*10.0
+    mat = Material(mu_s=30, mu_a = 0.01, g = 0.7)
 
-    for i in range(100000):
+    for i in range(1000000):
         while photon.isAlive:
             d = mat.getScatteringDistance(photon)
             (theta, phi) = mat.getScatteringAngles(photon)
@@ -91,6 +98,8 @@ if __name__ == "__main__":
             photon.scatterBy(theta, phi)
             mat.absorbEnergy(photon)
             photon.roulette()
-        # print(p.r)
+            #print(photon.r)
 
-    Vector(0,0,0).rotateAroundX(0.1)
+    Vector(0,0,1).rotateAroundX(0.1)
+    Vector(0,0,1).rotateAroundY(0.1)
+    Vector(0,0,1).rotateAroundZ(0.1)
