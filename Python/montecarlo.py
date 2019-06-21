@@ -2,8 +2,8 @@ import numpy as np
 import scipy
 
 class Vector:
-    def __init__(self):
-        self.v = np.array([0,0,0],dtype=float)
+    def __init__(self, array=[0,0,0]):
+        self.v = np.array(array,dtype=float)
 
     @property
     def x(self):
@@ -17,16 +17,29 @@ class Vector:
     def z(self):
         return self.v[2]
 
+    def __getitem__(self, index):
+        return self.v[index]
+
     def __mul__(self, scale):
         self.v *= scale
+        return self.v
 
     def __rmul__(self, scale):
         self.v *= scale
+        return self.v
+
+    def __add__(self, vector):
+        self.v += vector
+        return self.v
+
+    def __radd__(self, vector):
+        self.v += vector
+        return self.v
 
 class Photon:
     def __init__(self):
-        self.r = np.array([0,0,0],dtype=float)
-        self.u = np.array([0,0,1],dtype=float)
+        self.r = Vector()
+        self.u = Vector([0,0,1])
         self.weight = 1.0
 
     def moveBy(self, d):
@@ -42,14 +55,12 @@ class Photon:
         uz = self.u[2]
 
         if abs(uz) > 0.9999:
-            self.u[0] = sint*cosp
-            self.u[1] = sint*sinp
-            self.u[2] = cost*uz/abs(uz)
+            self.u = Vector([sint*cosp, sint*sinp, cost*uz/abs(uz)])
         else:
             temp = np.sqrt(1.0 - uz*uz)
-            self.u[0] = sint*(ux*uz*cosp - uy*sinp)/temp + ux*cost;
-            self.u[1] = sint*(uy*uz*cosp + ux*sinp)/temp + uy*cost;
-            self.u[2] = -sint*cosp*temp + uz*cost;
+            self.u = Vector([sint*(ux*uz*cosp - uy*sinp)/temp + ux*cost,
+                             sint*(uy*uz*cosp + ux*sinp)/temp + uy*cost,
+                             -sint*cosp*temp + uz*cost])
 
     def decreaseWeightBy(self, delta):
         self.weight -= delta
