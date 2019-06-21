@@ -61,10 +61,10 @@ class Vector:
     def abs(self):
         return np.sqrt(self.norm())
 
-    def crossProduct(self, vector):
+    def cross(self, vector):
         return np.cross(self.v, vector)
 
-    def dotProduct(self, vector):
+    def dot(self, vector):
         return np.dot(self.v, vector)
 
     def normalizedCrossProduct(self, vector):
@@ -80,17 +80,16 @@ class Vector:
         sinPhiAbs = abs(sinPhi)
         phi = np.arcsin(sinPhiAbs)
     
-        if u.dotProduct(v) <= 0:
+        if u.dot(v) <= 0:
             phi = PI-phi
 
-        if sinPhi.dotProduct(w) <= 0:
+        if sinPhi.dot(w) <= 0:
             phi *= -1 
     
         return phi;
 
     def rotateAroundX(self, phi):
         v = Vector(self.x, self.y, self.z)
-        u = Vector()
         
         c = np.cos(phi);
         s = np.sin(phi);
@@ -100,7 +99,6 @@ class Vector:
 
     def rotateAroundY(self, phi):
         v = Vector(self.x, self.y, self.z)
-        u = Vector()
         
         c = np.cos(phi)
         s = np.sin(phi)
@@ -110,7 +108,6 @@ class Vector:
 
     def rotateAroundZ(self, phi):
         v = Vector(self.x, self.y, self.z)
-        u = Vector()
         
         c = np.cos(phi)
         s = np.sin(phi)
