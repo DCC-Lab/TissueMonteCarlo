@@ -28,6 +28,9 @@ class Vector:
     def z(self, value):
         self.v[2] = value
 
+    def __str__(self):
+        return "({0:.4f},{1:.4f},{2:.4f})".format(self.x, self.y, self.z)
+
     def __getitem__(self, index):
         return self.v[index]
 
@@ -103,8 +106,8 @@ class Vector:
         c = np.cos(phi)
         s = np.sin(phi)
     
-        self.x = c * v.y + s * v.z
-        self.z = -s * v.y + c * v.z
+        self.x = c * v.x + s * v.z
+        self.z = -s * v.x + c * v.z
 
     def rotateAroundZ(self, phi):
         v = Vector(self.x, self.y, self.z)
