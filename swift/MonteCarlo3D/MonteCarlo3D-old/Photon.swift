@@ -13,10 +13,10 @@ enum MonteCarloError: LocalizedError {
     case UnexpectedNil
 }
 
-let xHat = SCNVector3(x: 1, y: 0, z: 0)
-let yHat = SCNVector3(x: 0, y: 1, z: 0)
-let zHat = SCNVector3(x: 0, y: 0, z: 1)
-let oHat = SCNVector3(x: 0, y: 0, z: 0)
+public let xHat = SCNVector3(x: 1, y: 0, z: 0)
+public let yHat = SCNVector3(x: 0, y: 1, z: 0)
+public let zHat = SCNVector3(x: 0, y: 0, z: 1)
+public let oHat = SCNVector3(x: 0, y: 0, z: 0)
 
 
 class Photon {
@@ -84,13 +84,13 @@ class Photon {
         while isAlive() {
             let (θ, φ) = material.randomScatteringAngles()
             let distance = material.randomScatteringDistance()
-            
+            print(θ, φ)
             if distance == material.infiniteDistance {
                 weight = 0
             } else {
-                moveBy(distance)
                 changeDirectionBy(θ, φ)
-                let energyLoss = weight * material.albedo();
+                moveBy(distance)
+                let energyLoss = material.absorbEnergy(self)
                 decreaseWeightBy(energyLoss)
             }
             

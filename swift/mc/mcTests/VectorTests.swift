@@ -10,6 +10,13 @@ import Cocoa
 import SceneKit
 import XCTest
 @testable import mc
+import SceneKit
+
+public let π:CGFloat = 3.1415926535
+public let xHat = SCNVector3(x: 1, y: 0, z: 0)
+public let yHat = SCNVector3(x: 0, y: 1, z: 0)
+public let zHat = SCNVector3(x: 0, y: 0, z: 1)
+public let oHat = SCNVector3(x: 0, y: 0, z: 0)
 
 class VectorTests: XCTestCase {
     

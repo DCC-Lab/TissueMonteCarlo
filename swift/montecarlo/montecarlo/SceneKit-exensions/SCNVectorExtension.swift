@@ -19,41 +19,12 @@ enum Axis:Int {
     case X=0,Y=1,Z=2
 }
 
+//infix operator ×
+//infix operator •
+//infix operator ⟂
+//infix operator ‖
 
-infix operator ×
-infix operator •
-infix operator ⟂
-infix operator ‖
-
-
-extension SCNVector3:CustomStringConvertible {
-
-//    static func vectorFromString(theString:String) -> SCNVector3? {
-//        let regexp = try! NSRegularExpression(pattern: "[+|-]?\\d+\\.?\\d*", options: NSRegularExpression.Options.caseInsensitive)
-//        
-//        let textResults = regexp.matches(in: theString, options: [], range: NSMakeRange(0,theString.lengthOfBytes(using: String.Encoding.isoLatin1)))
-//        
-//        var numbers = [Float]()
-//        for result in textResults {
-//            for i in 0..<result.numberOfRanges {
-//                let startIndex = result.range(at: i).location
-//                let endIndex = result.range(at: i).location+result.range(at: i).length
-//                
-//                let numberString = theString.substringWith(theString.startIndex.advancedBy(startIndex)..<theString.startIndex.advancedBy(endIndex))
-//                let number = Float(numberString)
-//                if number != nil {
-//                    numbers.append(number!)
-//                }
-//            }
-//        }
-//        if numbers.count != 3 {
-//            return nil
-//        }
-//        
-//        return SCNVector3(numbers[0],numbers[1],numbers[2])
-//        
-//    }
-
+extension SCNVector3 {
     static func randomVector() -> SCNVector3 {
         let x = CGFloat(arc4random())/CGFloat(RAND_MAX)
         let y = CGFloat(arc4random())/CGFloat(RAND_MAX)
@@ -256,80 +227,82 @@ extension SCNVector3:CustomStringConvertible {
         z = (uz*ux * oneMinusCosTheta - uy * sinTheta) * X + (uz * uy * oneMinusCosTheta + ux * sinTheta) * Y
         z = z + (cosTheta + uz*uz * oneMinusCosTheta) * Z
     }
-}
 
-func == (left: SCNVector3, right: SCNVector3) -> Bool {
-    let diff = (left-right).abs()
-    
-    if diff < 1e-6 {
-        return true
+    static func ==(left: SCNVector3, right: SCNVector3) -> Bool {
+        let diff = (left-right).abs()
+        
+        if diff < 1e-6 {
+            return true
+        }
+        return false
     }
-    return false
+    
+    static prefix func - (vector: SCNVector3) -> SCNVector3 {
+        return SCNVector3(x: -vector.x, y: -vector.y, z:-vector.z)
+    }
+    
+    static func + (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
+        return SCNVector3(x: left.x + right.x, y: left.y + right.y, z:left.z + right.z)
+    }
+    
+    static func - (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
+        return SCNVector3(x: left.x - right.x, y: left.y - right.y, z:left.z - right.z)
+    }
+    
+    static func * (left: SCNVector3, scalar: CGFloat) -> SCNVector3 {
+        return SCNVector3(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
+    }
+    
+    static func * (scalar: CGFloat, left: SCNVector3) -> SCNVector3 {
+        return SCNVector3(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
+    }
+    
+    static func / (left: SCNVector3, scalar: CGFloat) -> SCNVector3 {
+        return SCNVector3(x: left.x / scalar, y: left.y / scalar, z:left.z / scalar)
+    }
+    
+//    static func × (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
+//        return left.crossProduct(right)
+//    }
+//    
+//    static func • (left: SCNVector3, right: SCNVector3) -> CGFloat {
+//        return left.dotProduct(right)
+//    }
+//    
+//    static func ⟂ (left: SCNVector3, right: SCNVector3) -> Bool {
+//        return left.isPerpendicularTo(right)
+//    }
+//    
+//    static func ‖ (left: SCNVector3, right: SCNVector3) -> Bool {
+//        return left.isParallelTo(right)
+//    }
+//    
+    static func += ( left: inout SCNVector3, right: SCNVector3) {
+        left.x += right.x
+        left.y += right.y
+        left.z += right.z
+    }
+    
+    static func -= ( left: inout SCNVector3, right: SCNVector3) {
+        left.x -= right.x
+        left.y -= right.y
+        left.z -= right.z
+    }
+    
+    static func *= ( left: inout SCNVector3, scalar: CGFloat) {
+        left.x *= scalar
+        left.y *= scalar
+        left.z *= scalar
+    }
+    
+    static func /= ( left: inout SCNVector3, scalar: CGFloat) {
+        left.x /= scalar
+        left.y /= scalar
+        left.z /= scalar
+    }
+
 }
 
-prefix func - (vector: SCNVector3) -> SCNVector3 {
-    return SCNVector3(x: -vector.x, y: -vector.y, z:-vector.z)
-}
-
-func + (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
-    return SCNVector3(x: left.x + right.x, y: left.y + right.y, z:left.z + right.z)
-}
-
-func - (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
-    return SCNVector3(x: left.x - right.x, y: left.y - right.y, z:left.z - right.z)
-}
-
-func * (left: SCNVector3, scalar: CGFloat) -> SCNVector3 {
-    return SCNVector3(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
-}
-
-func * (scalar: CGFloat, left: SCNVector3) -> SCNVector3 {
-    return SCNVector3(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
-}
-
-func / (left: SCNVector3, scalar: CGFloat) -> SCNVector3 {
-    return SCNVector3(x: left.x / scalar, y: left.y / scalar, z:left.z / scalar)
-}
-
-func × (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
-    return left.crossProduct(right)
-}
-
-func • (left: SCNVector3, right: SCNVector3) -> CGFloat {
-    return left.dotProduct(right)
-}
-
-func ⟂ (left: SCNVector3, right: SCNVector3) -> Bool {
-    return left.isPerpendicularTo(right)
-}
-
-func ‖ (left: SCNVector3, right: SCNVector3) -> Bool {
-    return left.isParallelTo(right)
-}
-
-func += ( left: inout SCNVector3, right: SCNVector3) {
-    left.x += right.x
-    left.y += right.y
-    left.z += right.z
-}
-
-func -= ( left: inout SCNVector3, right: SCNVector3) {
-    left.x -= right.x
-    left.y -= right.y
-    left.z -= right.z
-}
-
-func *= ( left: inout SCNVector3, scalar: CGFloat) {
-    left.x *= scalar
-    left.y *= scalar
-    left.z *= scalar
-}
-
-func /= ( left: inout SCNVector3, scalar: CGFloat) {
-    left.x /= scalar
-    left.y /= scalar
-    left.z /= scalar
-}
 
 
 

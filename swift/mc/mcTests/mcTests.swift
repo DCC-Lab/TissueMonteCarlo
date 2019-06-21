@@ -7,6 +7,8 @@
 //
 
 import XCTest
+import SceneKit
+@testable import mc
 
 class mcTests: XCTestCase {
 
@@ -18,16 +20,37 @@ class mcTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func myRandom() -> CGFloat {
+        return CGFloat(arc4random_uniform(30000))/30000
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    func testInitVector() {
+        var _ = Vector3D()
     }
 
+    func testInitVectorWithArg() {
+        var _ = Vector3D(1,2,3)
+    }
+
+    func testInitVectorWithGlobalVecrtors() {
+        var _ = xHat
+        var _ = yHat
+        var _ = zHat
+    }
+
+    func testNorm() {
+        var v = Vector3D(1,0,0)
+        XCTAssert(v.norm() == 1)
+        
+    }
+
+//    func testRotation() {
+//        var vectorA = xHat
+////        var vectorB = yHat
+//
+//        vectorA.rotateAroundZ(3.14)
+////        vectorB.rotateAroundAxis(zHat, byAngle: π/2)
+////        XCTAssert(vectorA == vectorB, "Rotation around Z failed")
+////        XCTAssert(vectorA == yHat, "Rotation around Z failed")
+//    }
 }

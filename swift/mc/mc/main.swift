@@ -8,5 +8,7 @@
 
 import Foundation
 
-print("Hello, World!")
+var material = BulkHenyeyGreenstein(mu_s: 30, mu_a: 0.1, index: 1.4, g: 0.8)
+var p = Photon(position: Vector3D(0,0,0), direction: Vector3D(0,0,1), wavelength: 632)
+try p?.propagateInto(material: material, distance: 0)
 

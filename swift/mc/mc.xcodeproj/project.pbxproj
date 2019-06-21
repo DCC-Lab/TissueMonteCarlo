@@ -7,16 +7,30 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		75A8C6F122BD2B5C00C60729 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
+		75A8C6F222BD2B5C00C60729 /* SCNVectorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* SCNVectorExtension.swift */; };
+		75A8C6F322BD2B5C00C60729 /* Photon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FCE22BD15AB00A8EB4D /* Photon.swift */; };
+		75A8C6F422BD2B5C00C60729 /* BulkMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */; };
+		75A8C6F522BD2B5C00C60729 /* BulkHenyeyGreenstein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */; };
 		75E32FC822BD155E00A8EB4D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
 		75E32FD122BD15D700A8EB4D /* SCNVectorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* SCNVectorExtension.swift */; };
 		75E32FDB22BD166F00A8EB4D /* mcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FDA22BD166F00A8EB4D /* mcTests.swift */; };
-		75E32FE022BD167600A8EB4D /* VectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD222BD165300A8EB4D /* VectorTests.swift */; };
 		75E32FE122BD178A00A8EB4D /* Photon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FCE22BD15AB00A8EB4D /* Photon.swift */; };
 		75E32FE822BD182C00A8EB4D /* BulkHenyeyGreenstein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */; };
 		75E32FE922BD182C00A8EB4D /* BulkMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */; };
 		75E32FEB22BD1B0C00A8EB4D /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75E32FEA22BD1B0C00A8EB4D /* SceneKit.framework */; };
 		75E32FED22BD1B5300A8EB4D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75E32FEC22BD1B5300A8EB4D /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		75E32FF322BD209200A8EB4D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 75E32FBC22BD155E00A8EB4D /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 75E32FC322BD155E00A8EB4D;
+			remoteInfo = mc;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		75E32FC222BD155E00A8EB4D /* CopyFiles */ = {
@@ -89,8 +103,8 @@
 				75E32FC722BD155E00A8EB4D /* main.swift */,
 				75E32FD022BD15D700A8EB4D /* SCNVectorExtension.swift */,
 				75E32FCE22BD15AB00A8EB4D /* Photon.swift */,
-				75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */,
 				75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */,
+				75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */,
 				75E32FEC22BD1B5300A8EB4D /* CoreGraphics.framework */,
 				75E32FEA22BD1B0C00A8EB4D /* SceneKit.framework */,
 			);
@@ -138,6 +152,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				75E32FF422BD209200A8EB4D /* PBXTargetDependency */,
 			);
 			name = mcTests;
 			productName = mcTests;
@@ -207,12 +222,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75E32FE022BD167600A8EB4D /* VectorTests.swift in Sources */,
+				75A8C6F422BD2B5C00C60729 /* BulkMaterial.swift in Sources */,
+				75A8C6F522BD2B5C00C60729 /* BulkHenyeyGreenstein.swift in Sources */,
+				75A8C6F222BD2B5C00C60729 /* SCNVectorExtension.swift in Sources */,
+				75A8C6F122BD2B5C00C60729 /* main.swift in Sources */,
 				75E32FDB22BD166F00A8EB4D /* mcTests.swift in Sources */,
+				75A8C6F322BD2B5C00C60729 /* Photon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		75E32FF422BD209200A8EB4D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 75E32FC322BD155E00A8EB4D /* mc */;
+			targetProxy = 75E32FF322BD209200A8EB4D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		75E32FC922BD155E00A8EB4D /* Debug */ = {
@@ -364,6 +391,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 7P28ZGELDY;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/mc",
+				);
 				INFOPLIST_FILE = mcTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -382,6 +413,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = 7P28ZGELDY;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/mc",
+				);
 				INFOPLIST_FILE = mcTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
