@@ -137,9 +137,7 @@ class Material:
 if __name__ == "__main__":
     photon = Photon()
     mat = Material(mu_s=60, mu_a = 0.01, g = 0.7)
-    #print(Vector(0,1,0).isPerpendicularTo(Vector(1,0,0)))
-    print(Vector(0,1,0).dot(Vector(0,1,0)))
-
+ 
     for i in range(1000000):
         while photon.isAlive and mat.contains(photon):
             d = mat.getScatteringDistance(photon)

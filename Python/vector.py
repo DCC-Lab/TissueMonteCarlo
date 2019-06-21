@@ -2,7 +2,6 @@ import numpy as np
 
 class Vector:
     def __init__(self, x=0,y=0,z=0):
-        print("type ",type(x))
         if isinstance(x, np.ndarray):
             self.v = x.copy() #np.array(x,dtype=float)
         elif isinstance(x, Vector):
@@ -71,18 +70,20 @@ class Vector:
         return np.sqrt(self.norm())
 
     def cross(self, vector):
-        return Vector(np.cross(self.v, vector))
+        return Vector(self.y*vector.z - self.z*vector.y, 
+                      self.z*vector.x - self.x*vector.z, 
+                      self.x*vector.y - self.y*vector.x)
 
     def dot(self, vector):
-        return Vector(np.dot(self.v, vector))
+        return self.x*vector.x + self.y*vector.y + self.z*vector.z 
 
     def normalizedCrossProduct(self, vector):
         productNorm = self.norm() * vector.norm()
-        return Vector(np.cross(self.v, vector)/ np.sqrt(productNorm)) 
+        return self.cross(vector)/ np.sqrt(productNorm)
 
     def normalizedDotProduct(self, vector):
         productNorm = self.norm() * vector.norm()
-        return Vector(np.dot(self.v, vector)/ np.sqrt(productNorm)) 
+        return self.dot(vector)/ np.sqrt(productNorm)
 
     def orientedAngleBetween(self, u, v, w):
         sinPhi = u.normalizedCrossProduct(v)
@@ -126,7 +127,7 @@ class Vector:
         self.z = v.z
 
     def isParallelTo(self, vector):
-        return (self.normalizedDotProduct(vector).norm() - 1 < 1e-6)
+        return (self.normalizedDotProduct(vector) - 1 < 1e-6)
 
     def isPerpendicularTo(self, vector):
-        return (self.normalizedDotProduct(vector).norm() < 1e-6)
+        return (self.normalizedDotProduct(vector) < 1e-6)
