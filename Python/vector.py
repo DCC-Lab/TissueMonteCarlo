@@ -84,7 +84,7 @@ class Vector:
         phi = np.arcsin(sinPhiAbs)
     
         if u.dot(v) <= 0:
-            phi = PI-phi
+            phi = np.pi-phi
 
         if sinPhi.dot(w) <= 0:
             phi *= -1 

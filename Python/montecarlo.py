@@ -15,6 +15,10 @@ class Photon:
         self.r += self.u * d
 
     def scatterBy(self, theta, phi):
+        self.rotateReferenceFrameAroundPropagationDirectionBy(phi)
+        self.changePropagationDirectionAroundEPerpBy(theta)
+
+    def explicitScatterBy(self, theta, phi):
         cost = np.cos(theta)
         sint = np.sqrt(1-cost*cost)
         cosp = np.cos(phi)
@@ -55,6 +59,40 @@ class Photon:
         else:
             self.weight = 0
 
+    def rotateReferenceFrameAroundPropagationDirectionBy(self, phi):
+        el = Vector(self.ePara.x, self.ePara.y, self.ePara.z)
+        er = Vector(self.ePerp.x, self.ePerp.y, self.ePerp.z)
+        ez = Vector(self.u.x, self.u.y, self.u.z)
+    
+        cos_phi = np.cos(phi);
+        sin_phi = np.sin(phi);
+    
+        self.ePerp.x = er.x * cos_phi + el.x * sin_phi;
+        self.ePerp.y = er.y * cos_phi + el.y * sin_phi;
+        self.ePerp.z = er.z * cos_phi + el.z * sin_phi;
+        
+        self.ePara.x = - er.x * sin_phi + el.x * cos_phi;
+        self.ePara.y = - er.y * sin_phi + el.y * cos_phi;
+        self.ePara.z = - er.z * sin_phi + el.z * cos_phi;
+
+    def changePropagationDirectionAroundEPerpBy(self, inTheta):
+        el = Vector(self.ePara.x, self.ePara.y, self.ePara.z)
+        er = Vector(self.ePerp.x, self.ePerp.y, self.ePerp.z)
+        ez = Vector(self.u.x, self.u.y, self.u.z)
+
+        cos_theta = np.cos(inTheta)
+        sin_theta = np.sin(inTheta)
+    
+        self.ePara.x = el.x * cos_theta + ez.x * sin_theta
+        self.ePara.y = el.y * cos_theta + ez.y * sin_theta
+        self.ePara.z = el.z * cos_theta + ez.z * sin_theta
+        
+        self.u.x = - el.x * sin_theta + ez.x * cos_theta
+        self.u.y = - el.y * sin_theta + ez.y * cos_theta
+        self.u.z = - el.z * sin_theta + ez.z * cos_theta
+    
+
+
 class Material:
     def __init__(self, mu_s, mu_a, g):
         self.mu_s = mu_s
@@ -86,23 +124,19 @@ class Material:
         delta = photon.weight * self.mu_a/self.mu_t
         photon.decreaseWeightBy(delta)
 
+    def contains(self, photon):
+        return True
+
 if __name__ == "__main__":
     photon = Photon()
-    mat = Material(mu_s=30, mu_a = 0.01, g = 0.7)
+    mat = Material(mu_s=60, mu_a = 0.01, g = 0.7)
 
     for i in range(1000000):
-        while photon.isAlive:
+        while photon.isAlive and mat.contains(photon):
             d = mat.getScatteringDistance(photon)
             (theta, phi) = mat.getScatteringAngles(photon)
             photon.moveBy(d)
             photon.scatterBy(theta, phi)
             mat.absorbEnergy(photon)
             photon.roulette()
-            #print(photon.r)
-    v = Vector(0,0,1)
-    print(v)
-    v.rotateAroundX(np.pi/2)
-    print(v)
-    v.rotateAroundY(np.pi/2)
-    print(v)
-    v.rotateAroundZ(np.pi/2)
+            print(photon.r)
