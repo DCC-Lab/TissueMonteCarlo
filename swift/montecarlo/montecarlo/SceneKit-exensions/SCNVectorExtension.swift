@@ -19,11 +19,6 @@ enum Axis:Int {
     case X=0,Y=1,Z=2
 }
 
-//infix operator ×
-//infix operator •
-//infix operator ⟂
-//infix operator ‖
-
 extension SCNVector3 {
     static func randomVector() -> SCNVector3 {
         let x = CGFloat(arc4random())/CGFloat(RAND_MAX)
@@ -302,7 +297,3 @@ extension SCNVector3 {
     }
 
 }
-
-
-
-

@@ -92,8 +92,8 @@ class Photon {
                 let energyLoss = material.absorbEnergy(self)
                 decreaseWeightBy(energyLoss)
             }
-            
             roulette()
+            statistics.append((self.position,self.weight))
         }
     }
 
