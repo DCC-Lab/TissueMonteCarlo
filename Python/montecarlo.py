@@ -7,19 +7,22 @@ class Photon:
         self.r = Vector(0,0,0)
         self.ez = Vector(0,0,1)    # Propagation
         self.ePerp = Vector(0,1,0) # Perpendicular to scattering plane
-        # self.ePara = Vector(1,0,0) # Parallel to scattering plane 
         self.weight = 1.0
 
     @property
-    def dir(self):
+    def dir(self) -> Vector:
         return self.ez
 
     @property
-    def isDead(self):
+    def ePara(self) -> Vector:
+        return self.ez.cross(self.ePerp) 
+
+    @property
+    def isDead(self) -> bool :
         return self.weight == 0
 
     @property
-    def isAlive(self):
+    def isAlive(self) -> bool :
         return self.weight != 0
 
     def moveBy(self, d):
@@ -52,35 +55,17 @@ class Photon:
         self.ePerp.x = er.x * cos_phi + el.x * sin_phi;
         self.ePerp.y = er.y * cos_phi + el.y * sin_phi;
         self.ePerp.z = er.z * cos_phi + el.z * sin_phi;
+        self.ePerp.normalize()
         
     def changePropagationDirectionAroundEPerpBy(self, inTheta):
         el = self.ez.cross(self.ePerp) 
-        elx = el.x
-        ely = el.y
-        elz = el.z
-        ezx = self.ez.x
-        ezy = self.ez.y
-        ezz = self.ez.z
         cos_theta = np.cos(inTheta)
         sin_theta = np.sin(inTheta)
     
-        self.ez.x = - elx * sin_theta + ezx * cos_theta
-        self.ez.y = - ely * sin_theta + ezy * cos_theta
-        self.ez.z = - elz * sin_theta + ezz * cos_theta
-
-    def _checkReferenceFrame(self):
-        if not self.ePara.isPerpendicularTo(self.ePerp):
-            raise ValueError()
-        if not self.ePerp.isPerpendicularTo(self.ez):
-            raise ValueError()
-        if not self.ez.isPerpendicularTo(self.ePara):
-            raise ValueError()
-        if not self.ePara.isUnitary:
-            raise ValueError()
-        if not self.ePerp.isUnitary:
-            raise ValueError()
-        if not self.ez.isUnitary:
-            raise ValueError()
+        self.ez.x = - el.x * sin_theta + self.ez.x * cos_theta
+        self.ez.y = - el.y * sin_theta + self.ez.y * cos_theta
+        self.ez.z = - el.z * sin_theta + self.ez.z * cos_theta
+        self.ez.normalize()
 
     def _scatterBy(self, theta, phi):
         cost = np.cos(theta)
@@ -110,7 +95,6 @@ class Material:
         # rnd = 0
         # while rnd == 0:
         rnd = np.random.random()
-
         return -np.log(rnd)/self.mu_t
 
     def getScatteringAngles(self, photon) -> (float, float):
