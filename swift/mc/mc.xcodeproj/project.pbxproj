@@ -18,8 +18,6 @@
 		75E32FE122BD178A00A8EB4D /* Photon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FCE22BD15AB00A8EB4D /* Photon.swift */; };
 		75E32FE822BD182C00A8EB4D /* BulkHenyeyGreenstein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */; };
 		75E32FE922BD182C00A8EB4D /* BulkMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */; };
-		75E32FEB22BD1B0C00A8EB4D /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75E32FEA22BD1B0C00A8EB4D /* SceneKit.framework */; };
-		75E32FED22BD1B5300A8EB4D /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75E32FEC22BD1B5300A8EB4D /* CoreGraphics.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,16 +45,14 @@
 /* Begin PBXFileReference section */
 		75E32FC422BD155E00A8EB4D /* mc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mc; sourceTree = BUILT_PRODUCTS_DIR; };
 		75E32FC722BD155E00A8EB4D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
-		75E32FCE22BD15AB00A8EB4D /* Photon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Photon.swift; path = "../../montecarlo3d/MonteCarlo3D-old/Photon.swift"; sourceTree = "<group>"; };
-		75E32FD022BD15D700A8EB4D /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Vector.swift; path = "../../montecarlo/montecarlo/SceneKit-exensions/Vector.swift"; sourceTree = "<group>"; };
+		75E32FCE22BD15AB00A8EB4D /* Photon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photon.swift; sourceTree = "<group>"; };
+		75E32FD022BD15D700A8EB4D /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
 		75E32FD222BD165300A8EB4D /* VectorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
 		75E32FD822BD166F00A8EB4D /* mcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = mcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		75E32FDA22BD166F00A8EB4D /* mcTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mcTests.swift; sourceTree = "<group>"; };
 		75E32FDC22BD166F00A8EB4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BulkHenyeyGreenstein.swift; path = "../../montecarlo3d/MonteCarlo3D-old/BulkHenyeyGreenstein.swift"; sourceTree = "<group>"; };
-		75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = BulkMaterial.swift; path = "../../montecarlo3d/MonteCarlo3D-old/BulkMaterial.swift"; sourceTree = "<group>"; };
-		75E32FEA22BD1B0C00A8EB4D /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SceneKit.framework; sourceTree = "<group>"; };
-		75E32FEC22BD1B5300A8EB4D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CoreGraphics.framework; sourceTree = "<group>"; };
+		75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulkHenyeyGreenstein.swift; sourceTree = "<group>"; };
+		75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BulkMaterial.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +60,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75E32FED22BD1B5300A8EB4D /* CoreGraphics.framework in Frameworks */,
-				75E32FEB22BD1B0C00A8EB4D /* SceneKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,8 +99,6 @@
 				75E32FCE22BD15AB00A8EB4D /* Photon.swift */,
 				75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */,
 				75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */,
-				75E32FEC22BD1B5300A8EB4D /* CoreGraphics.framework */,
-				75E32FEA22BD1B0C00A8EB4D /* SceneKit.framework */,
 			);
 			path = mc;
 			sourceTree = "<group>";
