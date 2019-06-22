@@ -644,53 +644,6 @@ extension float3x3 {
     }
 }
 
-struct Matrix {
-    var m:[float]
-    
-    init(array:[float]? = nil) {
-        if array != nil {
-            m = array!
-        } else {
-            m = [float](repeating: 0, count: 9)
-        }
-    }
-
-    static func matIndex(row:Int, col:Int) -> Int {
-        return col + 3*row
-    }
-    
-    static func * (left: Matrix, right: Matrix) -> Matrix {
-        // Symbolically: p(i,j) = Sum_u Sum_v left(u,j) * right(i,v)
-        var product = Matrix()
-        for j in 0...3 {
-            for i in 0...3 {
-                let p = matIndex(row:i,col:j)
-                for v in 0...3 {
-                    let r = matIndex(row:i,col:v)
-                    for u in 0...3 {
-                        let l = matIndex(row:u,col:j)
-                        product.m[p] += left.m[l] * right.m[r]
-                    }
-                }
-            }
-        }
-        return product
-    }
-
-    static func + (left: Matrix, right: Matrix) -> Matrix {
-        // Symbolically: p(i,j) = left(i,j) + right(i,j)
-        var sum = Matrix()
-        for j in 0...3 {
-            for i in 0...3 {
-                let s = matIndex(row:i,col:j)
-                sum.m[s] += left.m[s] * right.m[s]
-            }
-        }
-        return sum
-    }
-
-}
-
 extension float4x4 {
     static func translate(tx: Float, ty: Float, tz: Float) -> float4x4 {
         return float4x4(
@@ -740,4 +693,51 @@ extension float4x4 {
             float4( 0,   0,   0,  1)
         )
     }
+}
+
+struct Matrix {
+    var m:[float]
+    
+    init(array:[float]? = nil) {
+        if array != nil {
+            m = array!
+        } else {
+            m = [float](repeating: 0, count: 9)
+        }
+    }
+    
+    static func matIndex(row:Int, col:Int) -> Int {
+        return col + 3*row
+    }
+    
+    static func * (left: Matrix, right: Matrix) -> Matrix {
+        // Symbolically: p(i,j) = Sum_u Sum_v left(u,j) * right(i,v)
+        var product = Matrix()
+        for j in 0...3 {
+            for i in 0...3 {
+                let p = matIndex(row:i,col:j)
+                for v in 0...3 {
+                    let r = matIndex(row:i,col:v)
+                    for u in 0...3 {
+                        let l = matIndex(row:u,col:j)
+                        product.m[p] += left.m[l] * right.m[r]
+                    }
+                }
+            }
+        }
+        return product
+    }
+    
+    static func + (left: Matrix, right: Matrix) -> Matrix {
+        // Symbolically: p(i,j) = left(i,j) + right(i,j)
+        var sum = Matrix()
+        for j in 0...3 {
+            for i in 0...3 {
+                let s = matIndex(row:i,col:j)
+                sum.m[s] += left.m[s] * right.m[s]
+            }
+        }
+        return sum
+    }
+    
 }
