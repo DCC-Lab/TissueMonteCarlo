@@ -10,6 +10,8 @@ import XCTest
 import SceneKit
 @testable import mc
 
+typealias Photon = GenericPhoton<Float, Vector, Matrix>
+
 class mcTests: XCTestCase {
 
     override func setUp() {
@@ -25,21 +27,15 @@ class mcTests: XCTestCase {
     }
 
     func testInitVector() {
-        var _ = Vector3D()
+        var _ = Vector()
     }
 
     func testInitVectorWithArg() {
-        var _ = Vector3D(1,2,3)
-    }
-
-    func testInitVectorWithGlobalVecrtors() {
-        var _ = xHat
-        var _ = yHat
-        var _ = zHat
+        var _ = Vector(1,2,3)
     }
 
     func testNorm() {
-        var v = Vector3D(1,0,0)
+        var v = Vector(1,0,0)
         XCTAssert(v.norm() == 1)
         
     }

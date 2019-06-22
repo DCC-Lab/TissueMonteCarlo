@@ -22,7 +22,6 @@ protocol VectorProtocol:Equatable {
     var x:T {get set}
     var y:T {get set}
     var z:T {get set}
-    var supportsTranslation:Bool {get}
     static var xHat:Self {get}
     static var yHat:Self {get}
     static var zHat:Self {get}
@@ -103,10 +102,6 @@ extension SCNVector3:VectorProtocol {
         self.init(x:x, y:y, z:z)
     }
 
-    var supportsTranslation:Bool {
-        return false
-    }
-    
     public var description: String {
         return "(\(x),\(y),\(z))"
     }
@@ -268,7 +263,7 @@ extension SCNVector3:VectorProtocol {
         z = z + (cosTheta + uz*uz * oneMinusCosTheta) * Z
     }
 
-    public static func ==(left: SCNVector3, right: SCNVector3) -> Bool {
+    public static func == (left: SCNVector3, right: SCNVector3) -> Bool {
         let diff = (left-right).abs()
         
         if diff < 1e-6 {
