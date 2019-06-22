@@ -10,10 +10,13 @@ import Foundation
 import SceneKit
 import simd
 
-typealias float = CGFloat
-typealias Vector = SCNVector3
-typealias Vector3D = Vector
-typealias v⃗ = Vector
+//typealias float = CGFloat
+//typealias Vector = SCNVector3
+//typealias float = Float
+//typealias Vector = float3
+
+//typealias Vector3D = Vector
+//typealias v⃗ = Vector
 
 let π = float(3.1415926535)
 let xHat = Vector(x: 1, y: 0, z: 0)
@@ -29,8 +32,8 @@ enum Axis:Int {
     case X=0,Y=1,Z=2
 }
 
-extension Vector {
-    init(_ x:float,_ y:float,_ z:float) {
+extension SCNVector3 {
+    init(_ x:CGFloat,_ y:CGFloat,_ z:CGFloat) {
         self.init(x:x, y:y, z:z)
     }
     
@@ -38,7 +41,7 @@ extension Vector {
         return "(\(x),\(y),\(z))"
     }
     
-    subscript(index: Axis) -> float {
+    subscript(index: Axis) -> CGFloat {
         get {
             switch index {
             case .X:
@@ -62,15 +65,15 @@ extension Vector {
         }
     }
     
-    func norm() -> float {
+    func norm() -> CGFloat {
         return x*x + y*y + z*z
     }
     
-    func abs() -> float {
+    func abs() -> CGFloat {
         return sqrt(x*x + y*y + z*z)
     }
     
-    mutating func normalize() throws -> Vector{
+    mutating func normalize() throws -> SCNVector3 {
         let value = sqrt(x*x + y*y + z*z)
 
         if value != 0 {
@@ -83,17 +86,17 @@ extension Vector {
         return self
     }
     
-    mutating func addScaledVector(_ theVector:Vector, scale theScale:float) {
+    mutating func addScaledVector(_ theVector:SCNVector3, scale theScale:CGFloat) {
         x += theVector.x * theScale;
         y += theVector.y * theScale;
         z += theVector.z * theScale;
     }
     
-    func dotProduct(_ theVector : Vector ) -> float {
+    func dotProduct(_ theVector : SCNVector3 ) -> CGFloat {
         return x * theVector.x + y * theVector.y + z * theVector.z;
     }
     
-    func normalizedDotProduct(_ theVector: Vector ) -> float {
+    func normalizedDotProduct(_ theVector: SCNVector3 ) -> CGFloat {
         var prod = self.dotProduct(theVector)
         
         let norm_u = norm()
@@ -112,11 +115,11 @@ extension Vector {
         return prod;
     }
     
-    func crossProduct(_ v: Vector) -> Vector {
-        return  Vector(x:y * v.z - z * v.y,  y:z * v.x - x * v.z,  z: x * v.y - y * v.x)
+    func crossProduct(_ v: SCNVector3) -> SCNVector3 {
+        return  SCNVector3(x:y * v.z - z * v.y,  y:z * v.x - x * v.z,  z: x * v.y - y * v.x)
     }
     
-    func normalizedCrossProduct(_ v: Vector) -> Vector {
+    func normalizedCrossProduct(_ v: SCNVector3) -> SCNVector3 {
         var t = self.crossProduct(v)
         
         let norm_u = self.norm()
@@ -134,13 +137,13 @@ extension Vector {
         return t;
     }
     
-    func tripleProduct(v : Vector, w : Vector) -> float {
+    func tripleProduct(v : SCNVector3, w : SCNVector3) -> CGFloat {
         let cp = crossProduct(v)
         
         return cp.dotProduct(w)
     }
     
-    func orientedAngleWith(_ y:Vector , aroundAxis r:Vector ) -> float {
+    func orientedAngleWith(_ y:SCNVector3 , aroundAxis r:SCNVector3 ) -> CGFloat {
         let sinPhi = self.normalizedCrossProduct(y)
         
         var phi = asin(sinPhi.abs())
@@ -156,11 +159,11 @@ extension Vector {
         return phi;
     }
     
-    func distanceToPlaneWithOrigin(origin v0: Vector, normal vn:Vector, alongVector vd:Vector )-> float {
+    func distanceToPlaneWithOrigin(origin v0: SCNVector3, normal vn:SCNVector3, alongVector vd:SCNVector3 )-> CGFloat {
         return -(vn.x * (x - v0.x) + vn.y * (y - v0.y) + vn.z * (z - v0.z) ) / (vn.x * vd.x + vn.y * vd.y + vn.z * vd.z)
     }
     
-    func isParallelTo(_ v:Vector ) -> Bool {
+    func isParallelTo(_ v:SCNVector3 ) -> Bool {
         let dp = dotProduct(v)
         
         if Swift.abs(dp/self.abs()/v.abs() - 1) <= 1e-5  {
@@ -170,7 +173,7 @@ extension Vector {
         return false
     }
     
-    func isPerpendicularTo(_ v:Vector ) -> Bool {
+    func isPerpendicularTo(_ v:SCNVector3 ) -> Bool {
         let dp = self.dotProduct(v)
         
         if Swift.abs(dp)/self.abs()/v.abs() <= 1e-5 {
@@ -180,7 +183,7 @@ extension Vector {
         return false
     }
     
-    mutating func rotateAroundX(_ inPhi: float) {
+    mutating func rotateAroundX(_ inPhi: CGFloat) {
         let c = cos(inPhi)
         let s = sin(inPhi)
         let tempY = y
@@ -189,7 +192,7 @@ extension Vector {
         z = s * tempY + c * z
     }
     
-    mutating func rotateAroundY(_ inPhi: float) {
+    mutating func rotateAroundY(_ inPhi: CGFloat) {
         let c = cos(inPhi)
         let s = sin(inPhi)
         let tempZ = z
@@ -198,7 +201,7 @@ extension Vector {
         x = s * tempZ + c * x
     }
     
-    mutating func rotateAroundZ(_ inPhi: float) {
+    mutating func rotateAroundZ(_ inPhi: CGFloat) {
         let c = cos(inPhi)
         let s = sin(inPhi)
         let tempX = x
@@ -207,16 +210,16 @@ extension Vector {
         y = s * tempX + c * y
     }
     
-    mutating func  rotateAroundAxis(_ u:Vector, byAngle theta:float) {
+    mutating func  rotateAroundAxis(_ u:SCNVector3, byAngle theta:CGFloat) {
         //http://en.wikipedia.org/wiki/Rotation_matrix
         
         let cosTheta = cos(theta)
         let sinTheta = sin(theta)
         let oneMinusCosTheta = 1 - cosTheta
         
-        let ux:float = u.x
-        let uy:float = u.y
-        let uz:float = u.z
+        let ux:CGFloat = u.x
+        let uy:CGFloat = u.y
+        let uz:CGFloat = u.z
         
         let X = x
         let Y = y
@@ -230,7 +233,7 @@ extension Vector {
         z = z + (cosTheta + uz*uz * oneMinusCosTheta) * Z
     }
 
-    static func ==(left: Vector, right: Vector) -> Bool {
+    static func ==(left: SCNVector3, right: SCNVector3) -> Bool {
         let diff = (left-right).abs()
         
         if diff < 1e-6 {
@@ -239,49 +242,49 @@ extension Vector {
         return false
     }
     
-    static prefix func - (vector: Vector) -> Vector {
-        return Vector(x: -vector.x, y: -vector.y, z:-vector.z)
+    static prefix func - (vector: SCNVector3) -> SCNVector3 {
+        return SCNVector3(x: -vector.x, y: -vector.y, z:-vector.z)
     }
     
-    static func + (left: Vector, right: Vector) -> Vector {
-        return Vector(x: left.x + right.x, y: left.y + right.y, z:left.z + right.z)
+    static func + (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
+        return SCNVector3(x: left.x + right.x, y: left.y + right.y, z:left.z + right.z)
     }
     
-    static func - (left: Vector, right: Vector) -> Vector {
-        return Vector(x: left.x - right.x, y: left.y - right.y, z:left.z - right.z)
+    static func - (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
+        return SCNVector3(x: left.x - right.x, y: left.y - right.y, z:left.z - right.z)
     }
     
-    static func * (left: Vector, scalar: float) -> Vector {
-        return Vector(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
+    static func * (left: SCNVector3, scalar: CGFloat) -> SCNVector3 {
+        return SCNVector3(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
     }
     
-    static func * (scalar: float, left: Vector) -> Vector {
-        return Vector(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
+    static func * (scalar: CGFloat, left: SCNVector3) -> SCNVector3 {
+        return SCNVector3(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
     }
     
-    static func / (left: Vector, scalar: float) -> Vector {
-        return Vector(x: left.x / scalar, y: left.y / scalar, z:left.z / scalar)
+    static func / (left: SCNVector3, scalar: CGFloat) -> SCNVector3 {
+        return SCNVector3(x: left.x / scalar, y: left.y / scalar, z:left.z / scalar)
     }
     
-    static func += ( left: inout Vector, right: Vector) {
+    static func += ( left: inout SCNVector3, right: SCNVector3) {
         left.x += right.x
         left.y += right.y
         left.z += right.z
     }
     
-    static func -= ( left: inout Vector, right: Vector) {
+    static func -= ( left: inout SCNVector3, right: SCNVector3) {
         left.x -= right.x
         left.y -= right.y
         left.z -= right.z
     }
     
-    static func *= ( left: inout Vector, scalar: float) {
+    static func *= ( left: inout SCNVector3, scalar: CGFloat) {
         left.x *= scalar
         left.y *= scalar
         left.z *= scalar
     }
     
-    static func /= ( left: inout Vector, scalar: float) {
+    static func /= ( left: inout SCNVector3, scalar: CGFloat) {
         left.x /= scalar
         left.y /= scalar
         left.z /= scalar
@@ -290,10 +293,6 @@ extension Vector {
 }
 
 extension float3 {
-//    convenience init(_ x:Float,_ y:Float,_ z:Float) {
-//        self.init(float3(x,y,z))
-//    }
-
     var x:Float {
         get {
             return self[0]
@@ -312,10 +311,6 @@ extension float3 {
         }
     }
 
-//    public var description: String {
-//        return "(\(x),\(y),\(z))"
-//    }
-//
     func norm() -> Float {
         return simd.norm_one(self)
     }
@@ -324,8 +319,9 @@ extension float3 {
         return simd.length(self)
     }
 
-    func normalize() throws -> float3 {
-        return simd.normalize(self)
+    mutating func normalize() throws -> float3 {
+        self = simd.normalize(self)
+        return self
     }
 
     mutating func addScaledVector(_ theVector:float3, scale theScale:Float) {
@@ -377,13 +373,11 @@ extension float3 {
         return float3(prod)
     }
 
-//
-//    func tripleProduct(v : Vector, w : Vector) -> Float {
-//        let cp = crossProduct(v)
-//
-//        return cp.dotProduct(w)
-//    }
-//
+    func tripleProduct(v : float3, w : float3) -> Float {
+        let cp = self.crossProduct(v)
+        return cp.dotProduct(w)
+    }
+
     func orientedAngleWith(_ y:float3 , aroundAxis r:float3 ) -> Float {
         let sinPhi = self.normalizedCrossProduct(y)
 
@@ -399,11 +393,7 @@ extension float3 {
 
         return phi
     }
-//
-//    func distanceToPlaneWithOrigin(origin v0: Vector, normal vn:Vector, alongVector vd:Vector )-> Float {
-//        return -(vn.x * (x - v0.x) + vn.y * (y - v0.y) + vn.z * (z - v0.z) ) / (vn.x * vd.x + vn.y * vd.y + vn.z * vd.z)
-//    }
-//
+
     func isParallelTo(_ v:float3 ) -> Bool {
         let dp = dotProduct(v)
 
@@ -445,9 +435,9 @@ extension float3 {
         self = float3(c * self[0] - s * self[1], s * self[0] + c * self[1], self[2])
     }
 
-    mutating func rotateAroundAxis(_ u:float3, byAngle theta:Float) -> float3 {
+    mutating func rotateAroundAxis(_ u:float3, byAngle theta:Float) {
         let rot = float3x3.rotationMatrixAround(axis: u, angle: theta)
-        return rot * self
+        self = rot * self
     }
     
 }
@@ -501,7 +491,8 @@ struct Matrix {
 
 extension float3x3 {
     static func rotationMatrixAround(axis:float3, angle:Float) -> float3x3 {
-        let normalizedAxis = try! axis.normalize()
+        var normalizedAxis = axis
+        try! _ = normalizedAxis.normalize()
         let ct = cosf(angle)
         let st = sinf(angle)
         let ci = 1 - ct
@@ -513,5 +504,49 @@ extension float3x3 {
             float3(x * y * ci - z * st,      ct + y * y * ci,  z * y * ci + x * st),
             float3(x * z * ci + y * st,  y * z * ci - x * st,      ct + z * z * ci))
         return rot
+    }
+    
+    static func scale(sx: Float, sy: Float, sz: Float) -> float3x3 {
+        // https://github.com/MetalKit/metal/blob/master/raytracing/Transforms.swift
+        return float3x3(
+            float3(sx,   0,   0),
+            float3( 0,  sy,   0),
+            float3( 0,   0,  sz)
+        )
+    }
+}
+
+extension float4x4 {
+    static func translate(tx: Float, ty: Float, tz: Float) -> float4x4 {
+        return float4x4(
+            float4( 1,  0,  0,  0),
+            float4( 0,  1,  0,  0),
+            float4( 0,  0,  1,  0),
+            float4(tx, ty, tz,  1)
+        )
+    }
+    
+    static func rotate(radians: Float, axis: float3) -> float4x4 {
+        let normalizedAxis = normalize(axis)
+        let ct = cosf(radians)
+        let st = sinf(radians)
+        let ci = 1 - ct
+        let x = normalizedAxis.x, y = normalizedAxis.y, z = normalizedAxis.z
+        
+        return float4x4(
+            float4(    ct + x * x * ci,  y * x * ci + z * st,  z * x * ci - y * st,  0),
+            float4(x * y * ci - z * st,      ct + y * y * ci,  z * y * ci + x * st,  0),
+            float4(x * z * ci + y * st,  y * z * ci - x * st,      ct + z * z * ci,  0),
+            float4(                  0,                    0,                    0,  1)
+        )
+    }
+    
+    static func scale(sx: Float, sy: Float, sz: Float) -> float4x4 {
+        return float4x4(
+            float4(sx,   0,   0,  0),
+            float4( 0,  sy,   0,  0),
+            float4( 0,   0,  sz,  0),
+            float4( 0,   0,   0,  1)
+        )
     }
 }

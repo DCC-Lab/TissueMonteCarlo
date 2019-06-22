@@ -10,7 +10,7 @@ import Foundation
 import SceneKit
 
 let infiniteDistance:float = 1e4
-
+let TableSize:Int = 65536
 extension float {
     func isInfinite() -> Bool {
         return self > infiniteDistance
@@ -18,7 +18,7 @@ extension float {
 }
 
 class BulkMaterial  {
-    fileprivate var randomTable = [float](repeating: 0, count: 65536)
+    fileprivate var randomTable = [float](repeating: 0, count: TableSize)
     fileprivate var randomIndex:Int = 0
 
     var mu_s:float
@@ -42,7 +42,7 @@ class BulkMaterial  {
         for i in 0...65535 {
             randomTable[i] = float.random(in:0...1)
         }
-        randomIndex = Int.random(in: 0...65535)
+        randomIndex = Int.random(in: 0...TableSize)
     }
     
     func absorbEnergy(_ photon:Photon) {
@@ -52,8 +52,8 @@ class BulkMaterial  {
     
     func randomfloat() -> float {
         randomIndex += 1
-        if randomIndex == 65536 {
-            randomIndex = Int.random(in: 0...65535)
+        if randomIndex == TableSize {
+            randomIndex = Int.random(in: 0...TableSize)
         }
         return randomTable[randomIndex]
     }
