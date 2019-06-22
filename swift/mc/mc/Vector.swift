@@ -10,18 +10,33 @@ import Foundation
 import SceneKit
 import simd
 
+//public func * <T>(_ x: T, _ y:T) -> T where T: Mathable {
+//    return x * y
+//}
+//
+//public func cos<T>(_ x: T) -> T where T: Mathable {
+//    return T.Math.cos(x)
+//}
+//
+//public func sin<T>(_ x: T) -> T where T: Mathable {
+//    return T.Math.sin(x)
+//}
+//
+//public func log<T>(_ x: T) -> T where T: Mathable {
+//    return T.Math.log(x)
+//}
 
-protocol FloatingPointVector {
-    associatedtype T
-    associatedtype V
+protocol VectorProtocol {
+    associatedtype T:BinaryFloatingPoint
+    associatedtype V:VectorProtocol where V.T == T
     var x:T {get set}
     var y:T {get set}
     var z:T {get set}
     var supportsTranslation:Bool {get}
-    var xHat:V {get}
-    var yHat:V {get}
-    var zHat:V {get}
-    var oHat:V {get}
+    static var xHat:V {get}
+    static var yHat:V {get}
+    static var zHat:V {get}
+    static var oHat:V {get}
 
     init(_ x:T,_ y:T,_ z:T)
 
@@ -31,8 +46,7 @@ protocol FloatingPointVector {
     func normalizedDotProduct(_ theVector: V ) -> T
     func crossProduct(_ v: V) -> V
     func normalizedCrossProduct(_ v: V) -> V
-    func tripleProduct(v : V, w : V) -> T
-    
+
     func orientedAngleWith(_ y:V , aroundAxis r:V ) -> T
     func isParallelTo(_ v:V ) -> Bool
     func isPerpendicularTo(_ v:V ) -> Bool
@@ -46,11 +60,46 @@ protocol FloatingPointVector {
 
 }
 
-protocol FloatingPointMatrix {
+extension VectorProtocol {
+    static var xHat:V {
+        get { return V(1,0,0)}
+    }
+    static var yHat:V {
+        get { return V(0,1,0)}
+    }
+    static var zHat:V {
+        get { return V(0,0,1)}
+    }
+    static var oHat:V {
+        get { return V(0,0,0)}
+    }
+
+    func normalizedDotProduct(_ theVector: V ) -> T {
+        var prod = self.dotProduct(theVector)
+        
+        let norm_u = norm()
+        let norm_v = theVector.norm()
+        
+        if norm_u != 0 && norm_v != 0 {
+            prod /= sqrt(norm_u * norm_v);
+        }
+        
+        if prod > 1 {
+            return 1
+        } else if prod < -1 {
+            return -1
+        }
+        
+        return prod;
+    }
+
+}
+
+protocol MatrixProtocol {
     associatedtype T
-    associatedtype V
-    associatedtype M
-    
+    associatedtype V:VectorProtocol where V.T == T
+    associatedtype M:MatrixProtocol where M.T == T, M.V == V
+
     static func translate(tx: T, ty: T, tz: T) -> M
     static func translate(_ d:V) -> M
     static func rotationMatrixAround(axis:V, angle:T) -> M
@@ -61,46 +110,16 @@ protocol FloatingPointMatrix {
     static func scale(sx: T, sy: T, sz: T) -> M
 }
 
-//typealias float = CGFloat
-//typealias Vector = SCNVector3
-//typealias float = Float
-//typealias Vector = float3
-
-//typealias Vector3D = Vector
-//typealias v⃗ = Vector
-
-let π = float(3.1415926535)
-let xHat = Vector(x: 1, y: 0, z: 0)
-let yHat = Vector(x: 0, y: 1, z: 0)
-let zHat = Vector(x: 0, y: 0, z: 1)
-let oHat = Vector(x: 0, y: 0, z: 0)
-
 enum VectorError: LocalizedError {
     case UnexpectedNil
-}
-
-enum Axis:Int {
-    case X=0,Y=1,Z=2
 }
 
 infix operator •: MultiplicationPrecedence
 infix operator ⨉: MultiplicationPrecedence
 
-extension SCNVector3:FloatingPointVector {
+extension SCNVector3:VectorProtocol {
     init(_ x:CGFloat,_ y:CGFloat,_ z:CGFloat) {
         self.init(x:x, y:y, z:z)
-    }
-    var xHat:SCNVector3 {
-        get { return SCNVector3(1,0,0)}
-    }
-    var yHat:SCNVector3 {
-        get { return SCNVector3(0,1,0)}
-    }
-    var zHat:SCNVector3 {
-        get { return SCNVector3(0,0,1)}
-    }
-    var oHat:SCNVector3 {
-        get { return SCNVector3(0,0,0)}
     }
 
     var supportsTranslation:Bool {
@@ -176,10 +195,6 @@ extension SCNVector3:FloatingPointVector {
         }
         
         return t;
-    }
-    
-    func tripleProduct(v : SCNVector3, w : SCNVector3) -> CGFloat {
-        return crossProduct(v).dotProduct(w)
     }
     
     func orientedAngleWith(_ y:SCNVector3 , aroundAxis r:SCNVector3 ) -> CGFloat {
@@ -338,17 +353,17 @@ extension SCNVector3:FloatingPointVector {
     }
 }
 
-extension float3:FloatingPointVector {
-    var xHat: float3 {
+extension float3:VectorProtocol {
+    static var xHat: float3 {
         get { return float3(1,0,0) }
     }
-    var yHat: float3 {
+    static var yHat: float3 {
         get { return float3(0,1,0) }
     }
-    var zHat: float3 {
+    static var zHat: float3 {
         get { return float3(0,0,1) }
     }
-    var oHat: float3 {
+    static var oHat: float3 {
         get { return float3(0,0,0) }
     }
     
@@ -505,17 +520,17 @@ extension float3:FloatingPointVector {
     }
 }
 
-extension float4 : FloatingPointVector {
-    var xHat: float4 {
+extension float4 : VectorProtocol {
+    static var xHat: float4 {
         get { return float4(1,0,0,1) }
     }
-    var yHat: float4 {
+    static var yHat: float4 {
         get { return float4(0,1,0,1) }
     }
-    var zHat: float4 {
+    static var zHat: float4 {
         get { return float4(0,0,1,1) }
     }
-    var oHat: float4 {
+    static var oHat: float4 {
         get { return float4(0,0,0,0) }
     }
 
@@ -564,7 +579,7 @@ extension float4 : FloatingPointVector {
     }
     
     func dotProduct(_ theVector : float4 ) -> Float {
-        return simd.dot(self,theVector)
+        return simd.dot(self,theVector) - 1
     }
     
     func normalizedDotProduct(_ theVector : float4 ) -> Float {
@@ -687,7 +702,7 @@ extension float4 : FloatingPointVector {
     }
 }
 
-extension float3x3 : FloatingPointMatrix {
+extension float3x3 : MatrixProtocol {
     static func translate(tx: Float, ty: Float, tz: Float) -> float3x3 {
         return float3x3(0)
     }
@@ -736,7 +751,7 @@ extension float3x3 : FloatingPointMatrix {
     }
 }
 
-extension float4x4 : FloatingPointMatrix {
+extension float4x4 : MatrixProtocol {
     static func translate(tx: Float, ty: Float, tz: Float) -> float4x4 {
         return float4x4(
             float4( 1,  0,  0,  0),
@@ -796,49 +811,3 @@ extension float4x4 : FloatingPointMatrix {
     }
 }
 
-struct Matrix {
-    var m:[float]
-    
-    init(array:[float]? = nil) {
-        if array != nil {
-            m = array!
-        } else {
-            m = [float](repeating: 0, count: 9)
-        }
-    }
-    
-    static func matIndex(row:Int, col:Int) -> Int {
-        return col + 3*row
-    }
-    
-    static func * (left: Matrix, right: Matrix) -> Matrix {
-        // Symbolically: p(i,j) = Sum_u Sum_v left(u,j) * right(i,v)
-        var product = Matrix()
-        for j in 0...3 {
-            for i in 0...3 {
-                let p = matIndex(row:i,col:j)
-                for v in 0...3 {
-                    let r = matIndex(row:i,col:v)
-                    for u in 0...3 {
-                        let l = matIndex(row:u,col:j)
-                        product.m[p] += left.m[l] * right.m[r]
-                    }
-                }
-            }
-        }
-        return product
-    }
-    
-    static func + (left: Matrix, right: Matrix) -> Matrix {
-        // Symbolically: p(i,j) = left(i,j) + right(i,j)
-        var sum = Matrix()
-        for j in 0...3 {
-            for i in 0...3 {
-                let s = matIndex(row:i,col:j)
-                sum.m[s] += left.m[s] * right.m[s]
-            }
-        }
-        return sum
-    }
-    
-}

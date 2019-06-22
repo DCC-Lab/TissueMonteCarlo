@@ -7,17 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		756D8B5322BED26700596CFB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
+		756D8B5522BED79100596CFB /* BulkMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */; };
 		75A8C6F122BD2B5C00C60729 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
 		75A8C6F222BD2B5C00C60729 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* Vector.swift */; };
 		75A8C6F322BD2B5C00C60729 /* Photon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FCE22BD15AB00A8EB4D /* Photon.swift */; };
 		75A8C6F422BD2B5C00C60729 /* BulkMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */; };
 		75A8C6F522BD2B5C00C60729 /* BulkHenyeyGreenstein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */; };
-		75E32FC822BD155E00A8EB4D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
 		75E32FD122BD15D700A8EB4D /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* Vector.swift */; };
 		75E32FDB22BD166F00A8EB4D /* mcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FDA22BD166F00A8EB4D /* mcTests.swift */; };
-		75E32FE122BD178A00A8EB4D /* Photon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FCE22BD15AB00A8EB4D /* Photon.swift */; };
-		75E32FE822BD182C00A8EB4D /* BulkHenyeyGreenstein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */; };
-		75E32FE922BD182C00A8EB4D /* BulkMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -202,10 +200,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75E32FE922BD182C00A8EB4D /* BulkMaterial.swift in Sources */,
-				75E32FE122BD178A00A8EB4D /* Photon.swift in Sources */,
-				75E32FE822BD182C00A8EB4D /* BulkHenyeyGreenstein.swift in Sources */,
-				75E32FC822BD155E00A8EB4D /* main.swift in Sources */,
+				756D8B5322BED26700596CFB /* main.swift in Sources */,
+				756D8B5522BED79100596CFB /* BulkMaterial.swift in Sources */,
 				75E32FD122BD15D700A8EB4D /* Vector.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

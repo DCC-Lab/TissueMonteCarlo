@@ -14,7 +14,7 @@ enum MonteCarloError: LocalizedError {
     case UnexpectedNil
 }
 
-class Photon<T:FloatingPoint, V:FloatingPointVector> {
+class Photon<T, V:VectorProtocol> where V.T == T {
     var position:V
     var direction:V
     var ePerp:V
@@ -27,15 +27,10 @@ class Photon<T:FloatingPoint, V:FloatingPointVector> {
     var statistics:[(V,T)]
     var distanceTraveled:T
 
-//    var description:String {
-//        return String(format: "P: ( %0.2f,%0.2f,%0.2f ) D:(%0.2f,%0.2f,%0.2f ) W:%0.2f",self.position.x,self.position.y,self.position.z,self.direction.x,self.direction.y,self.direction.z,self.weight )
-//    }
-    
-
     init?(position:V, direction:V, wavelength:T) {
         self.position = position
         self.direction = direction
-        self.weight = T(1)
+        self.weight = T(1.0)
         self.wavelength = wavelength
 
         self.originalPosition = position
@@ -44,22 +39,22 @@ class Photon<T:FloatingPoint, V:FloatingPointVector> {
         self.keepingExtendedStatistics = false
         self.distanceTraveled = 0
         self.statistics = []
-        self.ePerp = oHat
-        if self.direction == zHat {
-            self.ePerp = xHat
-        } else if (self.direction == xHat) {
-            self.ePerp = yHat
-        } else if (self.direction == yHat) {
-            self.ePerp = zHat
-        } else if self.direction == -zHat {
-            self.ePerp = -xHat
-        } else if (self.direction == -xHat) {
-            self.ePerp = -yHat
-        } else if (self.direction == -yHat) {
-            self.ePerp = -zHat
-        }
+//        self.ePerp = oHat as! V
+//        if self.direction == zHat {
+//            self.ePerp = xHat
+//        } else if (self.direction == xHat) {
+//            self.ePerp = yHat
+//        } else if (self.direction == yHat) {
+//            self.ePerp = zHat
+//        } else if self.direction == -zHat {
+//            self.ePerp = -xHat
+//        } else if (self.direction == -xHat) {
+//            self.ePerp = -yHat
+//        } else if (self.direction == -yHat) {
+//            self.ePerp = -zHat
+//        }
 
-        if direction.norm() == 0 {
+        if direction.norm() == T(0.0) {
             return nil
         }
 

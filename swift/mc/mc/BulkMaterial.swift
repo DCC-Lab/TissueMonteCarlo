@@ -10,13 +10,8 @@ import Foundation
 import SceneKit
 
 let TableSize:Int = 65536
-//extension float {
-//    func isInfinite() -> Bool {
-//        return self > infiniteDistance
-//    }
-//}
 
-class BulkMaterial<T:FloatingPoint>  {
+class BulkMaterial<T, V, M:MatrixProtocol> where V.T == T, M.V == V, M.V.T == V.T {
     let infiniteDistance:T = T(10000)
     fileprivate var randomTable = [T](repeating: 0, count: TableSize)
     fileprivate var randomIndex:Int = 0
@@ -40,15 +35,15 @@ class BulkMaterial<T:FloatingPoint>  {
             self.albedo = mu_a/mu_t
         }
         for i in 0...65535 {
-            randomTable[i] = T.random(in:0...1)
+            randomTable[i] = T(Double.random(in:0...1))
         }
         randomIndex = Int.random(in: 0...TableSize)
     }
     
-    func absorbEnergy(_ photon:Photon) {
-        let delta = photon.weight * albedo
-        photon.decreaseWeightBy(delta)
-    }
+//    func absorbEnergy(_ photon:Photon<T,V>) {
+//        let delta = photon.weight * albedo
+//        photon.decreaseWeightBy(delta)
+//    }
 
     func randomfloat() -> T {
         randomIndex += 1
@@ -64,7 +59,7 @@ class BulkMaterial<T:FloatingPoint>  {
         }
         
         let n = randomfloat()
-        let d = -log(n) / mu_t
+        let d = T(-log(Double(n)) / Double(mu_t))
 
         return d
     }

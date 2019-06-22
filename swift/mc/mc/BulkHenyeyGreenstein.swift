@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BulkHenyeyGreenstein<T> : BulkMaterial<T> {
+class BulkHenyeyGreenstein<T:FloatingPoint> : BulkMaterial<T> {
     var g:T
     override var description: String {
         return super.description+" g=\(g)"
