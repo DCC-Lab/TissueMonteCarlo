@@ -10,6 +10,7 @@
 		756D8B5322BED26700596CFB /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
 		756D8B5522BED79100596CFB /* BulkMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */; };
 		756D8B5822BEE24E00596CFB /* Photon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FCE22BD15AB00A8EB4D /* Photon.swift */; };
+		756D8B5A22BEE4DD00596CFB /* BulkHenyeyGreenstein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */; };
 		75A8C6F122BD2B5C00C60729 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
 		75A8C6F222BD2B5C00C60729 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* Vector.swift */; };
 		75E32FD122BD15D700A8EB4D /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* Vector.swift */; };
@@ -198,6 +199,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				756D8B5A22BEE4DD00596CFB /* BulkHenyeyGreenstein.swift in Sources */,
 				756D8B5322BED26700596CFB /* main.swift in Sources */,
 				756D8B5522BED79100596CFB /* BulkMaterial.swift in Sources */,
 				75E32FD122BD15D700A8EB4D /* Vector.swift in Sources */,

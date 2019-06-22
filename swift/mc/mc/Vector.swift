@@ -17,7 +17,7 @@ enum VectorError: LocalizedError {
 infix operator •: MultiplicationPrecedence
 infix operator ⨉: MultiplicationPrecedence
 
-protocol VectorProtocol {
+protocol VectorProtocol:Equatable {
     associatedtype T:BinaryFloatingPoint
     var x:T {get set}
     var y:T {get set}
@@ -268,7 +268,7 @@ extension SCNVector3:VectorProtocol {
         z = z + (cosTheta + uz*uz * oneMinusCosTheta) * Z
     }
 
-    static func ==(left: SCNVector3, right: SCNVector3) -> Bool {
+    public static func ==(left: SCNVector3, right: SCNVector3) -> Bool {
         let diff = (left-right).abs()
         
         if diff < 1e-6 {

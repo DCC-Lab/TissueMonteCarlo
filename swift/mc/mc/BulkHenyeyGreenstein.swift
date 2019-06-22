@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BulkHenyeyGreenstein<T, V, M:MatrixProtocol> : BulkMaterial<T, V, M> where V.T == T, M.V == V, M.V.T == V.T {
+class BulkHenyeyGreenstein<T, V, M:MatrixProtocol> : BulkMaterial<T, V, M> where V == M.V, T == V.T {
     var g:T
     override var description: String {
         return super.description+" g=\(g)"
@@ -25,12 +25,13 @@ class BulkHenyeyGreenstein<T, V, M:MatrixProtocol> : BulkMaterial<T, V, M> where
         let ϕ:T = 2.0 * T.pi * randomfloat()
         for _ in 1...100 {
             if g != 0 {
-                let num = Float(1.0 - g*g)
-                let den = Float(1.0 - g + 2.0 * randomfloat() * g)
+                let num = 1.0 - g*g
+                let den = 1.0 - g + 2.0 * randomfloat() * g
                 let rand_frac =  num / den
-                θ = T(acos( Float((1.0 + g*g - rand_frac*rand_frac) / (2.0*g) )))
+                let frac = (1.0 + g*g - rand_frac*rand_frac) / T(2.0*g)
+                θ = T(acos( Double(frac) ))
             } else {
-                θ = acos(Float(1.0 - 2.0 * randomfloat() ))
+                θ = T(acos(Float(1.0 - 2.0 * randomfloat() )))
             }
             if θ >= 0 && θ <= T.pi {
                 break

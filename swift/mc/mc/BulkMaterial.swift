@@ -40,10 +40,10 @@ class BulkMaterial<T, V, M:MatrixProtocol> where V.T == T, M.V == V, M.V.T == V.
         randomIndex = Int.random(in: 0...TableSize)
     }
     
-//    func absorbEnergy(_ photon:Photon<T,V>) {
-//        let delta = photon.weight * albedo
-//        photon.decreaseWeightBy(delta)
-//    }
+    func absorbEnergy(_ photon:Photon<T,V,M>) {
+        let delta = photon.weight * albedo
+        photon.decreaseWeightBy(delta)
+    }
 
     func randomfloat() -> T {
         randomIndex += 1
@@ -59,7 +59,7 @@ class BulkMaterial<T, V, M:MatrixProtocol> where V.T == T, M.V == V, M.V.T == V.
         }
         
         let n = randomfloat()
-        let d = T(-log(Double(n)) / Double(mu_t))
+        let d = T(-log(Double(n))) / mu_t
 
         return d
     }

@@ -40,19 +40,13 @@ class Photon<T, V, M:MatrixProtocol> where T == V.T, V == M.V  {
         self.distanceTraveled = 0
         self.statistics = []
         self.ePerp = V.xHat
-//        if self.direction == zHat {
-//            self.ePerp = xHat
-//        } else if (self.direction == xHat) {
-//            self.ePerp = yHat
-//        } else if (self.direction == yHat) {
-//            self.ePerp = zHat
-//        } else if self.direction == -zHat {
-//            self.ePerp = -xHat
-//        } else if (self.direction == -xHat) {
-//            self.ePerp = -yHat
-//        } else if (self.direction == -yHat) {
-//            self.ePerp = -zHat
-//        }
+        if self.direction == V.zHat {
+            self.ePerp = V.xHat
+        } else if (self.direction == V.xHat) {
+            self.ePerp = V.yHat
+        } else if (self.direction == V.yHat) {
+            self.ePerp = V.zHat
+        }
 
         if direction.norm() == T(0.0) {
             return nil
@@ -63,7 +57,7 @@ class Photon<T, V, M:MatrixProtocol> where T == V.T, V == M.V  {
     func reset() {
         self.position = self.originalPosition
         self.direction = self.originalDirection
-        self.ePerp = V.xHat as! V
+        self.ePerp = V.xHat
         self.weight = 1
         self.keepingExtendedStatistics = false
         self.distanceTraveled = 0
@@ -79,7 +73,7 @@ class Photon<T, V, M:MatrixProtocol> where T == V.T, V == M.V  {
             } else {
                 scatterBy(θ, φ)
                 moveBy(distance)
-//                material.absorbEnergy(self)
+                material.absorbEnergy(self)
             }
             roulette()
         }
