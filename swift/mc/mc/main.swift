@@ -11,6 +11,7 @@ import SceneKit
 
 typealias Vector = float4
 typealias Matrix = float4x4
+typealias Photon = GenericPhoton<Float, Vector, Matrix>
 
 var v = Vector(1,1,1)
 var u = Vector(1,2,3)
@@ -19,7 +20,7 @@ var M1 = Matrix.rotate(radians: 0.1, axis: Vector.xHat)
 var M2 = Matrix.rotate(radians: 0.1, axis: u)
 var w = M2 * M1 * v
 print(w)
-//let p = Photon(position: Vector(0,0,0), direction: Vector(0,0,1), wavelength: 632)
+let p = Photon(position: Vector(0.0,0,0), direction: Vector(0,0,1), wavelength: 632.0)
 
 //
 //print(v.norm())
