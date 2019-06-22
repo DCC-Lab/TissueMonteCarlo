@@ -9,7 +9,6 @@
 import Foundation
 import SceneKit
 
-let infiniteDistance:float = 1e4
 let TableSize:Int = 65536
 extension float {
     func isInfinite() -> Bool {
@@ -17,20 +16,21 @@ extension float {
     }
 }
 
-class BulkMaterial  {
-    fileprivate var randomTable = [float](repeating: 0, count: TableSize)
+class BulkMaterial<T>  {
+    let infiniteDistance:T = 1e4
+    fileprivate var randomTable = [T](repeating: 0, count: TableSize)
     fileprivate var randomIndex:Int = 0
 
-    var mu_s:float
-    var mu_a:float
-    var mu_t:float
-    var index:float
-    var albedo:float
+    var mu_s:T
+    var mu_a:T
+    var mu_t:T
+    var index:T
+    var albedo:T
     var description: String {
         return " µs=\(mu_s) µa=\(mu_a) index=\(index)"
     }
     
-    init(mu_s:float, mu_a:float, index:float) {
+    init(mu_s:T, mu_a:T, index:T) {
         self.mu_s = mu_s
         self.mu_a = mu_a
         self.mu_t = mu_a + mu_s
@@ -40,7 +40,7 @@ class BulkMaterial  {
             self.albedo = mu_a/mu_t
         }
         for i in 0...65535 {
-            randomTable[i] = float.random(in:0...1)
+            randomTable[i] = T.random(in:0...1)
         }
         randomIndex = Int.random(in: 0...TableSize)
     }
@@ -49,8 +49,13 @@ class BulkMaterial  {
         let delta = photon.weight * albedo
         photon.decreaseWeightBy(delta)
     }
-    
-    func randomfloat() -> float {
+
+    func absorbEnergy(_ photon:PhotonSIMD4) {
+        let delta = photon.weight * Float(albedo)
+        photon.decreaseWeightBy(delta)
+    }
+
+    func randomfloat() -> T {
         randomIndex += 1
         if randomIndex == TableSize {
             randomIndex = Int.random(in: 0...TableSize)
@@ -58,7 +63,7 @@ class BulkMaterial  {
         return randomTable[randomIndex]
     }
     
-    func randomScatteringDistance() -> float {
+    func randomScatteringDistance() -> T {
         if mu_t == 0 {
             return infiniteDistance
         }
@@ -69,7 +74,7 @@ class BulkMaterial  {
         return d
     }
 
-    func randomScatteringAngles() -> (float, float) {
+    func randomScatteringAngles() -> (T, T) {
         return (0,0)
     }
 }

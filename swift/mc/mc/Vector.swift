@@ -40,6 +40,10 @@ extension SCNVector3 {
         self.init(x:x, y:y, z:z)
     }
     
+    var supportsTranslation:Bool {
+        return false
+    }
+    
     public var description: String {
         return "(\(x),\(y),\(z))"
     }
@@ -272,6 +276,10 @@ extension SCNVector3 {
 }
 
 extension float3 {
+    var supportsTranslation:Bool {
+        return false
+    }
+
     var x:Float {
         get {
             return self[0]
@@ -433,6 +441,10 @@ extension float4 {
     }
     init(x:Float,y:Float, z:Float ) {
         self.init(x,y,z,1)
+    }
+
+    var supportsTranslation:Bool {
+        return true
     }
 
     var x:Float {
@@ -648,6 +660,15 @@ extension float4x4 {
             float4( 0,  1,  0,  0),
             float4( 0,  0,  1,  0),
             float4(tx, ty, tz,  1)
+        )
+    }
+
+    static func translate(_ d:float4) -> float4x4 {
+        return float4x4(
+            float4( 1,  0,  0,  0),
+            float4( 0,  1,  0,  0),
+            float4( 0,  0,  1,  0),
+            d
         )
     }
 
