@@ -53,4 +53,35 @@ class mcTests: XCTestCase {
 ////        XCTAssert(vectorA == vectorB, "Rotation around Z failed")
 ////        XCTAssert(vectorA == yHat, "Rotation around Z failed")
 //    }
+    
+    func testFloat3Operations() {
+        var v = float3(1,2,3)
+        var u = float3(1,2,3)
+        self.measure {
+            for i in 0...100000 {
+                var w = u + v
+                XCTAssert(w==float3(2,4,6))
+                w = v + v - 5*u
+                XCTAssert(w==float3(-3,-6,-9))
+                var n = try! w.normalize()
+                var m = w.abs()
+            }
+        }
+    }
+
+    func testSCN3VectorOperations() {
+        var v = SCNVector3(1,2,3)
+        var u = SCNVector3(1,2,3)
+        self.measure {
+            for i in 0...100000 {
+                var w = u + v
+                XCTAssert(w==SCNVector3(2,4,6))
+                w = v + v - 5*u
+                XCTAssert(w==SCNVector3(-3,-6,-9))
+                var n = try! w.normalize()
+                var m = w.abs()
+            }
+        }
+    }
+
 }
