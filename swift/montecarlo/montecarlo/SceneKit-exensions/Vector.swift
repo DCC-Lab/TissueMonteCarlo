@@ -32,6 +32,9 @@ enum Axis:Int {
     case X=0,Y=1,Z=2
 }
 
+infix operator •: MultiplicationPrecedence
+infix operator ⨉: MultiplicationPrecedence
+
 extension SCNVector3 {
     init(_ x:CGFloat,_ y:CGFloat,_ z:CGFloat) {
         self.init(x:x, y:y, z:z)
@@ -39,30 +42,6 @@ extension SCNVector3 {
     
     public var description: String {
         return "(\(x),\(y),\(z))"
-    }
-    
-    subscript(index: Axis) -> CGFloat {
-        get {
-            switch index {
-            case .X:
-                return x
-            case .Y:
-                return y
-            case .Z:
-                return z
-            }
-        }
-    
-        set(newValue) {
-            switch index {
-            case .X:
-                x = newValue
-            case .Y:
-                y = newValue
-            case .Z:
-                z = newValue
-            }
-        }
     }
     
     func norm() -> CGFloat {
@@ -75,14 +54,9 @@ extension SCNVector3 {
     
     mutating func normalize() throws -> SCNVector3 {
         let value = sqrt(x*x + y*y + z*z)
-
-        if value != 0 {
-            x = x / value
-            y = y / value
-            z = z / value
-        } else {
-            throw VectorError.UnexpectedNil
-        }
+        x = x / value
+        y = y / value
+        z = z / value
         return self
     }
     
@@ -91,7 +65,7 @@ extension SCNVector3 {
         y += theVector.y * theScale;
         z += theVector.z * theScale;
     }
-    
+
     func dotProduct(_ theVector : SCNVector3 ) -> CGFloat {
         return x * theVector.x + y * theVector.y + z * theVector.z;
     }
@@ -288,6 +262,13 @@ extension SCNVector3 {
         left.z /= scalar
     }
 
+    static func • (left: SCNVector3, right: SCNVector3 ) -> CGFloat {
+        return left.dotProduct(right)
+    }
+
+    static func ⨉ (left: SCNVector3, right: SCNVector3 ) -> CGFloat {
+        return left.dotProduct(right)
+    }
 }
 
 extension float3 {
@@ -310,7 +291,7 @@ extension float3 {
     }
 
     func norm() -> Float {
-        return simd.norm_one(self)
+        return simd.norm_one(self)-1
     }
 
     func abs() -> Float {
@@ -436,6 +417,14 @@ extension float3 {
     mutating func rotateAroundAxis(_ u:float3, byAngle theta:Float) {
         self = float3x3.rotationMatrixAround(axis: u, angle: theta) * self
     }
+    
+    static func • (left: float3, right: float3 ) -> Float {
+        return left.dotProduct(right)
+    }
+    
+    static func ⨉ (left: float3, right: float3 ) -> Float {
+        return left.dotProduct(right)
+    }
 }
 
 extension float4 {
@@ -471,7 +460,7 @@ extension float4 {
     }
 
     func norm() -> Float {
-        return simd.norm_one(self)
+        return simd.norm_one(self) - 1
     }
     
     func abs() -> Float {
@@ -600,6 +589,14 @@ extension float4 {
     
     mutating func rotateAroundAxis(_ u:float4, byAngle theta:Float) {
         self = float4x4.rotationMatrixAround(axis: u, angle: theta) * self
+    }
+    
+    static func • (left: float4, right: float4 ) -> Float {
+        return left.dotProduct(right)
+    }
+    
+    static func ⨉ (left: float4, right: float4 ) -> Float {
+        return left.dotProduct(right)
     }
 }
 
