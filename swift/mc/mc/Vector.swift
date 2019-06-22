@@ -10,6 +10,57 @@ import Foundation
 import SceneKit
 import simd
 
+
+protocol FloatingPointVector {
+    associatedtype T
+    associatedtype V
+    var x:T {get set}
+    var y:T {get set}
+    var z:T {get set}
+    var supportsTranslation:Bool {get}
+    var xHat:V {get}
+    var yHat:V {get}
+    var zHat:V {get}
+    var oHat:V {get}
+
+    init(_ x:T,_ y:T,_ z:T)
+
+    func norm() -> T
+    func abs() -> T
+    func dotProduct(_ theVector : V ) -> T
+    func normalizedDotProduct(_ theVector: V ) -> T
+    func crossProduct(_ v: V) -> V
+    func normalizedCrossProduct(_ v: V) -> V
+    func tripleProduct(v : V, w : V) -> T
+    
+    func orientedAngleWith(_ y:V , aroundAxis r:V ) -> T
+    func isParallelTo(_ v:V ) -> Bool
+    func isPerpendicularTo(_ v:V ) -> Bool
+
+    mutating func normalize() throws -> V
+    mutating func addScaledVector(_ theVector:V, scale theScale:T)
+    mutating func rotateAroundX(_ inPhi: T)
+    mutating func rotateAroundY(_ inPhi: T)
+    mutating func rotateAroundZ(_ inPhi: T)
+    mutating func rotateAroundAxis(_ u:V, byAngle theta:T)
+
+}
+
+protocol FloatingPointMatrix {
+    associatedtype T
+    associatedtype V
+    associatedtype M
+    
+    static func translate(tx: T, ty: T, tz: T) -> M
+    static func translate(_ d:V) -> M
+    static func rotationMatrixAround(axis:V, angle:T) -> M
+    static func rotate(radians: T, axis: V) -> M
+    static func rotateX(radians: T) -> M
+    static func rotateY(radians: T) -> M
+    static func rotateZ(radians: T) -> M
+    static func scale(sx: T, sy: T, sz: T) -> M
+}
+
 //typealias float = CGFloat
 //typealias Vector = SCNVector3
 //typealias float = Float
@@ -35,11 +86,23 @@ enum Axis:Int {
 infix operator •: MultiplicationPrecedence
 infix operator ⨉: MultiplicationPrecedence
 
-extension SCNVector3 {
+extension SCNVector3:FloatingPointVector {
     init(_ x:CGFloat,_ y:CGFloat,_ z:CGFloat) {
         self.init(x:x, y:y, z:z)
     }
-    
+    var xHat:SCNVector3 {
+        get { return SCNVector3(1,0,0)}
+    }
+    var yHat:SCNVector3 {
+        get { return SCNVector3(0,1,0)}
+    }
+    var zHat:SCNVector3 {
+        get { return SCNVector3(0,0,1)}
+    }
+    var oHat:SCNVector3 {
+        get { return SCNVector3(0,0,0)}
+    }
+
     var supportsTranslation:Bool {
         return false
     }
@@ -275,27 +338,34 @@ extension SCNVector3 {
     }
 }
 
-extension float3 {
+extension float3:FloatingPointVector {
+    var xHat: float3 {
+        get { return float3(1,0,0) }
+    }
+    var yHat: float3 {
+        get { return float3(0,1,0) }
+    }
+    var zHat: float3 {
+        get { return float3(0,0,1) }
+    }
+    var oHat: float3 {
+        get { return float3(0,0,0) }
+    }
+    
     var supportsTranslation:Bool {
         return false
     }
 
     var x:Float {
-        get {
-            return self[0]
-        }
+        get { return self[0] }
     }
 
     var y:Float {
-        get {
-            return self[1]
-        }
+        get { return self[1] }
     }
 
     var z:Float {
-        get {
-            return self[2]
-        }
+        get { return self[2] }
     }
 
     func norm() -> Float {
@@ -435,7 +505,20 @@ extension float3 {
     }
 }
 
-extension float4 {
+extension float4 : FloatingPointVector {
+    var xHat: float4 {
+        get { return float4(1,0,0,1) }
+    }
+    var yHat: float4 {
+        get { return float4(0,1,0,1) }
+    }
+    var zHat: float4 {
+        get { return float4(0,0,1,1) }
+    }
+    var oHat: float4 {
+        get { return float4(0,0,0,0) }
+    }
+
     init(_ x:Float,_ y:Float, _ z:Float ) {
         self.init(x,y,z,1)
     }
@@ -448,27 +531,19 @@ extension float4 {
     }
 
     var x:Float {
-        get {
-            return self[0]
-        }
+        get { return self[0] }
     }
     
     var y:Float {
-        get {
-            return self[1]
-        }
+        get { return self[1] }
     }
     
     var z:Float {
-        get {
-            return self[2]
-        }
+        get { return self[2] }
     }
 
     var w:Float {
-        get {
-            return self[3]
-        }
+        get { return self[3] }
     }
 
     func norm() -> Float {
@@ -612,7 +687,15 @@ extension float4 {
     }
 }
 
-extension float3x3 {
+extension float3x3 : FloatingPointMatrix {
+    static func translate(tx: Float, ty: Float, tz: Float) -> float3x3 {
+        return float3x3(0)
+    }
+    
+    static func translate(_ d: float3) -> float3x3 {
+        return float3x3(0)
+    }
+    
     static func rotationMatrixAround(axis:float3, angle:Float) -> float3x3 {
         return rotate(radians: angle, axis: axis)
     }
@@ -653,7 +736,7 @@ extension float3x3 {
     }
 }
 
-extension float4x4 {
+extension float4x4 : FloatingPointMatrix {
     static func translate(tx: Float, ty: Float, tz: Float) -> float4x4 {
         return float4x4(
             float4( 1,  0,  0,  0),

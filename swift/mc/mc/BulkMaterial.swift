@@ -10,14 +10,14 @@ import Foundation
 import SceneKit
 
 let TableSize:Int = 65536
-extension float {
-    func isInfinite() -> Bool {
-        return self > infiniteDistance
-    }
-}
+//extension float {
+//    func isInfinite() -> Bool {
+//        return self > infiniteDistance
+//    }
+//}
 
-class BulkMaterial<T>  {
-    let infiniteDistance:T = 1e4
+class BulkMaterial<T:FloatingPoint>  {
+    let infiniteDistance:T = T(10000)
     fileprivate var randomTable = [T](repeating: 0, count: TableSize)
     fileprivate var randomIndex:Int = 0
 
@@ -47,11 +47,6 @@ class BulkMaterial<T>  {
     
     func absorbEnergy(_ photon:Photon) {
         let delta = photon.weight * albedo
-        photon.decreaseWeightBy(delta)
-    }
-
-    func absorbEnergy(_ photon:PhotonSIMD4) {
-        let delta = photon.weight * Float(albedo)
         photon.decreaseWeightBy(delta)
     }
 
