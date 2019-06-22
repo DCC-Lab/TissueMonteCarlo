@@ -10,71 +10,74 @@ import Foundation
 import SceneKit
 import simd
 
-//public func * <T>(_ x: T, _ y:T) -> T where T: Mathable {
-//    return x * y
-//}
-//
-//public func cos<T>(_ x: T) -> T where T: Mathable {
-//    return T.Math.cos(x)
-//}
-//
-//public func sin<T>(_ x: T) -> T where T: Mathable {
-//    return T.Math.sin(x)
-//}
-//
-//public func log<T>(_ x: T) -> T where T: Mathable {
-//    return T.Math.log(x)
-//}
+enum VectorError: LocalizedError {
+    case UnexpectedNil
+}
+
+infix operator •: MultiplicationPrecedence
+infix operator ⨉: MultiplicationPrecedence
 
 protocol VectorProtocol {
     associatedtype T:BinaryFloatingPoint
-    associatedtype V:VectorProtocol where V.T == T
     var x:T {get set}
     var y:T {get set}
     var z:T {get set}
     var supportsTranslation:Bool {get}
-    static var xHat:V {get}
-    static var yHat:V {get}
-    static var zHat:V {get}
-    static var oHat:V {get}
+    static var xHat:Self {get}
+    static var yHat:Self {get}
+    static var zHat:Self {get}
+    static var oHat:Self {get}
 
     init(_ x:T,_ y:T,_ z:T)
-
     func norm() -> T
     func abs() -> T
-    func dotProduct(_ theVector : V ) -> T
-    func normalizedDotProduct(_ theVector: V ) -> T
-    func crossProduct(_ v: V) -> V
-    func normalizedCrossProduct(_ v: V) -> V
+    func dotProduct(_ theVector : Self ) -> T
+    func normalizedDotProduct(_ theVector: Self ) -> T
+    func crossProduct(_ v: Self) -> Self
+    func normalizedCrossProduct(_ v: Self) -> Self
 
-    func orientedAngleWith(_ y:V , aroundAxis r:V ) -> T
-    func isParallelTo(_ v:V ) -> Bool
-    func isPerpendicularTo(_ v:V ) -> Bool
+    func orientedAngleWith(_ y:Self , aroundAxis r:Self ) -> T
+    func isParallelTo(_ v:Self ) -> Bool
+    func isPerpendicularTo(_ v:Self ) -> Bool
 
-    mutating func normalize() throws -> V
-    mutating func addScaledVector(_ theVector:V, scale theScale:T)
+    mutating func normalize() throws -> Self
+    mutating func addScaledVector(_ theVector:Self, scale theScale:T)
     mutating func rotateAroundX(_ inPhi: T)
     mutating func rotateAroundY(_ inPhi: T)
     mutating func rotateAroundZ(_ inPhi: T)
-    mutating func rotateAroundAxis(_ u:V, byAngle theta:T)
+    mutating func rotateAroundAxis(_ u:Self, byAngle theta:T)
+}
 
+protocol MatrixProtocol {
+    associatedtype T
+    associatedtype V:VectorProtocol where V.T == T
+    associatedtype M:MatrixProtocol where M.T == T, M.V == V, M.V.T == V.T
+
+    static func translate(tx: T, ty: T, tz: T) -> M
+    static func translate(_ d:V) -> M
+    static func rotationMatrixAround(axis:V, angle:T) -> M
+    static func rotate(radians: T, axis: V) -> M
+    static func rotateX(radians: T) -> M
+    static func rotateY(radians: T) -> M
+    static func rotateZ(radians: T) -> M
+    static func scale(sx: T, sy: T, sz: T) -> M
 }
 
 extension VectorProtocol {
-    static var xHat:V {
-        get { return V(1,0,0)}
+    static var xHat:Self {
+        get { return Self(1,0,0)}
     }
-    static var yHat:V {
-        get { return V(0,1,0)}
+    static var yHat:Self {
+        get { return Self(0,1,0)}
     }
-    static var zHat:V {
-        get { return V(0,0,1)}
+    static var zHat:Self {
+        get { return Self(0,0,1)}
     }
-    static var oHat:V {
-        get { return V(0,0,0)}
+    static var oHat:Self {
+        get { return Self(0,0,0)}
     }
-
-    func normalizedDotProduct(_ theVector: V ) -> T {
+    
+    func normalizedDotProduct(_ theVector: Self ) -> T {
         var prod = self.dotProduct(theVector)
         
         let norm_u = norm()
@@ -92,30 +95,8 @@ extension VectorProtocol {
         
         return prod;
     }
-
+    
 }
-
-protocol MatrixProtocol {
-    associatedtype T
-    associatedtype V:VectorProtocol where V.T == T
-    associatedtype M:MatrixProtocol where M.T == T, M.V == V
-
-    static func translate(tx: T, ty: T, tz: T) -> M
-    static func translate(_ d:V) -> M
-    static func rotationMatrixAround(axis:V, angle:T) -> M
-    static func rotate(radians: T, axis: V) -> M
-    static func rotateX(radians: T) -> M
-    static func rotateY(radians: T) -> M
-    static func rotateZ(radians: T) -> M
-    static func scale(sx: T, sy: T, sz: T) -> M
-}
-
-enum VectorError: LocalizedError {
-    case UnexpectedNil
-}
-
-infix operator •: MultiplicationPrecedence
-infix operator ⨉: MultiplicationPrecedence
 
 extension SCNVector3:VectorProtocol {
     init(_ x:CGFloat,_ y:CGFloat,_ z:CGFloat) {

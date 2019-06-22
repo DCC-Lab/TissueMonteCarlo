@@ -14,7 +14,7 @@ enum MonteCarloError: LocalizedError {
     case UnexpectedNil
 }
 
-class Photon<T, V:VectorProtocol> where V.T == T {
+class Photon<T, V, M:MatrixProtocol> where T == V.T, V == M.V  {
     var position:V
     var direction:V
     var ePerp:V
@@ -39,7 +39,7 @@ class Photon<T, V:VectorProtocol> where V.T == T {
         self.keepingExtendedStatistics = false
         self.distanceTraveled = 0
         self.statistics = []
-//        self.ePerp = oHat as! V
+        self.ePerp = V.xHat
 //        if self.direction == zHat {
 //            self.ePerp = xHat
 //        } else if (self.direction == xHat) {
@@ -63,14 +63,14 @@ class Photon<T, V:VectorProtocol> where V.T == T {
     func reset() {
         self.position = self.originalPosition
         self.direction = self.originalDirection
-        self.ePerp = xHat
+        self.ePerp = V.xHat as! V
         self.weight = 1
         self.keepingExtendedStatistics = false
         self.distanceTraveled = 0
         self.statistics = [(self.originalPosition,self.weight)]
     }
     
-    func propagate(into material:BulkMaterial, for distance:T) throws {
+    func propagate(into material:BulkMaterial<T,V,M>, for distance:T) throws {
         while isAlive() {
             let (θ, φ) = material.randomScatteringAngles()
             let distance = material.randomScatteringDistance()
@@ -79,7 +79,7 @@ class Photon<T, V:VectorProtocol> where V.T == T {
             } else {
                 scatterBy(θ, φ)
                 moveBy(distance)
-                material.absorbEnergy(self)
+//                material.absorbEnergy(self)
             }
             roulette()
         }
@@ -118,35 +118,32 @@ class Photon<T, V:VectorProtocol> where V.T == T {
     }
 
     
-    func rotateReferenceFrameInFresnelPlaneWithNormal( theNormal:V ) {
-        /* We always want the "s hat" vector in the same orientation
-        compared to dir, regardless of the normal (i.e the normal
-        could be pointing in or out) */
-        var s = direction.normalizedCrossProduct(theNormal)
-        
-        if direction.normalizedDotProduct(theNormal) < 0  {
-            s = s*(-1)
-        }
-        
-        do {
-            try _ = s.normalize()
-            let phi = ePerp.orientedAngleWith(s, aroundAxis: direction)
-            ePerp.rotateAroundAxis(direction, byAngle: phi)
-            try _ = ePerp.normalize()
-        } catch {
-            
-        }
-    
-        assert(ePerp.isPerpendicularTo(direction), "ePerp not perpendicular to direction")
-        assert(ePerp.isPerpendicularTo(theNormal), "ePerp not perpendicular to normal")
-    }
+//    func rotateReferenceFrameInFresnelPlaneWithNormal( theNormal:V ) {
+//        /* We always want the "s hat" vector in the same orientation
+//        compared to dir, regardless of the normal (i.e the normal
+//        could be pointing in or out) */
+//        var s = direction.normalizedCrossProduct(theNormal)
+//
+//        if direction.normalizedDotProduct(theNormal) < 0  {
+//            s = s*(-1)
+//        }
+//
+//        do {
+//            try _ = s.normalize()
+//            let phi = ePerp.orientedAngleWith(s, aroundAxis: direction)
+//            ePerp.rotateAroundAxis(direction, byAngle: phi)
+//            try _ = ePerp.normalize()
+//        } catch {
+//
+//        }
+//    }
     
     func roulette() {
         let CHANCE:T = 0.1
         let WeightThreshold:T = 1e-4
         
         if self.weight <= WeightThreshold {
-           let randomfloat = T.random(in:0...1)
+           let randomfloat = T(Double.random(in:0...1))
             
             if( randomfloat < CHANCE) {
                 /* survived the roulette.*/

@@ -8,7 +8,7 @@
 
 import Foundation
 
-class BulkHenyeyGreenstein<T:FloatingPoint> : BulkMaterial<T> {
+class BulkHenyeyGreenstein<T, V, M:MatrixProtocol> : BulkMaterial<T, V, M> where V.T == T, M.V == V, M.V.T == V.T {
     var g:T
     override var description: String {
         return super.description+" g=\(g)"
@@ -22,15 +22,17 @@ class BulkHenyeyGreenstein<T:FloatingPoint> : BulkMaterial<T> {
     override func randomScatteringAngles() -> (T, T) {
         let g = self.g
         var θ:T!
-        let ϕ = 2.0 * π * randomfloat()
+        let ϕ:T = 2.0 * T.pi * randomfloat()
         for _ in 1...100 {
             if g != 0 {
-                let rand_frac = (1.0 - g*g) / (1.0 - g + 2.0 * randomfloat() * g)
-                θ = acos( (1.0 + g*g - rand_frac*rand_frac) / (2.0*g) )
+                let num = Float(1.0 - g*g)
+                let den = Float(1.0 - g + 2.0 * randomfloat() * g)
+                let rand_frac =  num / den
+                θ = T(acos( Float((1.0 + g*g - rand_frac*rand_frac) / (2.0*g) )))
             } else {
-                θ = acos(1.0 - 2.0 * randomfloat() )
+                θ = acos(Float(1.0 - 2.0 * randomfloat() ))
             }
-            if θ >= 0 && θ <= π {
+            if θ >= 0 && θ <= T.pi {
                 break
             }
         }
