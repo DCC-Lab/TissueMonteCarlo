@@ -98,8 +98,8 @@ class Vector:
         if sinPhi.dot(w) <= 0:
             phi *= -1 
     
-        return phi;
-
+        return phi
+        
     def rotateAroundX(self, phi):
         v = Vector(self.x, self.y, self.z)
         
