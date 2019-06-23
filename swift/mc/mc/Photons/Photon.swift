@@ -25,6 +25,7 @@ class PhotonBase {
 
     let r⃗ₒ:Vector
     let ûₒ:Vector
+    var êrₒ:Vector
     var keepingExtendedStatistics:Bool
     var statistics:[(Vector,Scalar)]
     var distanceTraveled:Scalar
@@ -60,11 +61,13 @@ class PhotonBase {
         distanceTraveled = 0
         statistics = [(r⃗ₒ,weight)]
         êr = Vector(0,0,0)
+        êrₒ = Vector(0,0,0)
         if let vector = defaultEPerpendicular(direction: û) {
             êr = vector
         } else {
             return nil
         }
+        êrₒ = êr
     }
 
     func defaultEPerpendicular(direction û:Vector) -> Vector? {
@@ -81,7 +84,7 @@ class PhotonBase {
     func reset() {
         r⃗ = r⃗ₒ
         û = ûₒ
-        êr = x̂
+        êr = êrₒ
         weight = 1
         keepingExtendedStatistics = false
         distanceTraveled = 0
