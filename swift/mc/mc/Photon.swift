@@ -32,6 +32,18 @@ class Photon {
         return String(format: "P: ( %0.2f,%0.2f,%0.2f ) D:(%0.2f,%0.2f,%0.2f ) W:%0.2f",self.position.x,self.position.y,self.position.z,self.direction.x,self.direction.y,self.direction.z,self.weight )
     }
     
+    var x̂:Vector {
+        get { return Vector(1,0,0) }
+    }
+    var ŷ:Vector {
+        get { return Vector(0,1,0) }
+    }
+    var ẑ:Vector {
+        get { return Vector(0,0,1) }
+    }
+    var ô:Vector {
+        get { return Vector(0,0,0) }
+    }
 
     init?(position:Vector, direction:Vector, wavelength:float) {
         self.position = position
@@ -45,19 +57,19 @@ class Photon {
         self.keepingExtendedStatistics = false
         self.distanceTraveled = 0
         self.statistics = []
-        self.ePerp = oHat
-        if self.direction == zHat {
-            self.ePerp = xHat
-        } else if (self.direction == xHat) {
-            self.ePerp = yHat
-        } else if (self.direction == yHat) {
-            self.ePerp = zHat
-        } else if self.direction == -zHat {
-            self.ePerp = -xHat
-        } else if (self.direction == -xHat) {
-            self.ePerp = -yHat
-        } else if (self.direction == -yHat) {
-            self.ePerp = -zHat
+        self.ePerp = Vector(0,0,0)
+        if self.direction == ẑ {
+            self.ePerp = x̂
+        } else if (self.direction == x̂) {
+            self.ePerp = ŷ
+        } else if (self.direction == ŷ) {
+            self.ePerp = ẑ
+        } else if self.direction == -ẑ {
+            self.ePerp = -x̂
+        } else if (self.direction == -x̂) {
+            self.ePerp = -ŷ
+        } else if (self.direction == -ŷ) {
+            self.ePerp = -ẑ
         }
 
         if direction.norm() == 0 {
@@ -69,7 +81,7 @@ class Photon {
     func reset() {
         self.position = self.originalPosition
         self.direction = self.originalDirection
-        self.ePerp = xHat
+        self.ePerp = x̂
         self.weight = 1
         self.keepingExtendedStatistics = false
         self.distanceTraveled = 0
