@@ -53,9 +53,9 @@ class PhotonBase {
     init?(position:Vector, direction:Vector, wavelength:Scalar) {
         r⃗ = position
         û = direction
+        û.normalize()
         weight = 1
         λ = wavelength
-        û.normalize()
 
         r⃗ₒ = position
         ûₒ = û
@@ -100,14 +100,17 @@ class PhotonBase {
     
     func propagate(into material:BulkMaterial, for distance:Scalar = 0) throws {
         while isAlive() {
-            let (θ, φ) = material.randomScatteringAngles()
-            let distance = material.randomScatteringDistance()
+            let (θ, φ) = material.randomScatteringAngles(photon:self)
+            let distance = material.randomScatteringDistance(photon:self)
+            let albedo = material.albedo(photon:self)
+            
             if distance.isInfinite {
                 weight = 0
             } else {
                 scatterBy(θ, φ)
                 moveBy(distance)
-                material.absorbEnergy(self)
+                let energyDeposited = albedo * weight
+                decreaseWeightBy(energyDeposited)
             }
             roulette()
         }
@@ -115,9 +118,9 @@ class PhotonBase {
 
     func scatterBy(_ θ:Scalar,_ φ:Scalar ) {
         êr.rotateAround(û, by: φ)
-        û.rotateAround(êr, by: θ)
-        
         êr.normalize()
+        
+        û.rotateAround(êr, by: θ)
         û.normalize()
     }
     

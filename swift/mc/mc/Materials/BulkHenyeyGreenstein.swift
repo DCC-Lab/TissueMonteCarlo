@@ -19,7 +19,7 @@ class BulkHenyeyGreenstein : BulkMaterial {
         super.init(mu_s:mu_s, mu_a:mu_a, index:index )
     }
 
-    override func randomScatteringAngles() -> (Scalar, Scalar) {
+    override func randomScatteringAngles(photon:Photon) -> (Scalar, Scalar) {
         let g = self.g
         var θ:Scalar!
         let ϕ = 2.0 * Scalar.pi * randomfloat()

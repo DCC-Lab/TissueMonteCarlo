@@ -20,7 +20,7 @@ class BulkMaterial  {
     var mu_a:Scalar
     var mu_t:Scalar
     var index:Scalar
-    var albedo:Scalar
+
     var description: String {
         return " µs=\(mu_s) µa=\(mu_a) index=\(index)"
     }
@@ -30,21 +30,16 @@ class BulkMaterial  {
         self.mu_a = mu_a
         self.mu_t = mu_a + mu_s
         self.index = index
-        self.albedo = 0
-        if mu_t != 0 {
-            self.albedo = mu_a/mu_t
-        }
         for i in 0...65535 {
             randomTable[i] = Scalar.random(in:0...1)
         }
         randomIndex = Int.random(in: 0...TableSize)
     }
     
-    func absorbEnergy(_ photon:Photon) {
-        let delta = photon.weight * albedo
-        photon.decreaseWeightBy(delta)
+    func albedo(photon:Photon) -> Scalar {
+        return mu_a/mu_t
     }
-    
+        
     func randomfloat() -> Scalar {
         randomIndex += 1
         if randomIndex == TableSize {
@@ -53,7 +48,7 @@ class BulkMaterial  {
         return randomTable[randomIndex]
     }
     
-    func randomScatteringDistance() -> Scalar {
+    func randomScatteringDistance(photon:Photon) -> Scalar {
         if mu_t == 0 {
             return infiniteDistance
         }
@@ -64,7 +59,7 @@ class BulkMaterial  {
         return d
     }
 
-    func randomScatteringAngles() -> (Scalar, Scalar) {
+    func randomScatteringAngles(photon:Photon) -> (Scalar, Scalar) {
         return (0,0)
     }
 }
