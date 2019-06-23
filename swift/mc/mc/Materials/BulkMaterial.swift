@@ -36,7 +36,7 @@ class BulkMaterial  {
         randomIndex = Int.random(in: 0...TableSize)
     }
     
-    func albedo(photon:Photon) -> Scalar {
+    func albedo(photon:Photon? = nil) -> Scalar {
         return mu_a/mu_t
     }
         
@@ -48,7 +48,7 @@ class BulkMaterial  {
         return randomTable[randomIndex]
     }
     
-    func randomScatteringDistance(photon:Photon) -> Scalar {
+    func randomScatteringDistance(photon:Photon? = nil) -> Scalar {
         if mu_t == 0 {
             return infiniteDistance
         }
@@ -59,7 +59,7 @@ class BulkMaterial  {
         return d
     }
 
-    func randomScatteringAngles(photon:Photon) -> (Scalar, Scalar) {
+    func randomScatteringAngles(photon:Photon? = nil) -> (Scalar, Scalar) {
         return (0,0)
     }
 }

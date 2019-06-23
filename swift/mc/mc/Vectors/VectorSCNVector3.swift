@@ -17,12 +17,6 @@ import SceneKit
 //typealias Vector3D = Vector
 //typealias v⃗ = Vector
 
-let π = CGFloat(3.1415926535)
-
-enum VectorError: LocalizedError {
-    case UnexpectedNil
-}
-
 enum Axis:Int {
     case X=0,Y=1,Z=2
 }

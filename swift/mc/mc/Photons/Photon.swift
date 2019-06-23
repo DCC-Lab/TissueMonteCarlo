@@ -11,10 +11,6 @@ import SceneKit
 import Metal
 import MetalPerformanceShaders
 
-enum MonteCarloError: LocalizedError {
-    case UnexpectedNil
-}
-
 typealias Photon = PhotonBase
 
 class PhotonBase {
@@ -100,9 +96,9 @@ class PhotonBase {
     
     func propagate(into material:BulkMaterial, for distance:Scalar = 0) throws {
         while isAlive() {
-            let (θ, φ) = material.randomScatteringAngles(photon:self)
-            let distance = material.randomScatteringDistance(photon:self)
-            let albedo = material.albedo(photon:self)
+            let (θ, φ) = material.randomScatteringAngles()
+            let distance = material.randomScatteringDistance()
+            let albedo = material.albedo()
             
             if distance.isInfinite {
                 weight = 0
