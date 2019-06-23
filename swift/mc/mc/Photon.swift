@@ -156,4 +156,18 @@ class PhotonSIMD4 : GenericPhoton<Float, float4, float4x4> {
         try! _ = self.ePerp.normalize()
         try! _ = self.direction.normalize()
     }
+
+    func translationMatrix(distance:Float) -> float4x4 {
+        let d⃗  = direction * distance
+        let T  = float4x4.translate(d⃗)
+        return T
+    }
+    
+    func scatteringMatrix(θ:Float, φ:Float) -> float4x4 {
+        let Mφ = float4x4.rotate(radians: φ, axis: direction)
+        let Mθ = float4x4.rotate(radians: θ, axis: ePerp)
+        return Mθ * Mφ
+    }
+    
+
 }

@@ -35,7 +35,7 @@ class BulkMaterial<T, V, M:MatrixProtocol> where V.T == T, M.V == V, M.V.T == V.
             self.albedo = mu_a/mu_t
         }
         for i in 0...65535 {
-            randomTable[i] = T(Double.random(in:0...1))
+            randomTable[i] = T.random(in:0...1)
         }
         randomIndex = Int.random(in: 0...TableSize)
     }
@@ -59,7 +59,7 @@ class BulkMaterial<T, V, M:MatrixProtocol> where V.T == T, M.V == V, M.V.T == V.
         }
         
         let n = randomfloat()
-        let d = T(-log(Double(n))) / mu_t
+        let d = -T.my_log(n) / mu_t
 
         return d
     }

@@ -17,6 +17,30 @@ enum VectorError: LocalizedError {
 infix operator •: MultiplicationPrecedence
 infix operator ⨉: MultiplicationPrecedence
 
+protocol ScalarProtocol:BinaryFloatingPoint {
+    static func my_log(_ x: Self) -> Self
+    static func my_acos(_ x: Self) -> Self
+    static func random(in range: ClosedRange<Self>) -> Self
+}
+
+extension Float: ScalarProtocol {
+    static func my_log(_ x: Float) -> Float {
+        return log(x)
+    }
+    static func my_acos(_ x: Float) -> Float {
+        return acos(x)
+    }
+}
+
+extension CGFloat: ScalarProtocol {
+    static func my_log(_ x: CGFloat) -> CGFloat {
+        return log(x)
+    }
+    static func my_acos(_ x: CGFloat) -> CGFloat {
+        return acos(x)
+    }
+}
+
 protocol VectorProtocol:Equatable {
     associatedtype T:BinaryFloatingPoint
     var x:T {get set}
@@ -48,18 +72,18 @@ protocol VectorProtocol:Equatable {
 }
 
 protocol MatrixProtocol {
-    associatedtype T
+    associatedtype T:ScalarProtocol
     associatedtype V:VectorProtocol where V.T == T
-    associatedtype M:MatrixProtocol where M.T == T, M.V == V, M.V.T == V.T
-
-    static func translate(tx: T, ty: T, tz: T) -> M
-    static func translate(_ d:V) -> M
-    static func rotationMatrixAround(axis:V, angle:T) -> M
-    static func rotate(radians: T, axis: V) -> M
-    static func rotateX(radians: T) -> M
-    static func rotateY(radians: T) -> M
-    static func rotateZ(radians: T) -> M
-    static func scale(sx: T, sy: T, sz: T) -> M
+    init()
+    static func translate(tx: T, ty: T, tz: T) -> Self
+    static func translate(_ d:V) -> Self
+    static func rotationMatrixAround(axis:V, angle:T) -> Self
+    static func rotate(radians: T, axis: V) -> Self
+    static func rotateX(radians: T) -> Self
+    static func rotateY(radians: T) -> Self
+    static func rotateZ(radians: T) -> Self
+    static func scale(sx: T, sy: T, sz: T) -> Self
+    static func * (left: Self, right: Self) -> Self
 }
 
 extension VectorProtocol {
@@ -271,29 +295,29 @@ extension SCNVector3:VectorProtocol {
         }
         return false
     }
-    
+
     static prefix func - (vector: SCNVector3) -> SCNVector3 {
-        return SCNVector3(x: -vector.x, y: -vector.y, z:-vector.z)
+        return SCNVector3(-vector.x, -vector.y, -vector.z)
     }
     
     static func + (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
-        return SCNVector3(x: left.x + right.x, y: left.y + right.y, z:left.z + right.z)
+        return SCNVector3(left.x + right.x,left.y + right.y, left.z + right.z)
     }
     
     static func - (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
-        return SCNVector3(x: left.x - right.x, y: left.y - right.y, z:left.z - right.z)
+        return SCNVector3(left.x - right.x, left.y - right.y, left.z - right.z)
     }
     
-    static func * (left: SCNVector3, scalar: CGFloat) -> SCNVector3 {
-        return SCNVector3(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
+    static func * (left: SCNVector3, scalar: T) -> SCNVector3 {
+        return SCNVector3(left.x * scalar, left.y * scalar,left.z * scalar)
     }
     
-    static func * (scalar: CGFloat, left: SCNVector3) -> SCNVector3 {
-        return SCNVector3(x: left.x * scalar, y: left.y * scalar, z:left.z * scalar)
+    static func * (scalar: T, left: SCNVector3) -> SCNVector3 {
+        return SCNVector3(left.x * scalar, left.y * scalar, left.z * scalar)
     }
     
-    static func / (left: SCNVector3, scalar: CGFloat) -> SCNVector3 {
-        return SCNVector3(x: left.x / scalar, y: left.y / scalar, z:left.z / scalar)
+    static func / (left: SCNVector3, scalar: T) -> SCNVector3 {
+        return SCNVector3(left.x / scalar, left.y / scalar, left.z / scalar)
     }
     
     static func += ( left: inout SCNVector3, right: SCNVector3) {
@@ -308,25 +332,26 @@ extension SCNVector3:VectorProtocol {
         left.z -= right.z
     }
     
-    static func *= ( left: inout SCNVector3, scalar: CGFloat) {
+    static func *= ( left: inout SCNVector3, scalar: T) {
         left.x *= scalar
         left.y *= scalar
         left.z *= scalar
     }
     
-    static func /= ( left: inout SCNVector3, scalar: CGFloat) {
+    static func /= ( left: inout SCNVector3, scalar: T) {
         left.x /= scalar
         left.y /= scalar
         left.z /= scalar
     }
-
-    static func • (left: SCNVector3, right: SCNVector3 ) -> CGFloat {
+    
+    static func • (left: SCNVector3, right: SCNVector3 ) -> T {
+        return left.dotProduct(right)
+    }
+    
+    static func ⨉ (left: SCNVector3, right: SCNVector3 ) -> T {
         return left.dotProduct(right)
     }
 
-    static func ⨉ (left: SCNVector3, right: SCNVector3 ) -> CGFloat {
-        return left.dotProduct(right)
-    }
 }
 
 extension float3:VectorProtocol {
@@ -360,7 +385,7 @@ extension float3:VectorProtocol {
     }
 
     func norm() -> Float {
-        return simd.norm_one(self)-1
+        return simd.dot(self,self)
     }
 
     func abs() -> Float {
@@ -486,14 +511,6 @@ extension float3:VectorProtocol {
     mutating func rotateAroundAxis(_ u:float3, byAngle theta:Float) {
         self = float3x3.rotationMatrixAround(axis: u, angle: theta) * self
     }
-    
-    static func • (left: float3, right: float3 ) -> Float {
-        return left.dotProduct(right)
-    }
-    
-    static func ⨉ (left: float3, right: float3 ) -> Float {
-        return left.dotProduct(right)
-    }
 }
 
 extension float4 : VectorProtocol {
@@ -515,10 +532,6 @@ extension float4 : VectorProtocol {
     }
     init(x:Float,y:Float, z:Float ) {
         self.init(x,y,z,1)
-    }
-
-    var supportsTranslation:Bool {
-        return true
     }
 
     var x:Float {
@@ -787,3 +800,77 @@ extension float4x4 : MatrixProtocol {
     }
 }
 
+class SCNMatrix3:MatrixProtocol {
+    typealias T = CGFloat
+    typealias V = SCNVector3
+    
+    var m:[CGFloat] = [CGFloat]()
+    required init() {
+        
+    }
+    
+    static func translate(tx: CGFloat, ty: CGFloat, tz: CGFloat) -> Self {
+        return self.init()
+    }
+
+    static func translate(_ d:SCNVector3) -> Self {
+        return self.init()
+    }
+    
+    static func rotationMatrixAround(axis:SCNVector3, angle:CGFloat) ->  Self {
+        return self.init()
+    }
+    static func rotate(radians: CGFloat, axis: SCNVector3) ->  Self {
+        return self.init()
+    }
+    static func rotateX(radians: CGFloat) ->  Self {
+        return self.init()
+    }
+    static func rotateY(radians: CGFloat) ->  Self {
+        return self.init()
+    }
+    static func rotateZ(radians: CGFloat) ->  Self {
+        return self.init()
+    }
+    static func scale(sx: CGFloat, sy: CGFloat, sz: CGFloat) ->  Self {
+        return self.init()
+    }
+    static func * (left: SCNMatrix3, right: SCNMatrix3) ->  Self {
+        return self.init()
+    }
+}
+
+//extension SCNMatrix3 : MatrixProtocol {
+//    typealias T = CGFloat
+//    typealias V = SCNVector3
+//
+//    static func translate(tx: T, ty: T, tz: T) -> SCNMatrix3 {
+//        return SCNMatrix3()
+//    }
+//
+//    static func translate(_ d:V) -> Self {
+//        return Self
+//    }
+//
+//    static func rotationMatrixAround(axis:V, angle:T) ->  Self {
+//        return Self
+//    }
+//    static func rotate(radians: T, axis: V) ->  Self {
+//        return Self
+//    }
+//    static func rotateX(radians: T) ->  Self {
+//        return Self
+//    }
+//    static func rotateY(radians: T) ->  Self {
+//        return Self
+//    }
+//    static func rotateZ(radians: T) ->  Self {
+//        return Self
+//    }
+//    static func scale(sx: T, sy: T, sz: T) ->  Self {
+//        return Self
+//    }
+//    static func * (left: SCNMatrix3, right: SCNMatrix3) ->  Self {
+//        return Self
+//    }
+//}

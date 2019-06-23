@@ -29,9 +29,9 @@ class BulkHenyeyGreenstein<T, V, M:MatrixProtocol> : BulkMaterial<T, V, M> where
                 let den = 1.0 - g + 2.0 * randomfloat() * g
                 let rand_frac =  num / den
                 let frac = (1.0 + g*g - rand_frac*rand_frac) / T(2.0*g)
-                θ = T(acos(Double(frac) ))
+                θ = T.my_acos(frac)
             } else {
-                θ = T(acos(Double(1.0 - 2.0 * randomfloat() )))
+                θ = T.my_acos(1.0 - 2.0 * randomfloat() )
             }
             if θ >= 0 && θ <= T.pi {
                 break
@@ -42,3 +42,29 @@ class BulkHenyeyGreenstein<T, V, M:MatrixProtocol> : BulkMaterial<T, V, M> where
     }
     
 }
+//
+//extension BulkHenyeyGreenstein where T == CGFloat, V == SCNVector3, M == SCNMatrix3 {
+//
+//    func randomScatteringAngles() -> (CGFloat, CGFloat) {
+//        let g = self.g
+//        var θ:T!
+//        let ϕ:T = 2.0 * T.pi * randomfloat()
+//        for _ in 1...100 {
+//            if g != 0 {
+//                let num = 1.0 - g*g
+//                let den = 1.0 - g + 2.0 * randomfloat() * g
+//                let rand_frac =  num / den
+//                let frac = (1.0 + g*g - rand_frac*rand_frac) / T(2.0*g)
+//                θ = T.my_acos(frac)
+//            } else {
+//                θ = T.my_acos(1.0 - 2.0 * randomfloat() )
+//            }
+//            if θ >= 0 && θ <= T.pi {
+//                break
+//            }
+//        }
+//
+//        return (θ, ϕ)
+//    }
+//
+//}
