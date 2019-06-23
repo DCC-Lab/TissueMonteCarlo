@@ -18,7 +18,10 @@ enum MonteCarloError: LocalizedError {
 class Photon {
     var r⃗:Vector
     var û:Vector
-    var er:Vector
+    var êr:Vector
+    var êl:Vector {
+        get { return êr.crossProduct(û) }
+    }
     var weight:Scalar
     let λ:Scalar
 
@@ -57,19 +60,19 @@ class Photon {
         keepingExtendedStatistics = false
         distanceTraveled = 0
         statistics = []
-        er = Vector(0,0,0)
+        êr = Vector(0,0,0)
         if û == ẑ {
-            er = x̂
+            êr = x̂
         } else if (û == x̂) {
-            er = ŷ
+            êr = ŷ
         } else if (û == ŷ) {
-            er = ẑ
+            êr = ẑ
         } else if û == -ẑ {
-            er = -x̂
+            êr = -x̂
         } else if (û == -x̂) {
-            er = -ŷ
+            êr = -ŷ
         } else if (û == -ŷ) {
-            er = -ẑ
+            êr = -ẑ
         }
 
         if û.norm() == 0 {
@@ -81,7 +84,7 @@ class Photon {
     func reset() {
         r⃗ = r⃗ₒ
         û = ûₒ
-        er = x̂
+        êr = x̂
         weight = 1
         keepingExtendedStatistics = false
         distanceTraveled = 0
@@ -128,10 +131,10 @@ class Photon {
     }
     
     func scatterBy(_ θ:Scalar,_ φ:Scalar ) {
-        er.rotateAroundAxis(û, byAngle: φ)
-        û.rotateAroundAxis(er, byAngle: θ)
+        êr.rotateAroundAxis(û, byAngle: φ)
+        û.rotateAroundAxis(êr, byAngle: θ)
 
-        try! _ = er.normalize()
+        try! _ = êr.normalize()
         try! _ = û.normalize()
     }
 
@@ -148,15 +151,15 @@ class Photon {
         
         do {
             try _ = s.normalize()
-            let phi = er.orientedAngleWith(s, aroundAxis: û)
-            er.rotateAroundAxis(û, byAngle: phi)
-            try _ = er.normalize()
+            let phi = êr.orientedAngleWith(s, aroundAxis: û)
+            êr.rotateAroundAxis(û, byAngle: phi)
+            try _ = êr.normalize()
         } catch {
             
         }
     
-        assert(er.isPerpendicularTo(û), "er not perpendicular to û")
-        assert(er.isPerpendicularTo(theNormal), "er not perpendicular to normal")
+        assert(êr.isPerpendicularTo(û), "êr not perpendicular to û")
+        assert(êr.isPerpendicularTo(theNormal), "êr not perpendicular to normal")
     }
     
     func roulette() {
