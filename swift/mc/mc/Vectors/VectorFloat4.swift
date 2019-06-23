@@ -49,6 +49,7 @@ extension float4 {
         return simd.length(self)
     }
     
+    @discardableResult
     mutating func normalize() -> float4 {
         self = simd.normalize(self)
         return self
@@ -82,7 +83,7 @@ extension float4 {
         return simd.dot(self,theVector)
     }
     
-    func crossProduct(_ theVector: float4) -> float4 {
+    public func crossProduct(_ theVector: float4) -> float4 {
         let u = float3(self[0],self[1],self[2])
         let v = float3(theVector[0],theVector[1],theVector[2])
         let w = u.crossProduct(v)
@@ -178,13 +179,14 @@ extension float4 {
         self = float4x4.rotationMatrixAround(axis: u, angle: theta) * self
     }
     
-    static func • (left: float4, right: float4 ) -> Float {
-        return left.dotProduct(right)
-    }
-    
-    static func ⨉ (left: float4, right: float4 ) -> Float {
-        return left.dotProduct(right)
-    }
+}
+
+public func • (left: float4, right: float4 ) -> Float {
+    return left.dotProduct(right)
+}
+
+public func ⨉ (left: float4, right: float4 ) -> float4 {
+    return left.crossProduct(right)
 }
 
 extension float4x4 {

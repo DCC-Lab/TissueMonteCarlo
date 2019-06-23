@@ -9,11 +9,10 @@ import Foundation
 import simd
 import SceneKit
 
-//typealias Scalar = CGFloat
-//typealias Vector = SCNVector3
-typealias Scalar = Float
-typealias Vector = float4
-typealias Vector3D = Vector
+typealias Scalar = CGFloat
+typealias Vector = SCNVector3
+//typealias Scalar = Float
+//typealias Vector = float4
 typealias v⃗ = Vector
 
 let N = 100000

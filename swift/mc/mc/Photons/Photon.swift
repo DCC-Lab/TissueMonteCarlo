@@ -145,23 +145,23 @@ class PhotonBase {
         return weight > 0
     }
     
-    func rotateReferenceFrameInFresnelPlaneWithNormal( theNormal:Vector ) {
+    func rotateReferenceFrameInFresnelPlaneWithNormal(normal n̂:Vector ) {
         /* We always want the "s hat" vector in the same orientation
         compared to dir, regardless of the normal (i.e the normal
         could be pointing in or out) */
-        var s = û.normalizedCrossProduct(theNormal)
+        var ŝ:Vector = û ⨉ n̂
         
-        if û.normalizedDotProduct(theNormal) < 0  {
-            s = s*(-1)
+        if û • n̂ < 0  {
+            ŝ = -ŝ
         }
         
-        s.normalize()
-        let phi = êr.orientedAngleWith(s, aroundAxis: û)
-        êr.rotateAroundAxis(û, byAngle: phi)
+        ŝ.normalize()
+        let ɸ = êr.orientedAngleWith(ŝ, aroundAxis: û)
+        êr.rotateAround(û, by: ɸ)
         êr.normalize()
     
         assert(êr.isPerpendicularTo(û), "êr not perpendicular to û")
-        assert(êr.isPerpendicularTo(theNormal), "êr not perpendicular to normal")
+        assert(êr.isPerpendicularTo(n̂), "êr not perpendicular to normal")
     }
     
     func roulette() {

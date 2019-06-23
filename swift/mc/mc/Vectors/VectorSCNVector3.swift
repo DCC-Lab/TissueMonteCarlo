@@ -279,8 +279,8 @@ extension SCNVector3 {
         return left.dotProduct(right)
     }
 
-    static func ⨉ (left: SCNVector3, right: SCNVector3 ) -> CGFloat {
-        return left.dotProduct(right)
+    static func ⨉ (left: SCNVector3, right: SCNVector3 ) -> SCNVector3 {
+        return left.crossProduct(right)
     }
 }
 
