@@ -20,7 +20,7 @@ import SceneKit
 //print(r)
 //print(r*u)
 
-typealias float = CGFloat
+typealias Scalar = CGFloat
 typealias Vector = SCNVector3
 //typealias float = Float
 //typealias Vector = float4

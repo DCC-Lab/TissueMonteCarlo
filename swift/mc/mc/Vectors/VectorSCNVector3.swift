@@ -281,13 +281,13 @@ extension SCNVector3 {
 
 
 struct Matrix {
-    var m:[float]
+    var m:[CGFloat]
     
-    init(array:[float]? = nil) {
+    init(array:[CGFloat]? = nil) {
         if array != nil {
             m = array!
         } else {
-            m = [float](repeating: 0, count: 9)
+            m = [CGFloat](repeating: 0, count: 9)
         }
     }
     

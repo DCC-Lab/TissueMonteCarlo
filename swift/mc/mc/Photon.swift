@@ -16,20 +16,20 @@ enum MonteCarloError: LocalizedError {
 }
 
 class Photon {
-    var position:Vector
-    var direction:Vector
-    var ePerp:Vector
-    var weight:float
-    let wavelength:float
+    var r⃗:Vector
+    var û:Vector
+    var er:Vector
+    var weight:Scalar
+    let λ:Scalar
 
-    let originalPosition:Vector
-    let originalDirection:Vector
+    let r⃗ₒ:Vector
+    let ûₒ:Vector
     var keepingExtendedStatistics:Bool
-    var statistics:[(Vector,float)]
-    var distanceTraveled:float
+    var statistics:[(Vector,Scalar)]
+    var distanceTraveled:Scalar
 
     var description:String {
-        return String(format: "P: ( %0.2f,%0.2f,%0.2f ) D:(%0.2f,%0.2f,%0.2f ) W:%0.2f",self.position.x,self.position.y,self.position.z,self.direction.x,self.direction.y,self.direction.z,self.weight )
+        return String(format: "P: ( %0.2f,%0.2f,%0.2f ) D:(%0.2f,%0.2f,%0.2f ) W:%0.2f",r⃗.x,r⃗.y,r⃗.z,û.x,û.y,û.z,weight )
     }
     
     var x̂:Vector {
@@ -45,50 +45,50 @@ class Photon {
         get { return Vector(0,0,0) }
     }
 
-    init?(position:Vector, direction:Vector, wavelength:float) {
-        self.position = position
-        self.direction = direction
-        self.weight = 1
-        self.wavelength = wavelength
+    init?(position:Vector, direction:Vector, wavelength:Scalar) {
+        r⃗ = position
+        û = direction
+        weight = 1
+        λ = wavelength
 
-        self.originalPosition = position
-        self.originalDirection = direction
+        r⃗ₒ = position
+        ûₒ = û
 
-        self.keepingExtendedStatistics = false
-        self.distanceTraveled = 0
-        self.statistics = []
-        self.ePerp = Vector(0,0,0)
-        if self.direction == ẑ {
-            self.ePerp = x̂
-        } else if (self.direction == x̂) {
-            self.ePerp = ŷ
-        } else if (self.direction == ŷ) {
-            self.ePerp = ẑ
-        } else if self.direction == -ẑ {
-            self.ePerp = -x̂
-        } else if (self.direction == -x̂) {
-            self.ePerp = -ŷ
-        } else if (self.direction == -ŷ) {
-            self.ePerp = -ẑ
+        keepingExtendedStatistics = false
+        distanceTraveled = 0
+        statistics = []
+        er = Vector(0,0,0)
+        if û == ẑ {
+            er = x̂
+        } else if (û == x̂) {
+            er = ŷ
+        } else if (û == ŷ) {
+            er = ẑ
+        } else if û == -ẑ {
+            er = -x̂
+        } else if (û == -x̂) {
+            er = -ŷ
+        } else if (û == -ŷ) {
+            er = -ẑ
         }
 
-        if direction.norm() == 0 {
+        if û.norm() == 0 {
             return nil
         }
 
     }
     
     func reset() {
-        self.position = self.originalPosition
-        self.direction = self.originalDirection
-        self.ePerp = x̂
-        self.weight = 1
-        self.keepingExtendedStatistics = false
-        self.distanceTraveled = 0
-        self.statistics = [(self.originalPosition,self.weight)]
+        r⃗ = r⃗ₒ
+        û = ûₒ
+        er = x̂
+        weight = 1
+        keepingExtendedStatistics = false
+        distanceTraveled = 0
+        statistics = [(r⃗ₒ,weight)]
     }
     
-    func propagate(into material:BulkMaterial, for distance:float) throws {
+    func propagate(into material:BulkMaterial, for distance:Scalar) throws {
         while isAlive() {
             let (θ, φ) = material.randomScatteringAngles()
             let distance = material.randomScatteringDistance()
@@ -103,23 +103,23 @@ class Photon {
         }
     }
 
-    func moveBy(_ distance:float) {
-        self.position.addScaledVector(self.direction, scale:distance)
-        self.distanceTraveled += distance;
-        //self.statistics.append((self.position, self.weight))
+    func moveBy(_ distance:Scalar) {
+        r⃗.addScaledVector(û, scale:distance)
+        distanceTraveled += distance;
+        //statistics.append((position, weight))
     }
     
-    func decreaseWeightBy(_ delta:float) {
-        self.weight -= delta
-        if self.weight < 0 {
-            self.weight = 0
+    func decreaseWeightBy(_ delta:Scalar) {
+        weight -= delta
+        if weight < 0 {
+            weight = 0
         }
     }
 
-    func multiplyWeightBy(scale:float) {
-        self.weight *= scale
-        if self.weight < 0 {
-            self.weight = 0
+    func multiplyWeightBy(scale:Scalar) {
+        weight *= scale
+        if weight < 0 {
+            weight = 0
         }
     }
 
@@ -127,12 +127,12 @@ class Photon {
         return weight > 0
     }
     
-    func scatterBy(_ θ:float,_ φ:float ) {
-        self.ePerp.rotateAroundAxis(self.direction, byAngle: φ)
-        self.direction.rotateAroundAxis(self.ePerp, byAngle: θ)
+    func scatterBy(_ θ:Scalar,_ φ:Scalar ) {
+        er.rotateAroundAxis(û, byAngle: φ)
+        û.rotateAroundAxis(er, byAngle: θ)
 
-        try! _ = self.ePerp.normalize()
-        try! _ = self.direction.normalize()
+        try! _ = er.normalize()
+        try! _ = û.normalize()
     }
 
     
@@ -140,37 +140,37 @@ class Photon {
         /* We always want the "s hat" vector in the same orientation
         compared to dir, regardless of the normal (i.e the normal
         could be pointing in or out) */
-        var s = direction.normalizedCrossProduct(theNormal)
+        var s = û.normalizedCrossProduct(theNormal)
         
-        if direction.normalizedDotProduct(theNormal) < 0  {
+        if û.normalizedDotProduct(theNormal) < 0  {
             s = s*(-1)
         }
         
         do {
             try _ = s.normalize()
-            let phi = ePerp.orientedAngleWith(s, aroundAxis: direction)
-            ePerp.rotateAroundAxis(direction, byAngle: phi)
-            try _ = ePerp.normalize()
+            let phi = er.orientedAngleWith(s, aroundAxis: û)
+            er.rotateAroundAxis(û, byAngle: phi)
+            try _ = er.normalize()
         } catch {
             
         }
     
-        assert(ePerp.isPerpendicularTo(direction), "ePerp not perpendicular to direction")
-        assert(ePerp.isPerpendicularTo(theNormal), "ePerp not perpendicular to normal")
+        assert(er.isPerpendicularTo(û), "er not perpendicular to û")
+        assert(er.isPerpendicularTo(theNormal), "er not perpendicular to normal")
     }
     
     func roulette() {
-        let CHANCE:float = 0.1
-        let WeightThreshold:float = 1e-4
+        let CHANCE:Scalar = 0.1
+        let WeightThreshold:Scalar = 1e-4
         
-        if self.weight <= WeightThreshold {
-           let randomfloat = float.random(in:0...1)
+        if weight <= WeightThreshold {
+           let randomfloat = Scalar.random(in:0...1)
             
             if( randomfloat < CHANCE) {
                 /* survived the roulette.*/
-                self.multiplyWeightBy( scale: 1.0 / CHANCE );
+                multiplyWeightBy( scale: 1.0 / CHANCE );
             } else {
-                self.weight = 0
+                weight = 0
             }
         }
     }
@@ -179,13 +179,13 @@ class Photon {
 //class PhotonSIMD4 {
 //
 //    var position:float4
-//    var direction:float4
-//    var ePerp:float4
+//    var û:float4
+//    var er:float4
 //    var weight:Float
-//    let wavelength:Float
+//    let λ:Float
 //    
-//    let originalPosition:float4
-//    let originalDirection:float4
+//    let r⃗ₒ:float4
+//    let ûₒ:float4
 //    var keepingExtendedStatistics:Bool
 //    var statistics:[(float4,Float)]
 //    var distanceTraveled:Float
@@ -196,54 +196,54 @@ class Photon {
 //    let oHat = float4(0,0,0,0)
 //    
 //    var description:String {
-//        return String(format: "P: ( %0.2f,%0.2f,%0.2f ) D:(%0.2f,%0.2f,%0.2f ) W:%0.2f",self.position.x,self.position.y,self.position.z,self.direction.x,self.direction.y,self.direction.z,self.weight )
+//        return String(format: "P: ( %0.2f,%0.2f,%0.2f ) D:(%0.2f,%0.2f,%0.2f ) W:%0.2f",self.position.x,self.position.y,self.position.z,self.û.x,self.û.y,self.û.z,self.weight )
 //    }
 //    
 //    
-//    init?(position:float4, direction:float4, wavelength:Float) {
+//    init?(position:float4, û:float4, λ:Float) {
 //        self.position = position
-//        self.direction = direction
+//        self.û = û
 //        self.weight = 1
-//        self.wavelength = wavelength
+//        self.λ = λ
 //        
-//        self.originalPosition = position
-//        self.originalDirection = direction
+//        self.r⃗ₒ = position
+//        self.ûₒ = û
 //        
 //        self.keepingExtendedStatistics = false
 //        self.distanceTraveled = 0
 //        self.statistics = []
-//        self.ePerp = oHat
-//        if self.direction == zHat {
-//            self.ePerp = xHat
-//        } else if (self.direction == xHat) {
-//            self.ePerp = yHat
-//        } else if (self.direction == yHat) {
-//            self.ePerp = zHat
-//        } else if self.direction == -zHat {
-//            self.ePerp = -xHat
-//        } else if (self.direction == -xHat) {
-//            self.ePerp = -yHat
-//        } else if (self.direction == -yHat) {
-//            self.ePerp = -zHat
+//        self.er = oHat
+//        if self.û == zHat {
+//            self.er = xHat
+//        } else if (self.û == xHat) {
+//            self.er = yHat
+//        } else if (self.û == yHat) {
+//            self.er = zHat
+//        } else if self.û == -zHat {
+//            self.er = -xHat
+//        } else if (self.û == -xHat) {
+//            self.er = -yHat
+//        } else if (self.û == -yHat) {
+//            self.er = -zHat
 //        }
 //
-//        if direction.norm() == 0 {
+//        if û.norm() == 0 {
 //            return nil
 //        }
 //        
 //    }
 //    
 //    func reset() {
-//        self.position = self.originalPosition
-//        self.direction = self.originalDirection
-//        self.ePerp = xHat
+//        self.position = self.r⃗ₒ
+//        self.û = self.ûₒ
+//        self.er = xHat
 //        self.weight = 1
 //        self.keepingExtendedStatistics = false
 //        self.distanceTraveled = 0
-//        self.statistics = [(self.originalPosition,self.weight)]
+//        self.statistics = [(self.r⃗ₒ,self.weight)]
 //    }
 //    
-//    func propagate(into material:BulkMaterialSIMD4, for distance:float) throws {
+//    func propagate(into material:BulkMaterialSIMD4, for distance:Scalar) throws {
 //        while isAlive() {
 //            let (θ, φ) = material.randomScatteringAngles()
 //            let distance = Float(material.randomScatteringDistance())
@@ -259,7 +259,7 @@ class Photon {
 //    }
 //    
 //    func moveBy(_ distance:Float) {
-//        self.position.addScaledVector(self.direction, scale:distance)
+//        self.position.addScaledVector(self.û, scale:distance)
 //        self.distanceTraveled += distance;
 //        //self.statistics.append((self.position, self.weight))
 //    }
@@ -283,11 +283,11 @@ class Photon {
 //    }
 //    
 //    func scatterBy(_ θ:Float,_ φ:Float ) {
-//        self.ePerp.rotateAroundAxis(self.direction, byAngle: φ)
-//        self.direction.rotateAroundAxis(self.ePerp, byAngle: θ)
+//        self.er.rotateAroundAxis(self.û, byAngle: φ)
+//        self.û.rotateAroundAxis(self.er, byAngle: θ)
 //        
-//        try! _ = self.ePerp.normalize()
-//        try! _ = self.direction.normalize()
+//        try! _ = self.er.normalize()
+//        try! _ = self.û.normalize()
 //    }
 //    
 //    
@@ -295,31 +295,31 @@ class Photon {
 //        /* We always want the "s hat" vector in the same orientation
 //         compared to dir, regardless of the normal (i.e the normal
 //         could be pointing in or out) */
-//        var s = direction.normalizedCrossProduct(theNormal)
+//        var s = û.normalizedCrossProduct(theNormal)
 //        
-//        if direction.normalizedDotProduct(theNormal) < 0  {
+//        if û.normalizedDotProduct(theNormal) < 0  {
 //            s = s*(-1)
 //        }
 //        
 //        do {
 //            try _ = s.normalize()
-//            let phi = ePerp.orientedAngleWith(s, aroundAxis: direction)
-//            ePerp.rotateAroundAxis(direction, byAngle: phi)
-//            try _ = ePerp.normalize()
+//            let phi = er.orientedAngleWith(s, aroundAxis: û)
+//            er.rotateAroundAxis(û, byAngle: phi)
+//            try _ = er.normalize()
 //        } catch {
 //            
 //        }
 //        
-//        assert(ePerp.isPerpendicularTo(direction), "ePerp not perpendicular to direction")
-//        assert(ePerp.isPerpendicularTo(theNormal), "ePerp not perpendicular to normal")
+//        assert(er.isPerpendicularTo(û), "er not perpendicular to û")
+//        assert(er.isPerpendicularTo(theNormal), "er not perpendicular to normal")
 //    }
 //    
 //    func roulette() {
-//        let CHANCE:float = 0.1
-//        let WeightThreshold:float = 1e-4
+//        let CHANCE:Scalar = 0.1
+//        let WeightThreshold:Scalar = 1e-4
 //        
 //        if self.weight <= WeightThreshold {
-//            let randomfloat = float.random(in:0...1)
+//            let randomfloat = Scalar.random(in:0...1)
 //            
 //            if( randomfloat < CHANCE) {
 //                /* survived the roulette.*/
@@ -332,7 +332,7 @@ class Photon {
 //}
 
 /*
-func propagate(into material:BulkMaterialSIMD4, for distance:float) throws {
+func propagate(into material:BulkMaterialSIMD4, for distance:Scalar) throws {
     for i in 0...1000 {
         op0 = getPositionsDirectionDistance()
         op1 = getRandomScatteringAngles(N)
@@ -347,54 +347,54 @@ func propagate(into material:BulkMaterialSIMD4, for distance:float) throws {
 
 //class Photons {
 //    var positions:[Vector]
-//    var directions:[Vector]
-//    var ePerps:[Vector]
-//    var weights:[float]
-//    let wavelengths:[float]
+//    var ûs:[Vector]
+//    var ers:[Vector]
+//    var weights:[Scalar]
+//    let λs:[Scalar]
 //
-//    let originalPositions:[Vector]
-//    let originalDirections:[Vector]
+//    let r⃗ₒs:[Vector]
+//    let ûₒs:[Vector]
 //    var keepingExtendedStatistics:Bool
-//    var statistics:[(Vector,float)]
-//    var distanceTraveled:[float]
+//    var statistics:[(Vector,Scalar)]
+//    var distanceTraveled:[Scalar]
 //
-//    init?(positions:[Vector], directions:[Vector], wavelengths:[float]) {
+//    init?(positions:[Vector], ûs:[Vector], λs:[Scalar]) {
 //        let N = positions.count
-//        guard N == directions.count && N == wavelengths.count else {
+//        guard N == ûs.count && N == λs.count else {
 //            return nil
 //        }
 //
 //        self.positions = positions
-//        self.directions = directions
-//        self.weights = [float](repeating: 1.0, count: N)
-//        self.wavelengths = wavelengths
+//        self.ûs = ûs
+//        self.weights = [Scalar](repeating: 1.0, count: N)
+//        self.λs = λs
 //
-//        self.originalPositions = positions
-//        self.originalDirections = directions
+//        self.r⃗ₒs = positions
+//        self.ûₒs = ûs
 //
 //        self.keepingExtendedStatistics = false
 //        self.distanceTraveled = []
 //        self.statistics = []
 //
-//        self.ePerps = [Vector](repeating: oHat, count: N)
-//        for (i, direction) in directions.enumerated() {
-//            ePerps[i] = defaultPerpendicularPlane(propagation: direction)
+//        self.ers = [Vector](repeating: oHat, count: N)
+//        for (i, û) in ûs.enumerated() {
+//            ers[i] = defaultPerpendicularPlane(propagation: û)
 //        }
 //
 //    }
 //
-//    func defaultPerpendicularPlane(propagation direction:Vector) -> Vector {
-//        if direction == zHat {
+//    func defaultPerpendicularPlane(propagation û:Vector) -> Vector {
+//        if û == zHat {
 //            return xHat
-//        } else if (direction == xHat) {
+//        } else if (û == xHat) {
 //            return  yHat
-//        } else if (direction == yHat) {
+//        } else if (û == yHat) {
 //            return  zHat
-//        } else if direction == -zHat {
+//        } else if û == -zHat {
 //            return  -xHat
-//        } else if (direction == -xHat) {
+//        } else if (û == -xHat) {
 //            return  -yHat
-//        } else if (direction == -yHat) {
+//        } else if (û == -yHat) {
 //            return  -zHat
 //        }
 //        return oHat
@@ -402,17 +402,17 @@ func propagate(into material:BulkMaterialSIMD4, for distance:float) throws {
 //
 //    func reset() {
 //        let N = positions.count
-//        self.positions = self.originalPositions
-//        self.directions = self.originalDirections
-//        self.ePerps = [Vector](repeating: oHat, count: N)
-//        for (i, direction) in directions.enumerated() {
-//            ePerps[i] = defaultPerpendicularPlane(propagation: direction)
+//        self.positions = self.r⃗ₒs
+//        self.ûs = self.ûₒs
+//        self.ers = [Vector](repeating: oHat, count: N)
+//        for (i, û) in ûs.enumerated() {
+//            ers[i] = defaultPerpendicularPlane(propagation: û)
 //        }
 //
-//        self.weights = [float](repeating: 1.0, count: N)
+//        self.weights = [Scalar](repeating: 1.0, count: N)
 //    }
 //
-//    func propagate(into material:BulkMaterial, for distance:float) throws {
+//    func propagate(into material:BulkMaterial, for distance:Scalar) throws {
 ////        while isAlive() {
 ////            let (θ, φ) = material.randomScatteringAngles()
 ////            let distance = material.randomScatteringDistance()
@@ -427,20 +427,20 @@ func propagate(into material:BulkMaterialSIMD4, for distance:float) throws {
 ////        }
 //    }
 //
-//    func moveBy(_ distances:[float]) {
-//        self.position.addScaledVector(self.direction, scale:distance)
+//    func moveBy(_ distances:[Scalar]) {
+//        self.position.addScaledVector(self.û, scale:distance)
 //        self.distanceTraveled += distance;
 //        //self.statistics.append((self.position, self.weight))
 //    }
 //
-//    func decreaseWeightBy(_ delta:float) {
+//    func decreaseWeightBy(_ delta:Scalar) {
 //        self.weight -= delta
 //        if self.weight < 0 {
 //            self.weight = 0
 //        }
 //    }
 //
-//    func multiplyWeightBy(scale:float) {
+//    func multiplyWeightBy(scale:Scalar) {
 //        self.weight *= scale
 //        if self.weight < 0 {
 //            self.weight = 0
@@ -451,12 +451,12 @@ func propagate(into material:BulkMaterialSIMD4, for distance:float) throws {
 //        return weight > 0
 //    }
 //
-//    func scatterBy(_ θ:float,_ φ:float ) {
-//        self.ePerp.rotateAroundAxis(self.direction, byAngle: φ)
-//        self.direction.rotateAroundAxis(self.ePerp, byAngle: θ)
+//    func scatterBy(_ θ:Scalar,_ φ:Scalar ) {
+//        self.er.rotateAroundAxis(self.û, byAngle: φ)
+//        self.û.rotateAroundAxis(self.er, byAngle: θ)
 //
-//        try! _ = self.ePerp.normalize()
-//        try! _ = self.direction.normalize()
+//        try! _ = self.er.normalize()
+//        try! _ = self.û.normalize()
 //    }
 //
 //
@@ -464,31 +464,31 @@ func propagate(into material:BulkMaterialSIMD4, for distance:float) throws {
 //        /* We always want the "s hat" vector in the same orientation
 //         compared to dir, regardless of the normal (i.e the normal
 //         could be pointing in or out) */
-//        var s = direction.normalizedCrossProduct(theNormal)
+//        var s = û.normalizedCrossProduct(theNormal)
 //
-//        if direction.normalizedDotProduct(theNormal) < 0  {
+//        if û.normalizedDotProduct(theNormal) < 0  {
 //            s = s*(-1)
 //        }
 //
 //        do {
 //            try _ = s.normalize()
-//            let phi = ePerp.orientedAngleWith(s, aroundAxis: direction)
-//            ePerp.rotateAroundAxis(direction, byAngle: phi)
-//            try _ = ePerp.normalize()
+//            let phi = er.orientedAngleWith(s, aroundAxis: û)
+//            er.rotateAroundAxis(û, byAngle: phi)
+//            try _ = er.normalize()
 //        } catch {
 //
 //        }
 //
-//        assert(ePerp.isPerpendicularTo(direction), "ePerp not perpendicular to direction")
-//        assert(ePerp.isPerpendicularTo(theNormal), "ePerp not perpendicular to normal")
+//        assert(er.isPerpendicularTo(û), "er not perpendicular to û")
+//        assert(er.isPerpendicularTo(theNormal), "er not perpendicular to normal")
 //    }
 //
 //    func roulette() {
-//        let CHANCE:float = 0.1
-//        let WeightThreshold:float = 1e-4
+//        let CHANCE:Scalar = 0.1
+//        let WeightThreshold:Scalar = 1e-4
 //
 //        if self.weight <= WeightThreshold {
-//            let randomfloat = float.random(in:0...1)
+//            let randomfloat = Scalar.random(in:0...1)
 //
 //            if( randomfloat < CHANCE) {
 //                /* survived the roulette.*/
