@@ -49,12 +49,13 @@ extension float4 {
         return simd.length(self)
     }
     
-    mutating func normalize() throws -> float4 {
+    mutating func normalize() -> float4 {
         self = simd.normalize(self)
         return self
     }
     
-    mutating func addScaledVector(_ theVector:float4, scale theScale:Float) {
+    mutating func add(_ theVector:float4, scaledBy theScale:Float) {
+        // TODO: Check SCN for fatser version? test
         self += theVector * theScale
     }
     
@@ -169,6 +170,10 @@ extension float4 {
         self = float4(c * self[0] - s * self[1], s * self[0] + c * self[1], self[2], 1)
     }
     
+    mutating func  rotateAround(_ u:float4, by theta:Float) {
+        rotateAroundAxis(u, byAngle: theta)
+    }
+
     mutating func rotateAroundAxis(_ u:float4, byAngle theta:Float) {
         self = float4x4.rotationMatrixAround(axis: u, angle: theta) * self
     }

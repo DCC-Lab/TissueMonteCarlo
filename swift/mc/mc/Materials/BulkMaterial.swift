@@ -68,7 +68,6 @@ class BulkMaterial  {
         return (0,0)
     }
 }
-
 //class BulkMaterialSIMD4  {
 //    fileprivate var randomTable = [Float](repeating: 0, count: TableSize)
 //    fileprivate var randomIndex:Int = 0

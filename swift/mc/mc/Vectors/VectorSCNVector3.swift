@@ -60,7 +60,8 @@ extension SCNVector3 {
         return sqrt(x*x + y*y + z*z)
     }
     
-    mutating func normalize() throws -> SCNVector3 {
+    @discardableResult
+    mutating func normalize() -> SCNVector3 {
         let value = sqrt(x*x + y*y + z*z)
         x = x / value
         y = y / value
@@ -68,7 +69,7 @@ extension SCNVector3 {
         return self
     }
     
-    mutating func addScaledVector(_ theVector:SCNVector3, scale theScale:CGFloat) {
+    mutating func add(_ theVector:SCNVector3, scaledBy theScale:CGFloat) {
         x += theVector.x * theScale;
         y += theVector.y * theScale;
         z += theVector.z * theScale;
@@ -189,6 +190,10 @@ extension SCNVector3 {
         x = c * tempX - s * y
         y = s * tempX + c * y
     }
+
+    mutating func  rotateAround(_ u:SCNVector3, by theta:CGFloat) {
+        rotateAroundAxis(u, byAngle: theta)
+    }
     
     mutating func  rotateAroundAxis(_ u:SCNVector3, byAngle theta:CGFloat) {
         //http://en.wikipedia.org/wiki/Rotation_matrix
@@ -225,7 +230,7 @@ extension SCNVector3 {
     static prefix func - (vector: SCNVector3) -> SCNVector3 {
         return SCNVector3(x: -vector.x, y: -vector.y, z:-vector.z)
     }
-    
+
     static func + (left: SCNVector3, right: SCNVector3) -> SCNVector3 {
         return SCNVector3(x: left.x + right.x, y: left.y + right.y, z:left.z + right.z)
     }

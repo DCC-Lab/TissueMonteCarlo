@@ -9,21 +9,10 @@ import Foundation
 import simd
 import SceneKit
 
-//var v = float3(arrayLiteral: 1,1,1)
-//var u = float3(arrayLiteral: 1,2,3)
-//
-//print(v.norm())
-//print(v.abs())
-//let w = v + u
-//print(u)
-//let r = float3x3.rotationMatrixAround(axis: u, angle: 0.5)
-//print(r)
-//print(r*u)
-
-typealias Scalar = CGFloat
-typealias Vector = SCNVector3
-//typealias float = Float
-//typealias Vector = float4
+//typealias Scalar = CGFloat
+//typealias Vector = SCNVector3
+typealias Scalar = Float
+typealias Vector = float4
 typealias Vector3D = Vector
 typealias v⃗ = Vector
 
@@ -33,7 +22,7 @@ let material = BulkHenyeyGreenstein(mu_s: 30, mu_a: 0.5, index: 1.4, g: 0.8)
 let photon = Photon(position: v⃗(0,0,0), direction: v⃗(0,0,1), wavelength: 632)!
 for _ in 1...N {
     photon.reset()
-    try photon.propagate(into: material, for: 0)
+    try photon.propagate(into: material)
 }
 var duration = -start.timeIntervalSinceNow
 var rate = duration/TimeInterval(N)*1000000
