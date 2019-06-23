@@ -51,6 +51,26 @@
                BlueprintName = "mcTests"
                ReferencedContainer = "container:mc.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "mcTests/testFloat3Operations()">
+               </Test>
+               <Test
+                  Identifier = "mcTests/testInitVector()">
+               </Test>
+               <Test
+                  Identifier = "mcTests/testInitVectorWithArg()">
+               </Test>
+               <Test
+                  Identifier = "mcTests/testInitVectorWithGlobalVecrtors()">
+               </Test>
+               <Test
+                  Identifier = "mcTests/testNorm()">
+               </Test>
+               <Test
+                  Identifier = "mcTests/testSCN3VectorOperations()">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>
