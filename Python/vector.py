@@ -115,7 +115,7 @@ class Vector:
 
         cost = np.cos(theta)
         sint = np.sin(theta)
-        one_cost = 1 - cosTheta
+        one_cost = 1 - cost
         
         ux = u.x
         uy = u.y
@@ -125,15 +125,15 @@ class Vector:
         Y = self.y
         Z = self.z
         
-        self.x = (cost + ux*ux * one_cost) * X \
+        self.x = (cost     + ux*ux    * one_cost ) * X \
         +        (ux*uy    * one_cost - uz * sint) * Y \
         +        (ux * uz  * one_cost + uy * sint) * Z
         self.y = (uy*ux    * one_cost + uz * sint) * X \
-        +        (cost + uy*uy * one_cost) * Y 
+        +        (cost     + uy*uy    * one_cost ) * Y 
         +        (uy * uz  * one_cost - ux * sint) * Z
         self.z = (uz*ux    * one_cost - uy * sint) * X \
         +        (uz * uy  * one_cost + ux * sint) * Y \
-        +        (cost + uz*uz * one_cost) * Z
+        +        (cost     + uz*uz    * one_cost ) * Z
 
     def rotateAroundX(self, phi):
         v = Vector(self.x, self.y, self.z)
