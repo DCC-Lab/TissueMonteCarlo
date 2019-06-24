@@ -25,14 +25,6 @@ class Vector:
     def __str__(self):
         return "({0:.4f},{1:.4f},{2:.4f})".format(self.x, self.y, self.z)
 
-    def __getitem__(self, index):
-        if index == 0:
-            return self.x
-        elif index == 1:
-            return self.y
-        else:
-            return self.z
-
     def __mul__(self, scale):
         return Vector(self.x * scale, self.y * scale, self.z * scale)
 
@@ -54,23 +46,29 @@ class Vector:
     def __rsub__(self, vector):
         return Vector(-self.x + vector.x, -self.y + vector.y, -self.z + vector.z)
 
+    def isParallelTo(self, vector):
+        return (self.normalizedDotProduct(vector) - 1 < 1e-6)
+
+    def isPerpendicularTo(self, vector):
+        return (self.normalizedDotProduct(vector) < 1e-6)
+
     def norm(self):
         ux = self.x
         uy = self.y
         uz = self.z
         return ux*ux+uy*uy+uz*uz
 
-    def normalize(self):
-        length = self.abs()
-        self.x /= length
-        self.y /= length
-        self.z /= length
-
     def abs(self):
         ux = self.x
         uy = self.y
         uz = self.z
         return np.sqrt(ux*ux+uy*uy+uz*uz)
+
+    def normalize(self):
+        length = self.abs()
+        self.x /= length
+        self.y /= length
+        self.z /= length
 
     def cross(self, vector):
         """ Accessing properties is costly when done very often.
@@ -103,7 +101,7 @@ class Vector:
             phi = np.pi-phi
 
         if sinPhi.dot(w) <= 0:
-            phi *= -1 
+            phi = -phi
     
         return phi
 
@@ -155,12 +153,6 @@ class Vector:
         self.y = s * v.x + c * v.y
         self.z = v.z
 
-    def isParallelTo(self, vector):
-        return (self.normalizedDotProduct(vector) - 1 < 1e-6)
-
-    def isPerpendicularTo(self, vector):
-        return (self.normalizedDotProduct(vector) < 1e-6)
-
 class UnitVector(Vector):
     def __init__(self, x:float=0,y:float=0,z:float=0):
         Vector.__init__(self, x,y,z)
@@ -172,8 +164,7 @@ class UnitVector(Vector):
         ux = self.x
         uy = self.y
         uz = self.z
-        length = (ux*ux+uy*uy+uz*uz+1)/2
-        return length
+        return (ux*ux+uy*uy+uz*uz+1)/2
 
     def cross(self, vector):
         """ Accessing properties is costly when done very often.
@@ -195,3 +186,8 @@ class UnitVector(Vector):
         else:
             return Vector.normalizedCrossProduct(self, vector)
 
+    def normalizedDotProduct(self, vector):
+        if isinstance(vector, UnitVector):
+            return self.dot(vector)
+        else:
+            return Vector.normalizedDotProduct(self, vector)
