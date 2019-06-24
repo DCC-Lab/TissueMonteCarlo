@@ -113,9 +113,9 @@ class Vector:
         # http://en.wikipedia.org/wiki/Rotation_matrix
         u.normalize()
 
-        cosTheta = np.cos(theta)
-        sinTheta = np.sin(theta)
-        oneMinusCosTheta = 1 - cosTheta
+        cost = np.cos(theta)
+        sint = np.sin(theta)
+        one_cost = 1 - cosTheta
         
         ux = u.x
         uy = u.y
@@ -125,15 +125,15 @@ class Vector:
         Y = self.y
         Z = self.z
         
-        self.x = (cosTheta + ux*ux * oneMinusCosTheta ) * X \
-               + (ux*uy    * oneMinusCosTheta - uz * sinTheta) * Y \
-               + (ux * uz  * oneMinusCosTheta + uy * sinTheta) * Z
-        self.y = (uy*ux    * oneMinusCosTheta + uz * sinTheta) * X \
-               + (cosTheta + uy*uy * oneMinusCosTheta ) * Y 
-               + (uy * uz  * oneMinusCosTheta - ux * sinTheta) * Z
-        self.z = (uz*ux    * oneMinusCosTheta - uy * sinTheta) * X \
-               + (uz * uy  * oneMinusCosTheta + ux * sinTheta) * Y \
-               + (cosTheta + uz*uz * oneMinusCosTheta) * Z
+        self.x = (cost + ux*ux * one_cost) * X \
+        +        (ux*uy    * one_cost - uz * sint) * Y \
+        +        (ux * uz  * one_cost + uy * sint) * Z
+        self.y = (uy*ux    * one_cost + uz * sint) * X \
+        +        (cost + uy*uy * one_cost) * Y 
+        +        (uy * uz  * one_cost - ux * sint) * Z
+        self.z = (uz*ux    * one_cost - uy * sint) * X \
+        +        (uz * uy  * one_cost + ux * sint) * Y \
+        +        (cost + uz*uz * one_cost) * Z
 
     def rotateAroundX(self, phi):
         v = Vector(self.x, self.y, self.z)
