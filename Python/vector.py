@@ -61,13 +61,7 @@ class Vector:
         return ux*ux+uy*uy+uz*uz
 
     def normalize(self):
-        """ The sqrt() calculation is expensive. If it should
-        be unitary in the first place, we only normalize
-        when it has departed significantly """
-        ux = self.x
-        uy = self.y
-        uz = self.z
-        length = np.sqrt(ux*ux+uy*uy+uz*uz)
+        length = self.abs()
         self.x /= length
         self.y /= length
         self.z /= length
@@ -171,7 +165,7 @@ class UnitVector(Vector):
     def __init__(self, x:float=0,y:float=0,z:float=0):
         Vector.__init__(self, x,y,z)
 
-    def normalize(self):
+    def abs(self):
         """ The sqrt() calculation is expensive. If it should
         be unitary in the first place, we use sqrt(1+x) = 1+x/2
         with norm = 1 + x, or norm - 1 = x """
@@ -179,13 +173,11 @@ class UnitVector(Vector):
         uy = self.y
         uz = self.z
         length = (ux*ux+uy*uy+uz*uz+1)/2
-        self.x /= length
-        self.y /= length
-        self.z /= length
+        return length
 
     def cross(self, vector):
         """ Accessing properties is costly when done very often.
-        cross product is a common operation """
+        cross product of unit vectors is a common operation """
         ux = self.x
         uy = self.y
         uz = self.z
