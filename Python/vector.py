@@ -106,6 +106,10 @@ class Vector:
         return phi
 
     def rotateAround(self, u, theta):
+        # This is the most expensive (and most common)
+        # operation when performing Monte Carlo 
+        # in tissue. It is difficult to optimize without
+        # making it even less readable than it currently is
         # http://en.wikipedia.org/wiki/Rotation_matrix
         u.normalize()
 
@@ -121,9 +125,15 @@ class Vector:
         Y = self.y
         Z = self.z
         
-        self.x = (cosTheta + ux * ux * oneMinusCosTheta ) * X + (ux*uy * oneMinusCosTheta - uz * sinTheta) * Y +(ux * uz * oneMinusCosTheta + uy * sinTheta ) * Z
-        self.y = (uy*ux * oneMinusCosTheta + uz * sinTheta) * X + (cosTheta + uy * uy * oneMinusCosTheta ) * Y +(uy * uz * oneMinusCosTheta - ux * sinTheta ) * Z
-        self.z = (uz*ux * oneMinusCosTheta - uy * sinTheta) * X + (uz * uy * oneMinusCosTheta + ux * sinTheta) * Y +(cosTheta + uz*uz * oneMinusCosTheta) * Z
+        self.x = (cosTheta + ux*ux * oneMinusCosTheta ) * X \
+               + (ux*uy    * oneMinusCosTheta - uz * sinTheta) * Y \
+               + (ux * uz  * oneMinusCosTheta + uy * sinTheta) * Z
+        self.y = (uy*ux    * oneMinusCosTheta + uz * sinTheta) * X \
+               + (cosTheta + uy*uy * oneMinusCosTheta ) * Y 
+               + (uy * uz  * oneMinusCosTheta - ux * sinTheta) * Z
+        self.z = (uz*ux    * oneMinusCosTheta - uy * sinTheta) * X \
+               + (uz * uy  * oneMinusCosTheta + ux * sinTheta) * Y \
+               + (cosTheta + uz*uz * oneMinusCosTheta) * Z
 
     def rotateAroundX(self, phi):
         v = Vector(self.x, self.y, self.z)

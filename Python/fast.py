@@ -1,5 +1,7 @@
 import numpy as np
 
+# There is no gain in speed with this...! 
+
 N = 1000
 xMin = 0.8
 xMax = 1.2
