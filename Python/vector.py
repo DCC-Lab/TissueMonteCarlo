@@ -1,38 +1,6 @@
 import numpy as np
 from collections import namedtuple
 
-N = 1000
-xMin = 0.8
-xMax = 1.2
-dx = (xMax-xMin)/N
-dTheta = 2*np.pi/N
-sqrtTable = []
-sinTable = []
-cosTable = []
-
-def Sqrt(x):
-    i = int((x - xMin)/dx)
-    return sqrtTable[i]
-
-def Cos(x):
-    i = int(x/dTheta)
-    return cosTable[i]
-
-def Sin(x):
-    i = int(x/dTheta)
-    return sinTable[i]
-
-def InitTables():
-    for i in range(N):
-        x = xMin + i * dx
-        sqrtTable.append(np.sqrt(x))
-    for i in range(N):
-        x = i * dTheta
-        cosTable.append(np.cos(x))
-    for i in range(N):
-        x = i * dTheta
-        sinTable.append(np.sin(x))
-
 class Vector:
     def __init__(self, x:float=0,y:float=0,z:float=0):
         if isinstance(x, (int, float)):
@@ -99,7 +67,7 @@ class Vector:
         ux = self.x
         uy = self.y
         uz = self.z
-        length = Sqrt(ux*ux+uy*uy+uz*uz)
+        length = np.sqrt(ux*ux+uy*uy+uz*uz)
         self.x /= length
         self.y /= length
         self.z /= length
@@ -149,8 +117,8 @@ class Vector:
         # http://en.wikipedia.org/wiki/Rotation_matrix
         u.normalize()
 
-        cosTheta = Cos(theta)
-        sinTheta = Sin(theta)
+        cosTheta = np.cos(theta)
+        sinTheta = np.sin(theta)
         oneMinusCosTheta = 1 - cosTheta
         
         ux = u.x
@@ -198,4 +166,40 @@ class Vector:
 
     def isPerpendicularTo(self, vector):
         return (self.normalizedDotProduct(vector) < 1e-6)
+
+class UnitVector(Vector):
+    def __init__(self, x:float=0,y:float=0,z:float=0):
+        Vector.__init__(self, x,y,z)
+
+    def normalize(self):
+        """ The sqrt() calculation is expensive. If it should
+        be unitary in the first place, we use sqrt(1+x) = 1+x/2
+        with norm = 1 + x, or norm - 1 = x """
+        ux = self.x
+        uy = self.y
+        uz = self.z
+        length = (ux*ux+uy*uy+uz*uz+1)/2
+        self.x /= length
+        self.y /= length
+        self.z /= length
+
+    def cross(self, vector):
+        """ Accessing properties is costly when done very often.
+        cross product is a common operation """
+        ux = self.x
+        uy = self.y
+        uz = self.z
+        vx = vector.x
+        vy = vector.y
+        vz = vector.z
+        if isinstance(vector, UnitVector):
+            return UnitVector(uy*vz - uz*vy, uz*vx - ux*vz, ux*vy - uy*vx)
+        else:
+            return Vector(uy*vz - uz*vy, uz*vx - ux*vz, ux*vy - uy*vx)
+
+    def normalizedCrossProduct(self, vector):
+        if isinstance(vector, UnitVector):
+            return self.cross(vector)
+        else:
+            return Vector.normalizedCrossProduct(self, vector)
 
