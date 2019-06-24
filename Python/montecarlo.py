@@ -6,6 +6,7 @@ from photon import *
 import time
 
 if __name__ == "__main__":
+    InitTables()
     mat = Material(mu_s=30, mu_a = 0.5, g = 0.8)
 
     startTime = time.time()
