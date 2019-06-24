@@ -107,8 +107,8 @@ class Vector:
 
     def rotateAround(self, u, theta):
         # This is the most expensive (and most common)
-        # operation when performing Monte Carlo 
-        # in tissue. It is difficult to optimize without
+        # operation when performing Monte Carlo in tissue 
+        # (40% of time spent here). It is difficult to optimize without
         # making it even less readable than it currently is
         # http://en.wikipedia.org/wiki/Rotation_matrix
         u.normalize()
@@ -129,7 +129,7 @@ class Vector:
         +        (ux*uy    * one_cost - uz * sint) * Y \
         +        (ux * uz  * one_cost + uy * sint) * Z
         self.y = (uy*ux    * one_cost + uz * sint) * X \
-        +        (cost     + uy*uy    * one_cost ) * Y 
+        +        (cost     + uy*uy    * one_cost ) * Y \
         +        (uy * uz  * one_cost - ux * sint) * Z
         self.z = (uz*ux    * one_cost - uy * sint) * X \
         +        (uz * uy  * one_cost + ux * sint) * Y \
