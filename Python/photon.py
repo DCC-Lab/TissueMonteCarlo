@@ -9,6 +9,12 @@ class Photon:
         self.er = UnitVector(0,1,0) # Perpendicular to scattering plane
         self.weight = 1.0
 
+    def reset(self):
+        self.r = Vector(0,0,0)
+        self.ez = UnitVector(0,0,1)    # Propagation
+        self.er = UnitVector(0,1,0) # Perpendicular to scattering plane
+        self.weight = 1.0
+
     @property
     def el(self) -> UnitVector:
         return self.ez.cross(self.ePerp) 
