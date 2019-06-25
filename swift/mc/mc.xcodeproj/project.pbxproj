@@ -7,13 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		75601BDE22BFD08200436C38 /* VectorFloat3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75601BDD22BFD08200436C38 /* VectorFloat3.swift */; };
+		75601BE022BFD09000436C38 /* VectorFloat4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75601BDF22BFD09000436C38 /* VectorFloat4.swift */; };
+		75601BE422BFD84800436C38 /* Photons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75601BE322BFD84800436C38 /* Photons.swift */; };
 		75A8C6F122BD2B5C00C60729 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
-		75A8C6F222BD2B5C00C60729 /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* Vector.swift */; };
+		75A8C6F222BD2B5C00C60729 /* VectorSCNVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* VectorSCNVector3.swift */; };
 		75A8C6F322BD2B5C00C60729 /* Photon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FCE22BD15AB00A8EB4D /* Photon.swift */; };
 		75A8C6F422BD2B5C00C60729 /* BulkMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */; };
 		75A8C6F522BD2B5C00C60729 /* BulkHenyeyGreenstein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */; };
 		75E32FC822BD155E00A8EB4D /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
-		75E32FD122BD15D700A8EB4D /* Vector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* Vector.swift */; };
+		75E32FD122BD15D700A8EB4D /* VectorSCNVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* VectorSCNVector3.swift */; };
 		75E32FDB22BD166F00A8EB4D /* mcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FDA22BD166F00A8EB4D /* mcTests.swift */; };
 		75E32FE122BD178A00A8EB4D /* Photon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FCE22BD15AB00A8EB4D /* Photon.swift */; };
 		75E32FE822BD182C00A8EB4D /* BulkHenyeyGreenstein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */; };
@@ -43,10 +46,13 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		75601BDD22BFD08200436C38 /* VectorFloat3.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorFloat3.swift; sourceTree = "<group>"; };
+		75601BDF22BFD09000436C38 /* VectorFloat4.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VectorFloat4.swift; sourceTree = "<group>"; };
+		75601BE322BFD84800436C38 /* Photons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photons.swift; sourceTree = "<group>"; };
 		75E32FC422BD155E00A8EB4D /* mc */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = mc; sourceTree = BUILT_PRODUCTS_DIR; };
 		75E32FC722BD155E00A8EB4D /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		75E32FCE22BD15AB00A8EB4D /* Photon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Photon.swift; sourceTree = "<group>"; };
-		75E32FD022BD15D700A8EB4D /* Vector.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Vector.swift; sourceTree = "<group>"; };
+		75E32FD022BD15D700A8EB4D /* VectorSCNVector3.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorSCNVector3.swift; sourceTree = "<group>"; };
 		75E32FD222BD165300A8EB4D /* VectorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorTests.swift; sourceTree = "<group>"; };
 		75E32FD822BD166F00A8EB4D /* mcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = mcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		75E32FDA22BD166F00A8EB4D /* mcTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mcTests.swift; sourceTree = "<group>"; };
@@ -73,6 +79,34 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		75601BDC22BFD05D00436C38 /* Vectors */ = {
+			isa = PBXGroup;
+			children = (
+				75E32FD022BD15D700A8EB4D /* VectorSCNVector3.swift */,
+				75601BDD22BFD08200436C38 /* VectorFloat3.swift */,
+				75601BDF22BFD09000436C38 /* VectorFloat4.swift */,
+			);
+			path = Vectors;
+			sourceTree = "<group>";
+		};
+		75601BE122BFD81300436C38 /* Photons */ = {
+			isa = PBXGroup;
+			children = (
+				75E32FCE22BD15AB00A8EB4D /* Photon.swift */,
+				75601BE322BFD84800436C38 /* Photons.swift */,
+			);
+			path = Photons;
+			sourceTree = "<group>";
+		};
+		75601BE222BFD81D00436C38 /* Materials */ = {
+			isa = PBXGroup;
+			children = (
+				75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */,
+				75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */,
+			);
+			path = Materials;
+			sourceTree = "<group>";
+		};
 		75E32FBB22BD155E00A8EB4D = {
 			isa = PBXGroup;
 			children = (
@@ -95,10 +129,9 @@
 			isa = PBXGroup;
 			children = (
 				75E32FC722BD155E00A8EB4D /* main.swift */,
-				75E32FD022BD15D700A8EB4D /* Vector.swift */,
-				75E32FCE22BD15AB00A8EB4D /* Photon.swift */,
-				75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */,
-				75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */,
+				75601BDC22BFD05D00436C38 /* Vectors */,
+				75601BE122BFD81300436C38 /* Photons */,
+				75601BE222BFD81D00436C38 /* Materials */,
 			);
 			path = mc;
 			sourceTree = "<group>";
@@ -205,8 +238,11 @@
 				75E32FE922BD182C00A8EB4D /* BulkMaterial.swift in Sources */,
 				75E32FE122BD178A00A8EB4D /* Photon.swift in Sources */,
 				75E32FE822BD182C00A8EB4D /* BulkHenyeyGreenstein.swift in Sources */,
+				75601BE422BFD84800436C38 /* Photons.swift in Sources */,
 				75E32FC822BD155E00A8EB4D /* main.swift in Sources */,
-				75E32FD122BD15D700A8EB4D /* Vector.swift in Sources */,
+				75E32FD122BD15D700A8EB4D /* VectorSCNVector3.swift in Sources */,
+				75601BDE22BFD08200436C38 /* VectorFloat3.swift in Sources */,
+				75601BE022BFD09000436C38 /* VectorFloat4.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -216,7 +252,7 @@
 			files = (
 				75A8C6F422BD2B5C00C60729 /* BulkMaterial.swift in Sources */,
 				75A8C6F522BD2B5C00C60729 /* BulkHenyeyGreenstein.swift in Sources */,
-				75A8C6F222BD2B5C00C60729 /* Vector.swift in Sources */,
+				75A8C6F222BD2B5C00C60729 /* VectorSCNVector3.swift in Sources */,
 				75A8C6F122BD2B5C00C60729 /* main.swift in Sources */,
 				75E32FDB22BD166F00A8EB4D /* mcTests.swift in Sources */,
 				75A8C6F322BD2B5C00C60729 /* Photon.swift in Sources */,

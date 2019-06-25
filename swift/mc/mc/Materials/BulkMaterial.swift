@@ -12,40 +12,35 @@ import SceneKit
 let TableSize:Int = 65536
 
 class BulkMaterial  {
-    fileprivate var randomTable = [float](repeating: 0, count: TableSize)
+    fileprivate var randomTable = [Scalar](repeating: 0, count: TableSize)
     fileprivate var randomIndex:Int = 0
-    let infiniteDistance:float = 1e4
+    let infiniteDistance:Scalar = 1e4
 
-    var mu_s:float
-    var mu_a:float
-    var mu_t:float
-    var index:float
-    var albedo:float
+    var mu_s:Scalar
+    var mu_a:Scalar
+    var mu_t:Scalar
+    var index:Scalar
+
     var description: String {
         return " µs=\(mu_s) µa=\(mu_a) index=\(index)"
     }
     
-    init(mu_s:float, mu_a:float, index:float) {
+    init(mu_s:Scalar, mu_a:Scalar, index:Scalar) {
         self.mu_s = mu_s
         self.mu_a = mu_a
         self.mu_t = mu_a + mu_s
         self.index = index
-        self.albedo = 0
-        if mu_t != 0 {
-            self.albedo = mu_a/mu_t
-        }
         for i in 0...65535 {
-            randomTable[i] = float.random(in:0...1)
+            randomTable[i] = Scalar.random(in:0...1)
         }
         randomIndex = Int.random(in: 0...TableSize)
     }
     
-    func absorbEnergy(_ photon:Photon) {
-        let delta = photon.weight * albedo
-        photon.decreaseWeightBy(delta)
+    func albedo(photon:Photon? = nil) -> Scalar {
+        return mu_a/mu_t
     }
-    
-    func randomfloat() -> float {
+        
+    func randomfloat() -> Scalar {
         randomIndex += 1
         if randomIndex == TableSize {
             randomIndex = Int.random(in: 0...TableSize-1)
@@ -53,7 +48,7 @@ class BulkMaterial  {
         return randomTable[randomIndex]
     }
     
-    func randomScatteringDistance() -> float {
+    func randomScatteringDistance(photon:Photon? = nil) -> Scalar {
         if mu_t == 0 {
             return infiniteDistance
         }
@@ -64,11 +59,10 @@ class BulkMaterial  {
         return d
     }
 
-    func randomScatteringAngles() -> (float, float) {
+    func randomScatteringAngles(photon:Photon? = nil) -> (Scalar, Scalar) {
         return (0,0)
     }
 }
-
 //class BulkMaterialSIMD4  {
 //    fileprivate var randomTable = [Float](repeating: 0, count: TableSize)
 //    fileprivate var randomIndex:Int = 0

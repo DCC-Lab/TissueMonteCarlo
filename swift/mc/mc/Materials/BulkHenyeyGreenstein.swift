@@ -9,20 +9,20 @@
 import Foundation
 
 class BulkHenyeyGreenstein : BulkMaterial {
-    var g:float
+    var g:Scalar
     override var description: String {
         return super.description+" g=\(g)"
     }
 
-    init(mu_s: float, mu_a: float, index: float, g:float) {
+    init(mu_s: Scalar, mu_a: Scalar, index: Scalar, g:Scalar) {
         self.g = g
         super.init(mu_s:mu_s, mu_a:mu_a, index:index )
     }
 
-    override func randomScatteringAngles() -> (float, float) {
+    override func randomScatteringAngles(photon:Photon? = nil) -> (Scalar, Scalar) {
         let g = self.g
-        var θ:float!
-        let ϕ = 2.0 * π * randomfloat()
+        var θ:Scalar!
+        let ϕ = 2.0 * Scalar.pi * randomfloat()
         for _ in 1...100 {
             if g != 0 {
                 let rand_frac = (1.0 - g*g) / (1.0 - g + 2.0 * randomfloat() * g)
@@ -30,7 +30,7 @@ class BulkHenyeyGreenstein : BulkMaterial {
             } else {
                 θ = acos(1.0 - 2.0 * randomfloat() )
             }
-            if θ >= 0 && θ <= π {
+            if θ >= 0 && θ <= Scalar.pi {
                 break
             }
         }
