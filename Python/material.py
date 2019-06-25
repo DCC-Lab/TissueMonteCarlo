@@ -3,12 +3,12 @@ import matplotlib.pyplot as plt
 from stats import *
 
 class Material:
-    def __init__(self, mu_s, mu_a, g, L = (0.1, 0.1, 0.01), N = (11,11,11)):
+    def __init__(self, mu_s, mu_a, g):
         self.mu_s = mu_s
         self.mu_a = mu_a
         self.mu_t = self.mu_a + self.mu_s
         self.g = g
-        self.stats = Stats(L,N)
+        self.stats = Stats()
 
     def getScatteringDistance(self, photon) -> float:
         rnd = 0
@@ -29,7 +29,8 @@ class Material:
     def absorbEnergy(self, photon):
         delta = photon.weight * self.mu_a/self.mu_t
         photon.decreaseWeightBy(delta)
-        self.stats.score(photon.r, delta)
+        if self.stats is not None:
+            self.stats.score(photon.r, delta)
 
     def contains(self, photon):
         return True

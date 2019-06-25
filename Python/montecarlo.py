@@ -6,9 +6,10 @@ from photon import *
 import time
 
 if __name__ == "__main__":
-    N = 10000
+    N = 100
     M = 21
-    mat = Material(mu_s=100, mu_a = 1, g = 0, L = (0.1, 0.1, 0.1), N = (M,M,M))
+    mat = Material(mu_s=100, mu_a = 1, g = 0)
+
     plt.ion()
     fig = plt.figure()
     startTime = time.time()
@@ -23,7 +24,9 @@ if __name__ == "__main__":
             mat.absorbEnergy(photon)
             photon.roulette()
         if i % 100 == 0:
-            mat.stats.show2DPlaneIntegration(plane='xz',title="{0} photons".format(i))
+            mat.stats.show2D(plane='xy', cutAt=10, title="{0} photons".format(i))
+            #mat.stats.show1D(axis='z', title="{0} photons".format(i))
 
     elapsed = time.time() - startTime
     print('{0:.1f} s for {2} photons, {1:.1f} ms per photon'.format(elapsed, elapsed/N*1000, N))
+    mat.stats.show2D(plane='xy', cutAt=10, title="{0} photons".format(i), realtime=False)
