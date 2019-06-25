@@ -2,7 +2,6 @@ import numpy as np
 from vector import *
 from material import *
 from photon import *
-import matplotlib.pyplot as plt
 
 import time
 
@@ -24,9 +23,7 @@ if __name__ == "__main__":
             mat.absorbEnergy(photon)
             photon.roulette()
         if i % 100 == 0:
-            plt.imshow(np.log(mat.energy[:,:,int((M-1)/2)]+0.0001),cmap='hsv')
-            plt.title("{0} photons".format(i))
-            plt.show()
-            plt.pause(0.0001)
+            mat.showEnergyDeposition(plane='xz',title="{0} photons".format(i))
+
     elapsed = time.time() - startTime
     print('{0:.1f} s for {2} photons, {1:.1f} ms per photon'.format(elapsed, elapsed/N*1000, N))
