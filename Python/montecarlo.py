@@ -6,8 +6,7 @@ from photon import *
 import time
 
 if __name__ == "__main__":
-    N = 100
-    M = 21
+    N = 10000
     mat = Material(mu_s=100, mu_a = 1, g = 0)
 
     plt.ion()
@@ -24,7 +23,7 @@ if __name__ == "__main__":
             mat.absorbEnergy(photon)
             photon.roulette()
         if i % 100 == 0:
-            mat.stats.show2D(plane='xy', cutAt=10, title="{0} photons".format(i))
+            mat.stats.show2D(plane='xy', integratedAlong='z', title="{0} photons".format(i))
             #mat.stats.show1D(axis='z', title="{0} photons".format(i))
 
     elapsed = time.time() - startTime

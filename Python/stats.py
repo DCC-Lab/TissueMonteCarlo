@@ -11,9 +11,9 @@ class Stats:
         self.figure = None
 
     def score(self, position, delta):
-        i = int(self.N[0]*(position.x-self.min[0])/self.L[0])
-        j = int(self.N[1]*(position.y-self.min[1])/self.L[1])
-        k = int(self.N[2]*(position.z-self.min[2])/self.L[2])
+        i = int((self.N[0]-1)*(position.x-self.min[0])/self.L[0])
+        j = int((self.N[1]-1)*(position.y-self.min[1])/self.L[1])
+        k = int((self.N[2]-1)*(position.z-self.min[2])/self.L[2])
 
         # print(position, self.min, self.max, self.L)
         # print(i,j,k)
