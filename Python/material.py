@@ -32,8 +32,4 @@ class Material:
         if self.stats is not None:
             self.stats.score(photon, delta)
 
-    def contains(self, photon):
-        return True
-
-
 

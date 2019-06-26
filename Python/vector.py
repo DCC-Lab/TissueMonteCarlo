@@ -169,7 +169,7 @@ class UnitVector(Vector):
 
     def abs(self):
         """ The sqrt() calculation is expensive. If it should
-        be unitary in the first place, we use sqrt(1+x) = 1+x/2
+        be unitary in the first place, so we use sqrt(1+x) = 1+x/2
         with norm = 1 + x, or norm - 1 = x """
         ux = self.x
         uy = self.y
