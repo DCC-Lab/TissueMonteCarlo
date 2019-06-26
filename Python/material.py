@@ -30,7 +30,7 @@ class Material:
         delta = photon.weight * self.mu_a/self.mu_t
         photon.decreaseWeightBy(delta)
         if self.stats is not None:
-            self.stats.score(photon.r, delta)
+            self.stats.score(photon, delta)
 
     def contains(self, photon):
         return True

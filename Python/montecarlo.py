@@ -6,15 +6,18 @@ from photon import *
 import time
 
 if __name__ == "__main__":
-    N = 10000
-    mat = Material(mu_s=100, mu_a = 1, g = 0)
+    N = 1000
+    mat = Material(mu_s=30, mu_a = 0.5, g = 0)
+    mat.stats = Stats(min = (-2, -2, 0), max = (2, 2, 2), size = (41,41,21))
+    # try:
+    #     mat.stats.restore("output.json")
+    # except:
+    #     pass
+    #mat.stats = None
 
-    plt.ion()
-    fig = plt.figure()
     startTime = time.time()
-    photon = Photon()
-    for i in range(N):
-        photon.reset()
+    for i in range(1,N+1):
+        photon = Photon()
         while photon.isAlive:
             d = mat.getScatteringDistance(photon)
             (theta, phi) = mat.getScatteringAngles(photon)
@@ -22,10 +25,16 @@ if __name__ == "__main__":
             photon.moveBy(d)
             mat.absorbEnergy(photon)
             photon.roulette()
-        if i % 100 == 0:
-            mat.stats.show2D(plane='xy', integratedAlong='z', title="{0} photons".format(i))
-            #mat.stats.show1D(axis='z', title="{0} photons".format(i))
+        if i  % 100 == 0:
+            print("Photon {0}/{1}".format(i,N) )
+            if mat.stats is not None:
+                #mat.stats.show1D(axis='z', integratedAlong='xy', title="{0} photons".format(i))
+                mat.stats.show2D(plane='xz', integratedAlong='y', title="{0} photons".format(i))
+                #mat.stats.show1D(axis='z', title="{0} photons".format(i))
 
     elapsed = time.time() - startTime
     print('{0:.1f} s for {2} photons, {1:.1f} ms per photon'.format(elapsed, elapsed/N*1000, N))
-    mat.stats.show2D(plane='xy', cutAt=10, title="{0} photons".format(i), realtime=False)
+
+    if mat.stats is not None:
+        mat.stats.save("output.json")
+        mat.stats.show1D(axis='z', integratedAlong='xy', title="{0} photons".format(N), realtime=False)

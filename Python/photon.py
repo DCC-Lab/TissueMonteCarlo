@@ -4,16 +4,14 @@ from material import *
 
 class Photon:
     def __init__(self):
-        self.r = Vector(0,0,0)
-        self.ez = UnitVector(0,0,1)    # Propagation
-        self.er = UnitVector(0,1,0) # Perpendicular to scattering plane
-        self.weight = 1.0
+        self.reset()
 
     def reset(self):
         self.r = Vector(0,0,0)
-        self.ez = UnitVector(0,0,1)    # Propagation
+        self.ez = UnitVector(0,0,1) # Propagation
         self.er = UnitVector(0,1,0) # Perpendicular to scattering plane
         self.weight = 1.0
+        self.uniqueId = np.random.randint(1<<63)
 
     @property
     def el(self) -> UnitVector:
