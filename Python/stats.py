@@ -1,37 +1,58 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import json
 
 class Stats:
-    def __init__(self, min = (-1, -1, 0), max = (1, 1, 0.5), N = (21,21,21)):
+    def __init__(self, min = (-1, -1, 0), max = (1, 1, 0.5), size = (21,21,21)):
         self.min = min
         self.max = max
         self.L = (self.max[0]-self.min[0],self.max[1]-self.min[1],self.max[2]-self.min[2])
-        self.N = N
-        self.energy = np.zeros(N)
+        self.size = size
+        self.photons = set()
+        self.energy = np.zeros(size)
         self.figure = None
 
-    def score(self, position, delta):
-        i = int((self.N[0]-1)*(position.x-self.min[0])/self.L[0])
-        j = int((self.N[1]-1)*(position.y-self.min[1])/self.L[1])
-        k = int((self.N[2]-1)*(position.z-self.min[2])/self.L[2])
+    def save(self, filepath="output.json"):
+        data = {"min":self.min, "max":self.max, "L":self.L, "size":self.size,"energy":self.energy.tolist()}
+        with open(filepath, "w") as write_file:
+            json.dump(data, write_file)
+
+    def restore(self, filepath="output.json"):
+        with open(filepath, "r") as read_file:
+            data = json.load(read_file)
+
+        self.min = data["min"]
+        self.max = data["max"]
+        self.L = data["L"]
+        self.size = data["size"]
+#        self.photons = data["photons"]
+        self.energy = np.array(data["energy"])
+
+    def score(self, photon, delta):      
+        self.photons.add(photon)
+        position = photon.r
+
+        i = int((self.size[0]-1)*(position.x-self.min[0])/self.L[0])
+        j = int((self.size[1]-1)*(position.y-self.min[1])/self.L[1])
+        k = int((self.size[2]-1)*(position.z-self.min[2])/self.L[2])
 
         # print(position, self.min, self.max, self.L)
         # print(i,j,k)
 
         if i < 0:
             i = 0
-        elif i > self.N[0]-1:
-            i = self.N[0]-1    
+        elif i > self.size[0]-1:
+            i = self.size[0]-1    
 
         if j < 0:
             j = 0
-        elif j > self.N[1]-1:
-            j = self.N[1]-1    
+        elif j > self.size[1]-1:
+            j = self.size[1]-1    
 
         if k < 0:
             k = 0
-        elif k > self.N[2]-1:
-            k = self.N[2]-1    
+        elif k > self.size[2]-1:
+            k = self.size[2]-1    
 
         self.energy[i,j,k] += delta
 
@@ -45,11 +66,11 @@ class Stats:
             raise ValueError("You cannot provide both cutAt= and integratedAlong=")
         elif integratedAlong is None and cutAt is not None:
             if plane == 'xy':
-                cutAt = int((self.N[2]-1)/2)
+                cutAt = int((self.size[2]-1)/2)
             elif plane == 'yz':
-                cutAt = int((self.N[0]-1)/2)
+                cutAt = int((self.size[0]-1)/2)
             elif plane == 'xz':
-                cutAt = int((self.N[1]-1)/2)
+                cutAt = int((self.size[1]-1)/2)
 
         if self.figure == None:
             plt.ion()
@@ -90,11 +111,11 @@ class Stats:
             raise ValueError("You cannot provide both cutAt= and integratedAlong=")
         elif integratedAlong is None and cutAt is not None:
             if axis == 'x':
-                cutAt = (int((self.N[1]-1)/2),int((self.N[2]-1)/2))
+                cutAt = (int((self.size[1]-1)/2),int((self.size[2]-1)/2))
             elif axis == 'y':
-                cutAt = (int((self.N[0]-1)/2),int((self.N[2]-1)/2))
+                cutAt = (int((self.size[0]-1)/2),int((self.size[2]-1)/2))
             elif axis == 'z':
-                cutAt = (int((self.N[0]-1)/2),int((self.N[1]-1)/2))
+                cutAt = (int((self.size[0]-1)/2),int((self.size[1]-1)/2))
 
         if self.figure == None:
             plt.ion()
@@ -103,21 +124,21 @@ class Stats:
         plt.title(title)
         if cutAt is not None:
             if axis == 'z':
-                plt.plot(np.log(self.energy[cutAt[0],cutAt[1],:]+0.0001))
+                plt.plot(np.log(self.energy[cutAt[0],cutAt[1],:]+0.0001),'ko--')
             elif axis == 'y':
-                plt.plot(np.log(self.energy[cutAt[0],:,cutAt[1]]+0.0001))
+                plt.plot(np.log(self.energy[cutAt[0],:,cutAt[1]]+0.0001),'ko--')
             elif axis == 'x':
-                plt.plot(np.log(self.energy[:,cutAt[0],cutAt[1]]+0.0001))
+                plt.plot(np.log(self.energy[:,cutAt[0],cutAt[1]]+0.0001),'ko--')
         else:
             if axis == 'z':
                 sum = self.energy.sum(axis=(0,1))
-                plt.plot(np.log(sum+0.0001))
+                plt.plot(np.log(sum+0.0001),'ko--')
             elif axis == 'y':
                 sum = self.energy.sum(axis=(0,2))
-                plt.plot(np.log(sum+0.0001))
+                plt.plot(np.log(sum+0.0001),'ko--')
             elif axis == 'x':
                 sum = self.energy.sum(axis=(1,2))
-                plt.plot(np.log(sum+0.0001))
+                plt.plot(np.log(sum+0.0001),'ko--')
 
 
         if realtime:
@@ -127,3 +148,5 @@ class Stats:
         else:
             plt.ioff()
             plt.show()
+
+#https://www.datacamp.com/community/tutorials/matplotlib-3d-volumetric-data
