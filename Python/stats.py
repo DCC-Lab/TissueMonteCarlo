@@ -29,7 +29,7 @@ class Stats:
         self.energy = np.array(data["energy"])
 
     def score(self, photon, delta):      
-        self.photons.add(photon)
+        self.photons.add(photon.uniqueId)
         position = photon.r
 
         i = int((self.size[0]-1)*(position.x-self.min[0])/self.L[0])
@@ -76,7 +76,7 @@ class Stats:
             plt.ion()
             self.figure = plt.figure()
 
-        plt.title(title)
+        plt.title("Energy in {0}, {1} photons".format(plane, len(self.photons)))
         if cutAt is not None:
             if plane == 'xy':
                 plt.imshow(np.log(self.energy[:,:,cutAt]+0.0001),cmap='hsv',extent=[-self.L[0],self.L[0],-self.L[1],self.L[1]],aspect='auto')

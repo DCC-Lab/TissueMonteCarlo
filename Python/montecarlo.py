@@ -6,20 +6,20 @@ from photon import *
 import time
 
 if __name__ == "__main__":
-    N = 10000
+    N = 1000
     mat = Material(mu_s=30, mu_a = 0.5, g = 0)
-    mat.stats = Stats(min = (-2, -2, 0), max = (2, 2, 2), size = (41,41,41))
-    try:
-        mat.stats.restore("output.json")
-    except:
-        pass
+    # mat.stats = Stats(min = (-2, -2, 0), max = (2, 2, 2), size = (41,41,41))
+    # try:
+    #     mat.stats.restore("output.json")
+    # except:
+    #     pass
+    mat.stats = None
 
     plt.ion()
     fig = plt.figure()
     startTime = time.time()
-    photon = Photon()
     for i in range(1,N+1):
-        photon.reset()
+        photon = Photon()
         while photon.isAlive:
             d = mat.getScatteringDistance(photon)
             (theta, phi) = mat.getScatteringAngles(photon)
