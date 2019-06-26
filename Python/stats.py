@@ -11,11 +11,20 @@ class Stats:
         self.photons = set()
         self.energy = np.zeros(size)
         self.figure = None
+        self.xCoords = []
+        self.yCoords = []
+        self.zCoords = []
+        for i in range(size[0]):
+            self.xCoords.append(self.min[0] + i * (self.max[0]-self.min[0])/size[0])
+        for i in range(size[1]):
+            self.yCoords.append(self.min[1] + i * (self.max[1]-self.min[1])/size[1])
+        for i in range(size[2]):
+            self.zCoords.append(self.min[2] + i * (self.max[2]-self.min[2])/size[2])
 
     def save(self, filepath="output.json"):
         data = {"min":self.min, "max":self.max, "L":self.L, "size":self.size,"energy":self.energy.tolist()}
         with open(filepath, "w") as write_file:
-            json.dump(data, write_file)
+            json.dump(data, write_file,indent=4, sort_keys=True)
 
     def restore(self, filepath="output.json"):
         with open(filepath, "r") as read_file:
@@ -79,21 +88,21 @@ class Stats:
         plt.title("Energy in {0}, {1} photons".format(plane, len(self.photons)))
         if cutAt is not None:
             if plane == 'xy':
-                plt.imshow(np.log(self.energy[:,:,cutAt]+0.0001),cmap='hsv',extent=[-self.L[0],self.L[0],-self.L[1],self.L[1]],aspect='auto')
+                plt.imshow(np.log(self.energy[:,:,cutAt]+0.0001),cmap='hsv',extent=[self.min[0],self.max[0],self.min[1],self.max[1]],aspect='auto')
             elif plane == 'yz':
-                plt.imshow(np.log(self.energy[cutAt,:,:]+0.0001),cmap='hsv',extent=[-self.L[1],self.L[1],-self.L[2],self.L[2]],aspect='auto')
+                plt.imshow(np.log(self.energy[cutAt,:,:]+0.0001),cmap='hsv',extent=[self.min[1],self.max[1],self.min[2],self.max[2]],aspect='auto')
             elif plane == 'xz':
-                plt.imshow(np.log(self.energy[:,cutAt,:]+0.0001),cmap='hsv',extent=[-self.L[0],self.L[0],-self.L[2],self.L[2]],aspect='auto')
+                plt.imshow(np.log(self.energy[:,cutAt,:]+0.0001),cmap='hsv',extent=[self.min[0],self.max[0],self.min[2],self.max[2]],aspect='auto')
         else:
             if plane == 'xy':
                 sum = self.energy.sum(axis=2)
-                plt.imshow(np.log(sum+0.0001),cmap='hsv',extent=[-self.L[0],self.L[0],-self.L[1],self.L[1]],aspect='auto')
+                plt.imshow(np.log(sum+0.0001),cmap='hsv',extent=[self.min[0],self.max[0],self.min[1],self.max[1]],aspect='auto')
             elif plane == 'yz':
                 sum = self.energy.sum(axis=0)
-                plt.imshow(np.log(sum+0.0001),cmap='hsv',extent=[-self.L[1],self.L[1],-self.L[2],self.L[2]],aspect='auto')
+                plt.imshow(np.log(sum+0.0001),cmap='hsv',extent=[self.min[1],self.max[1],self.min[2],self.max[2]],aspect='auto')
             elif plane == 'xz':
                 sum = self.energy.sum(axis=1)
-                plt.imshow(np.log(sum+0.0001),cmap='hsv',extent=[-self.L[0],self.L[0],-self.L[2],self.L[2]],aspect='auto')
+                plt.imshow(np.log(sum+0.0001),cmap='hsv',extent=[self.min[2],self.max[2],self.min[0],self.max[0]],aspect='auto')
 
         if realtime:
             plt.show()
@@ -124,22 +133,21 @@ class Stats:
         plt.title(title)
         if cutAt is not None:
             if axis == 'z':
-                plt.plot(np.log(self.energy[cutAt[0],cutAt[1],:]+0.0001),'ko--')
+                plt.plot(self.zCoords, np.log(self.energy[cutAt[0],cutAt[1],:]+0.0001),'ko--')
             elif axis == 'y':
-                plt.plot(np.log(self.energy[cutAt[0],:,cutAt[1]]+0.0001),'ko--')
+                plt.plot(self.yCoords, np.log(self.energy[cutAt[0],:,cutAt[1]]+0.0001),'ko--')
             elif axis == 'x':
-                plt.plot(np.log(self.energy[:,cutAt[0],cutAt[1]]+0.0001),'ko--')
+                plt.plot(self.xCoords, np.log(self.energy[:,cutAt[0],cutAt[1]]+0.0001),'ko--')
         else:
             if axis == 'z':
                 sum = self.energy.sum(axis=(0,1))
-                plt.plot(np.log(sum+0.0001),'ko--')
+                plt.plot(self.zCoords, np.log(sum+0.0001),'ko--')
             elif axis == 'y':
                 sum = self.energy.sum(axis=(0,2))
-                plt.plot(np.log(sum+0.0001),'ko--')
+                plt.plot(self.yCoords, np.log(sum+0.0001),'ko--')
             elif axis == 'x':
                 sum = self.energy.sum(axis=(1,2))
-                plt.plot(np.log(sum+0.0001),'ko--')
-
+                plt.plot(self.xCoords, np.log(sum+0.0001),'ko--')
 
         if realtime:
             plt.show()
@@ -149,4 +157,3 @@ class Stats:
             plt.ioff()
             plt.show()
 
-#https://www.datacamp.com/community/tutorials/matplotlib-3d-volumetric-data

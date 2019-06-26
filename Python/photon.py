@@ -8,7 +8,7 @@ class Photon:
 
     def reset(self):
         self.r = Vector(0,0,0)
-        self.ez = UnitVector(0,0,1)    # Propagation
+        self.ez = UnitVector(0,0,1) # Propagation
         self.er = UnitVector(0,1,0) # Perpendicular to scattering plane
         self.weight = 1.0
         self.uniqueId = np.random.randint(1<<63)
