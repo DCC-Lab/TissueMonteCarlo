@@ -466,6 +466,11 @@ extension Array where Element == SCNVector3 {
         return results
     }
 
+    mutating func  rotateAroundAxis(_ u:[SCNVector3], byAngle theta:[CGFloat]) {
+        for (i,_) in self.enumerated() {
+            self[i].rotateAround(u[i], by: theta[i])
+        }
+    }
 }
 
 extension Array where Element == CGFloat {

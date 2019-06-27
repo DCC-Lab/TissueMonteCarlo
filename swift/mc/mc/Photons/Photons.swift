@@ -88,6 +88,14 @@ class Photons {
         distanceTraveled += distance
     }
 
+    func scatterBy(_ θ:Scalars,_ φ:Scalars ) {
+        êr.rotateAroundAxis(û, byAngle: φ)
+        û.rotateAroundAxis(êr, byAngle: θ)
+
+        êr.normalize()
+        û.normalize()
+    }
+
 }
 //class PhotonSIMD4 {
 //

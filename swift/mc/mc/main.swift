@@ -56,7 +56,19 @@ for _ in 1...N/P {
     }
 }
 
-queue.waitUntilAllOperationsAreFinished()
-duration = -start.timeIntervalSinceNow
-rate = duration/TimeInterval(N)*1000000
-print(String(format: "Total %.1lf s, %.1lf µs per photon", duration, rate))
+queue.maxConcurrentOperationCount = M
+start = Date()
+for _ in 1...N/P {
+    queue.addOperation {
+        do {
+            let material = BulkHenyeyGreenstein(mu_s: 30, mu_a: 0.5, index: 1.4, g: 0.8)
+            let photon = Photons(position: v⃗(0,0,0), direction: v⃗(0,0,1), wavelength: 632)!
+            for _ in 1...P {
+                photon.reset()
+                try photon.propagate(into: material, for: 0)
+            }
+        } catch {
+            
+        }
+    }
+}
