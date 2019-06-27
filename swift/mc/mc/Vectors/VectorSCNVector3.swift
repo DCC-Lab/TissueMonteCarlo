@@ -359,13 +359,13 @@ extension Array where Element == SCNVector3 {
     func dotProduct(_ vectors : [SCNVector3] ) -> [CGFloat] {
         var results = [CGFloat](repeating: 0, count: self.count)
         for (i,v) in self.enumerated() {
-            results[i] = simd.dot(v,vectors[i])
+            results[i] = v•vectors[i]
         }
         return results
     }
     
-    func normalizedDotProduct(_ vectors : [float4] ) -> [Float] {
-        var results = [Float](repeating: 0, count: self.count)
+    func normalizedDotProduct(_ vectors : [SCNVector3] ) -> [CGFloat] {
+        var results = [CGFloat](repeating: 0, count: self.count)
         for (i,u) in self.enumerated() {
             let v = vectors[i]
             var prod = u.dotProduct(v)
@@ -399,14 +399,14 @@ extension Array where Element == SCNVector3 {
         for (i,u) in self.enumerated() {
             let v = vectors[i]
             var prod = u.crossProduct(v)
-            let norm_u = simd.length_squared(u)
-            let norm_v = simd.length_squared(v)
+            let norm_u = u.norm()
+            let norm_v = v.norm()
 
             if norm_u != 0 && norm_v != 0 {
                 prod /= sqrt(norm_u * norm_v)
             }
             
-            let norm_t = simd.norm_one(prod)
+            let norm_t = prod.norm()
             if norm_t > 1 {
                 prod /= sqrt(norm_t);
             }
