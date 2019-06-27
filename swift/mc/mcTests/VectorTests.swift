@@ -112,7 +112,7 @@ class VectorTests: XCTestCase {
         let v2 = SCNVector3(3,4,5)
         let v3 = SCNVector3(0,0,0)
         XCTAssertEqualWithAccuracy(v1.dotProduct(v2), 14, accuracy: 1e-6)
-        XCTAssertEqualWithAccuracy(v1•v2, 14, accuracy: 1e-6)
+        XCTAssertEqualWithAccuracy(v1·v2, 14, accuracy: 1e-6)
         XCTAssertEqualWithAccuracy(v1.dotProduct(v3), 0, accuracy: 1e-6)
 
     }

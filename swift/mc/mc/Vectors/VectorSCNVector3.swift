@@ -326,28 +326,28 @@ struct Matrix {
     
 }
 
-extension Array where Element == float4 {
+extension Array where Element == SCNVector3 {
     // https://developer.apple.com/documentation/accelerate/simd/working_with_vectors
     
-    func norm() -> [Float] {
-        var results = [Float](repeating: 0, count: self.count)
+    func norm() -> [CGFloat] {
+        var results = [CGFloat](repeating: 0, count: self.count)
         for (i,v) in self.enumerated() {
-            results[i] = simd.length_squared(v)
+            results[i] = v.norm()
         }
         return results
     }
     
-    func abs() -> [Float] {
-        var results = [Float](repeating: 0, count: self.count)
+    func abs() -> [CGFloat] {
+        var results = [CGFloat](repeating: 0, count: self.count)
         for (i,v) in self.enumerated() {
-            results[i] = simd.length(v)
+            results[i] = v.abs()
         }
         return results
     }
     
-    mutating func normalize() throws -> [float4] {
+    mutating func normalize() throws -> [SCNVector3] {
         for (i,v) in self.enumerated() {
-            self[i] = simd.normalize(v)
+            self[i] /= v.abs()
         }
         return self
     }
@@ -356,8 +356,8 @@ extension Array where Element == float4 {
 //        self += theVector * theScale
 //    }
     
-    func dotProduct(_ vectors : [float4] ) -> [Float] {
-        var results = [Float](repeating: 0, count: self.count)
+    func dotProduct(_ vectors : [SCNVector3] ) -> [CGFloat] {
+        var results = [CGFloat](repeating: 0, count: self.count)
         for (i,v) in self.enumerated() {
             results[i] = simd.dot(v,vectors[i])
         }
@@ -384,8 +384,8 @@ extension Array where Element == float4 {
         return results
     }
     
-    func crossProduct(_ vectors: [float4]) -> [float4] {
-        var results:[float4] = [float4](repeating: float4(0,0,0), count: self.count)
+    func crossProduct(_ vectors: [SCNVector3]) -> [SCNVector3] {
+        var results:[SCNVector3] = [SCNVector3](repeating: SCNVector3(0,0,0), count: self.count)
 
         for (i,u) in self.enumerated() {
             results[i] = u.crossProduct(vectors[i])
@@ -393,8 +393,8 @@ extension Array where Element == float4 {
         return results
     }
     
-    func normalizedCrossProduct(_ vectors: [float4]) -> [float4] {
-        var results:[float4] = [float4](repeating: float4(0,0,0), count: self.count)
+    func normalizedCrossProduct(_ vectors: [SCNVector3]) -> [SCNVector3] {
+        var results:[SCNVector3] = [SCNVector3](repeating: SCNVector3(0,0,0), count: self.count)
 
         for (i,u) in self.enumerated() {
             let v = vectors[i]
@@ -416,8 +416,8 @@ extension Array where Element == float4 {
         return results
     }
 
-    func tripleProduct(v : [float4], w : [float4]) -> [Float] {
-        var results = [Float](repeating: 0, count: self.count)
+    func tripleProduct(v : [SCNVector3], w : [SCNVector3]) -> [CGFloat] {
+        var results = [CGFloat](repeating: 0, count: self.count)
         for (i,u) in self.enumerated() {
             let cp = u.crossProduct(v[i])
             results[i] = cp.dotProduct(w[i])
@@ -425,8 +425,8 @@ extension Array where Element == float4 {
         return results
     }
 
-    func orientedAngleWith(_ y:[float4] , aroundAxis r:[float4] ) -> [Float] {
-        var results = [Float](repeating: 0, count: self.count)
+    func orientedAngleWith(_ y:[SCNVector3] , aroundAxis r:[SCNVector3] ) -> [CGFloat] {
+        var results = [CGFloat](repeating: 0, count: self.count)
         let sinɸ̂ = self.normalizedCrossProduct(y)
         let sinɸ̂Dotr = sinɸ̂.dotProduct(r)
         let uDoty = self.dotProduct(y)
@@ -445,59 +445,6 @@ extension Array where Element == float4 {
         
         return results
     }
-//
-//    func isParallelTo(_ v:float3 ) -> Bool {
-//        let dp = dotProduct(v)
-//
-//        if Swift.abs(dp/self.abs()/v.abs() - 1) <= 1e-5  {
-//            return true
-//        }
-//
-//        return false
-//    }
-//
-//    func isPerpendicularTo(_ v:float3 ) -> Bool {
-//        let dp = self.dotProduct(v)
-//
-//        if Swift.abs(dp)/self.abs()/v.abs() <= 1e-5 {
-//            return true
-//        }
-//
-//        return false
-//    }
-//
-//    mutating func rotateAroundX(_ phi: Float) {
-//        let c = cos(phi)
-//        let s = sin(phi)
-//
-//        self = float3(self[0], c * self[1] - s * self[2], s * self[1] + c * self[2])
-//    }
-//
-//    mutating func rotateAroundY(_ phi: Float) {
-//        let c = cos(phi)
-//        let s = sin(phi)
-//
-//        self = float3(s * self[2] + c * self[0], self[1], s * self[2] - s * self[0])
-//    }
-//
-//    mutating func rotateAroundZ(_ phi: Float) {
-//        let c = cos(phi)
-//        let s = sin(phi)
-//
-//        self = float3(c * self[0] - s * self[1], s * self[0] + c * self[1], self[2])
-//    }
-//
-//    mutating func rotateAroundAxis(_ u:float3, byAngle theta:Float) {
-//        self = float3x3.rotationMatrixAround(axis: u, angle: theta) * self
-//    }
-//
-//    static func • (left: float3, right: float3 ) -> Float {
-//        return left.dotProduct(right)
-//    }
-//
-//    static func ⨉ (left: float3, right: float3 ) -> Float {
-//        return left.dotProduct(right)
-//    }
 
 }
 
