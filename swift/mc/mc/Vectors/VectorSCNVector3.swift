@@ -329,6 +329,9 @@ struct Matrix {
 extension Array where Element == SCNVector3 {
     // https://developer.apple.com/documentation/accelerate/simd/working_with_vectors
     
+    init(vector:SCNVector3, count:Int) {
+        self.init(repeating: vector, count: count)
+    }
     func norm() -> [CGFloat] {
         var results = [CGFloat](repeating: 0, count: self.count)
         for (i,v) in self.enumerated() {
@@ -345,7 +348,8 @@ extension Array where Element == SCNVector3 {
         return results
     }
     
-    mutating func normalize() throws -> [SCNVector3] {
+    @discardableResult
+    mutating func normalize() -> [SCNVector3] {
         for (i,v) in self.enumerated() {
             self[i] /= v.abs()
         }
@@ -446,5 +450,24 @@ extension Array where Element == SCNVector3 {
         return results
     }
 
+    static func * (left: [SCNVector3], scalar: [CGFloat]) -> [SCNVector3] {
+        var results = [SCNVector3](repeating: SCNVector3(0,0,0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar[i]
+        }
+        return results
+    }
+    
+    static func * (scalar: [CGFloat], left: [SCNVector3]) -> [SCNVector3] {
+        var results = [SCNVector3](repeating: SCNVector3(0,0,0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar[i]
+        }
+        return results
+    }
+
 }
 
+extension Array where Element == CGFloat {
+
+}

@@ -8,8 +8,8 @@
 
 import Foundation
 
-typealias Vectors = [Vector]
 typealias Scalars = [Scalar]
+typealias Vectors = [Vector]
 
 class Photons {
     var r⃗:Vectors
@@ -28,28 +28,66 @@ class Photons {
     var statistics:[(Vectors,Scalars)]
     var distanceTraveled:Scalars
     
-    init(position:Vectors, direction:Vectors, wavelength:Scalars) {
-        r⃗ = position
-        û = direction
-        û.normalize()
-        weight = 1
-        λ = wavelength
+    init?(positions:Vectors, directions:Vectors, wavelengths:Scalars) {
+        let N = positions.count
         
-        r⃗ₒ = position
+        r⃗ = positions
+        û = directions
+        û.normalize()
+        
+        weight = Scalars(repeating: 1, count:N)
+        λ = wavelengths
+        
+        r⃗ₒ = positions
         ûₒ = û
         
         keepingExtendedStatistics = false
-        distanceTraveled = 0
+        distanceTraveled = Scalars(repeating: 0, count:N)
         statistics = [(r⃗ₒ,weight)]
-        êr = Vector(0,0,0)
-        êrₒ = Vector(0,0,0)
-        if let vector = defaultEPerpendicular(direction: û) {
+        êr = Vectors( vector:Vector(0,0,0), count: N)
+        êrₒ = Vectors(vector:Vector(0,0,0), count: N)
+        if let vector = defaultEPerpendicular(directions: û) {
             êr = vector
         } else {
             return nil
         }
         êrₒ = êr
     }
+    
+    var x̂:Vector {
+        get { return Vector(1,0,0) }
+    }
+    var ŷ:Vector {
+        get { return Vector(0,1,0) }
+    }
+    var ẑ:Vector {
+        get { return Vector(0,0,1) }
+    }
+    var ô:Vector {
+        get { return Vector(0,0,0) }
+    }
+
+    func defaultEPerpendicular(directions:Vectors) -> Vectors? {
+        var results = Vectors(repeating: Vector(0,0,0), count: directions.count)
+        for û in directions {
+            if û.isParallelTo(ẑ) {
+                results.append(x̂)
+            } else if û.isParallelTo(x̂) {
+                results.append(ŷ)
+            } else if û.isParallelTo(ŷ) {
+                results.append(ẑ)
+            } else {
+                return nil
+            }
+        }
+        return results
+    }
+
+    func moveBy(_ distance:Scalars) {
+        r⃗ += û * distance
+        distanceTraveled += distance
+    }
+
 }
 //class PhotonSIMD4 {
 //

@@ -11,6 +11,7 @@ import SceneKit
 
 typealias Scalar = CGFloat
 typealias Vector = SCNVector3
+
 //typealias Scalar = Float
 //typealias Vector = float3
 //typealias Scalar = Float
