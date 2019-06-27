@@ -8,6 +8,49 @@
 
 import Foundation
 
+typealias Vectors = [Vector]
+typealias Scalars = [Scalar]
+
+class Photons {
+    var r⃗:Vectors
+    var û:Vectors
+    var êr:Vectors
+//    var êl:[Vector] {
+//        get { return êr.crossProduct(û) }
+//    }
+    var weight:Scalars
+    let λ:Scalars
+    
+    let r⃗ₒ:Vectors
+    let ûₒ:Vectors
+    var êrₒ:Vectors
+    var keepingExtendedStatistics:Bool
+    var statistics:[(Vectors,Scalars)]
+    var distanceTraveled:Scalars
+    
+    init(position:Vectors, direction:Vectors, wavelength:Scalars) {
+        r⃗ = position
+        û = direction
+        û.normalize()
+        weight = 1
+        λ = wavelength
+        
+        r⃗ₒ = position
+        ûₒ = û
+        
+        keepingExtendedStatistics = false
+        distanceTraveled = 0
+        statistics = [(r⃗ₒ,weight)]
+        êr = Vector(0,0,0)
+        êrₒ = Vector(0,0,0)
+        if let vector = defaultEPerpendicular(direction: û) {
+            êr = vector
+        } else {
+            return nil
+        }
+        êrₒ = êr
+    }
+}
 //class PhotonSIMD4 {
 //
 //    var position:float4
