@@ -39,7 +39,12 @@ class BulkMaterial  {
     func albedo(photon:Photon? = nil) -> Scalar {
         return mu_a/mu_t
     }
-        
+    
+    func albedo(photons:Photons) -> Scalars {
+        let count = photons.N
+        return Scalars(repeating: albedo(), count: count)
+    }
+
     func randomfloat() -> Scalar {
         randomIndex += 1
         if randomIndex == TableSize {
@@ -59,8 +64,21 @@ class BulkMaterial  {
         return d
     }
 
+    func randomScatteringDistance(photons:Photons) -> Scalars {
+        var distances = Scalars()
+        for _ in 0..<photons.N {
+            distances.append(randomScatteringDistance())
+        }
+        return distances
+    }
+
     func randomScatteringAngles(photon:Photon? = nil) -> (Scalar, Scalar) {
         return (0,0)
+    }
+    
+    func randomScatteringAngles(photons:Photons) -> (Scalars, Scalars) {
+        let count = photons.N
+        return (Scalars(repeating: 0, count: count),Scalars(repeating: 0, count: count))
     }
 }
 //class BulkMaterialSIMD4  {

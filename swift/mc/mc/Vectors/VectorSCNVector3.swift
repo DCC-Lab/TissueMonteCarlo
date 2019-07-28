@@ -474,5 +474,35 @@ extension Array where Element == SCNVector3 {
 }
 
 extension Array where Element == CGFloat {
+    static func - (left: [CGFloat], right: [CGFloat]) -> [CGFloat] {
+        var results = [CGFloat](repeating: CGFloat(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u - right[i]
+        }
+        return results
+    }
+
+    static func * (left: [CGFloat], right: [CGFloat]) -> [CGFloat] {
+        var results = [CGFloat](repeating: CGFloat(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * right[i]
+        }
+        return results
+    }
+
+    static func * (left: [CGFloat], scalar: CGFloat) -> [CGFloat] {
+        var results = [CGFloat](repeating: CGFloat(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar
+        }
+        return results
+    }
+    static func * (scalar: CGFloat, left: [CGFloat]) -> [CGFloat] {
+        var results = [CGFloat](repeating: CGFloat(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar
+        }
+        return results
+    }
 
 }

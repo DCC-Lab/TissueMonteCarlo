@@ -12,12 +12,10 @@ typealias Scalars = [Scalar]
 typealias Vectors = [Vector]
 
 class Photons {
+    var N:Int
     var r⃗:Vectors
     var û:Vectors
     var êr:Vectors
-//    var êl:[Vector] {
-//        get { return êr.crossProduct(û) }
-//    }
     var weight:Scalars
     let λ:Scalars
     
@@ -29,7 +27,7 @@ class Photons {
     var distanceTraveled:Scalars
     
     init?(positions:Vectors, directions:Vectors, wavelengths:Scalars) {
-        let N = positions.count
+        N = positions.count
         
         r⃗ = positions
         û = directions
@@ -53,7 +51,14 @@ class Photons {
         }
         êrₒ = êr
     }
-    
+
+    convenience init?(position:Vector, direction:Vector, wavelength:Scalar, N:Int) {
+        let thePositions = Vectors(repeating: position, count: N)
+        let theDirections = Vectors(repeating: direction, count: N)
+        let theWavelength = Scalars(repeating: wavelength, count: N)
+        self.init(positions:thePositions, directions:theDirections, wavelengths:theWavelength)
+    }
+
     var x̂:Vector {
         get { return Vector(1,0,0) }
     }
@@ -68,7 +73,7 @@ class Photons {
     }
 
     func defaultEPerpendicular(directions:Vectors) -> Vectors? {
-        var results = Vectors(repeating: Vector(0,0,0), count: directions.count)
+        var results = Vectors()
         for û in directions {
             if û.isParallelTo(ẑ) {
                 results.append(x̂)
@@ -83,6 +88,9 @@ class Photons {
         return results
     }
 
+    func reset() {
+        
+    }
     func moveBy(_ distance:Scalars) {
         r⃗ += û * distance
         distanceTraveled += distance
@@ -94,6 +102,28 @@ class Photons {
 
         êr.normalize()
         û.normalize()
+    }
+
+    func propagate(into material:BulkMaterial, for distance:Scalar = 0) throws {
+        let N = r⃗.count
+        for i in 0...100 {
+            let (θ, φ) = material.randomScatteringAngles(photons:self)
+            let distances = material.randomScatteringDistance(photons:self)
+            let albedo = material.albedo(photons:self)
+            assert(θ.count == N)
+            assert(φ.count == N)
+            assert(distances.count == N)
+            assert(albedo.count == N)
+            scatterBy(θ, φ)
+            moveBy(distances)
+            let energyDeposited = albedo * weight
+            decreaseWeightBy(energyDeposited)
+//            roulette()
+        }
+    }
+
+    func decreaseWeightBy(_ delta:Scalars) {
+        weight = weight - delta
     }
 
 }
