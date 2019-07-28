@@ -91,6 +91,7 @@ class Photons {
     func reset() {
         
     }
+    
     func moveBy(_ distance:Scalars) {
         r⃗ += û * distance
         distanceTraveled += distance

@@ -466,6 +466,12 @@ extension Array where Element == SCNVector3 {
         return results
     }
 
+    static func += ( left: inout [SCNVector3], right: [SCNVector3]) {
+        for (i,u) in right.enumerated() {
+            left[i] += u
+        }
+    }
+
     mutating func  rotateAroundAxis(_ u:[SCNVector3], byAngle theta:[CGFloat]) {
         for (i,_) in self.enumerated() {
             self[i].rotateAround(u[i], by: theta[i])
