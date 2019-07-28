@@ -105,25 +105,45 @@ class Photons {
     }
 
     func propagate(into material:BulkMaterial, for distance:Scalar = 0) throws {
-        let N = r⃗.count
-        for i in 0...100 {
+        while photons.isAlive() {
             let (θ, φ) = material.randomScatteringAngles(photons:self)
             let distances = material.randomScatteringDistance(photons:self)
             let albedo = material.albedo(photons:self)
-            assert(θ.count == N)
-            assert(φ.count == N)
-            assert(distances.count == N)
-            assert(albedo.count == N)
             scatterBy(θ, φ)
             moveBy(distances)
-            let energyDeposited = albedo * weight
-            decreaseWeightBy(energyDeposited)
-//            roulette()
+            decreaseWeightBy(albedo * weight)
+            roulette()
         }
     }
 
+    func isAlive() -> Bool {
+        for weight in self.weight {
+            if weight > 0 {
+                return true
+            }
+        }
+        return false
+    }
+    
     func decreaseWeightBy(_ delta:Scalars) {
         weight = weight - delta
+    }
+
+    func roulette() {
+        let CHANCE:Scalar = 0.1
+        let threshold:Scalar = 1e-4
+        
+        for (i,weight) in self.weight.enumerated() {
+            if weight <= threshold {
+                let randomScalar = Scalar.random(in:0...1)
+                if( randomScalar < CHANCE) {
+                    /* survived the roulette.*/
+                    self.weight[i] *= 1.0 / CHANCE
+                } else {
+                    self.weight[i]  = 0
+                }
+            }
+        }
     }
 
 }
