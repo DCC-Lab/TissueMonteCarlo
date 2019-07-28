@@ -89,7 +89,13 @@ class Photons {
     }
 
     func reset() {
-        
+        r⃗ = r⃗ₒ
+        û = ûₒ
+        êr = êrₒ
+        weight = Scalars(repeating: 1, count: N)
+        keepingExtendedStatistics = false
+        distanceTraveled = Scalars(repeating: 0, count: N)
+        statistics = [(r⃗ₒ,weight)]
     }
     
     func moveBy(_ distance:Scalars) {
@@ -118,12 +124,8 @@ class Photons {
     }
 
     func isAlive() -> Bool {
-        for weight in self.weight {
-            if weight > 0 {
-                return true
-            }
-        }
-        return false
+        let areAlive = (weight > 0)
+        return areAlive.sum() > 0
     }
     
     func decreaseWeightBy(_ delta:Scalars) {
@@ -134,17 +136,23 @@ class Photons {
         let CHANCE:Scalar = 0.1
         let threshold:Scalar = 1e-4
         
-        for (i,weight) in self.weight.enumerated() {
-            if weight <= threshold {
-                let randomScalar = Scalar.random(in:0...1)
-                if( randomScalar < CHANCE) {
-                    /* survived the roulette.*/
-                    self.weight[i] *= 1.0 / CHANCE
-                } else {
-                    self.weight[i]  = 0
-                }
-            }
-        }
+        let belowThreshold = weight < threshold
+        let aboveThreshold = weight > threshold
+        let randomScalar = Scalars.random(in:CGFloat(0)...CGFloat(1.0), count:N)
+        let rouletteResult = randomScalar < CHANCE
+        let multiplier = Scalars(repeating: 1.0 / CHANCE, count: N) * rouletteResult
+        weight = weight * (multiplier * belowThreshold + 1.0 * aboveThreshold)
+        
+//        for (i,weight) in sef.weight.enumerated() {
+//            if weight <= threshold {
+//                if( randomScalar < CHANCE) {
+//                    /* survived the roulette.*/
+//                    self.weight[i] *= 1.0 / CHANCE
+//                } else {
+//                    self.weight[i]  = 0
+//                }
+//            }
+//        }
     }
 
 }

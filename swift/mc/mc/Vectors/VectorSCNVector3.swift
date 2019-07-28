@@ -479,7 +479,35 @@ extension Array where Element == SCNVector3 {
     }
 }
 
+extension Array where Element == Bool {
+    func sum() -> Int {
+        var sum:Int = 0
+        for value in self {
+            if value {
+                sum += 1
+            }
+        }
+        return sum
+    }
+}
+
 extension Array where Element == CGFloat {
+    static func random(in range:ClosedRange<CGFloat>, count:Int) -> [CGFloat]{
+        var results = [CGFloat]()
+        for _ in 0..<count {
+            results.append(CGFloat.random(in: range))
+        }
+        return results
+    }
+    
+    func sum() -> CGFloat {
+        var sum:CGFloat = 0
+        for value in self {
+            sum += value
+        }
+        return sum
+    }
+    
     static func - (left: [CGFloat], right: [CGFloat]) -> [CGFloat] {
         var results = [CGFloat](repeating: CGFloat(0), count: left.count)
         for (i,u) in left.enumerated() {
@@ -507,6 +535,26 @@ extension Array where Element == CGFloat {
         var results = [CGFloat](repeating: CGFloat(0), count: left.count)
         for (i,u) in left.enumerated() {
             results[i] = u * scalar
+        }
+        return results
+    }
+
+    static func > (left: [CGFloat], scalar: CGFloat) -> [CGFloat] {
+        var results = [CGFloat](repeating: 0, count: left.count)
+        for (i,u) in left.enumerated() {
+            if left[i] > scalar {
+                results[i] = 1.0
+            }
+        }
+        return results
+    }
+
+    static func < (left: [CGFloat], scalar: CGFloat) -> [CGFloat] {
+        var results = [CGFloat](repeating: 0, count: left.count)
+        for (i,u) in left.enumerated() {
+            if left[i] < scalar {
+                results[i] = 1.0
+            }
         }
         return results
     }
