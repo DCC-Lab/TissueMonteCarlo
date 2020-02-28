@@ -31,15 +31,15 @@ class Photons {
     init(position:Vectors, direction:Vectors, wavelength:Scalars) {
         r⃗ = position
         û = direction
-        û.normalize()
-        weight = 1
+        try? û.normalize()
+        weight = [1.0]
         λ = wavelength
         
         r⃗ₒ = position
         ûₒ = û
         
         keepingExtendedStatistics = false
-        distanceTraveled = 0
+        distanceTraveled = 0.0
         statistics = [(r⃗ₒ,weight)]
         êr = Vector(0,0,0)
         êrₒ = Vector(0,0,0)
