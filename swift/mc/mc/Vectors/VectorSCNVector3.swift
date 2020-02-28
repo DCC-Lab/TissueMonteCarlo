@@ -9,14 +9,6 @@
 import Foundation
 import SceneKit
 
-//typealias float = CGFloat
-//typealias Vector = SCNVector3
-//typealias float = Float
-//typealias Vector = float3
-
-//typealias Vector3D = Vector
-//typealias v⃗ = Vector
-
 enum Axis:Int {
     case X=0,Y=1,Z=2
 }
@@ -507,7 +499,15 @@ extension Array where Element == CGFloat {
         }
         return sum
     }
-    
+
+    static func + (left: [CGFloat], right: [CGFloat]) -> [CGFloat] {
+        var results = [CGFloat](repeating: CGFloat(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u + right[i]
+        }
+        return results
+    }
+
     static func - (left: [CGFloat], right: [CGFloat]) -> [CGFloat] {
         var results = [CGFloat](repeating: CGFloat(0), count: left.count)
         for (i,u) in left.enumerated() {
@@ -541,7 +541,7 @@ extension Array where Element == CGFloat {
 
     static func > (left: [CGFloat], scalar: CGFloat) -> [CGFloat] {
         var results = [CGFloat](repeating: 0, count: left.count)
-        for (i,u) in left.enumerated() {
+        for (i,_) in left.enumerated() {
             if left[i] > scalar {
                 results[i] = 1.0
             }
@@ -551,7 +551,7 @@ extension Array where Element == CGFloat {
 
     static func < (left: [CGFloat], scalar: CGFloat) -> [CGFloat] {
         var results = [CGFloat](repeating: 0, count: left.count)
-        for (i,u) in left.enumerated() {
+        for (i,_) in left.enumerated() {
             if left[i] < scalar {
                 results[i] = 1.0
             }
@@ -560,3 +560,5 @@ extension Array where Element == CGFloat {
     }
 
 }
+
+

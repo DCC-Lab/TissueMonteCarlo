@@ -47,14 +47,14 @@ class PhotonBase {
         get { return Vector(0,0,0) }
     }
 
-    init?(position:Vector, direction:Vector, wavelength:Scalar) {
-        r⃗ = position
-        û = direction
-        û.normalize()
+    init?(position r⃗ᵢ:Vector, direction ûᵢ:Vector, wavelength:Scalar) {
+        r⃗ = r⃗ᵢ
+        û = ûᵢ
+        û.normalize() // make sure normmalized
         weight = 1
         λ = wavelength
 
-        r⃗ₒ = position
+        r⃗ₒ = r⃗ᵢ
         ûₒ = û
 
         keepingExtendedStatistics = false

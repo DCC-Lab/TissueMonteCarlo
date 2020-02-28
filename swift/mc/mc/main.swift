@@ -12,14 +12,18 @@ import SceneKit
 public typealias float3 = SIMD3<Float>
 public typealias float4 = SIMD4<Float>
 
-public typealias Scalar = CGFloat
-public typealias Vector = SCNVector3
+//public typealias Scalar = CGFloat
+//public typealias Vector = SCNVector3
 
-//typealias Scalar = Float
-//typealias Vector = float3
-//typealias Scalar = Float
-//typealias Vector = float4
+public typealias Scalar = Float
+public typealias Vector = float3
+//public typealias Scalar = Float
+//public typealias Vector = float4
 public typealias v⃗ = Vector
+
+public typealias Scalars = [Scalar]
+public typealias Vectors = [Vector]
+
 
 let N = 10000
 var start = Date()
@@ -51,7 +55,7 @@ for _ in 1...N/P {
             let photon = Photon(position: v⃗(0,0,0), direction: v⃗(0,0,1), wavelength: 632)!
             for _ in 1...P {
                 photon.reset()
-                try photon.propagate(into: material, for: 0)
+                try photon.propagate(into: material)
             }
         } catch {
 
@@ -63,14 +67,11 @@ duration = -start.timeIntervalSinceNow
 rate = duration/TimeInterval(N)*1000000
 print(String(format: "Total %.1lf s, %.1lf µs per photon", duration, rate))
 
-
-queue.maxConcurrentOperationCount = M
 start = Date()
 material = BulkHenyeyGreenstein(mu_s: 30, mu_a: 0.5, index: 1.4, g: 0.8)
-let photons = Photons(position: v⃗(0,0,0), direction: v⃗(0,0,1), wavelength: 632, N:1000)!
-try photons.propagate(into: material, for: 0)
+let photons = Photons(position: v⃗(0,0,0), direction: v⃗(0,0,1), wavelength: 632, N:N)!
+try photons.propagate(into: material)
 
-queue.waitUntilAllOperationsAreFinished()
 duration = -start.timeIntervalSinceNow
 rate = duration/TimeInterval(N)*1000000
 print(String(format: "Total %.1lf s, %.1lf µs per photon", duration, rate))

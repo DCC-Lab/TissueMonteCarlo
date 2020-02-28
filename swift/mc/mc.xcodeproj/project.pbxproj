@@ -9,12 +9,8 @@
 /* Begin PBXBuildFile section */
 		75601BDE22BFD08200436C38 /* VectorFloat3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75601BDD22BFD08200436C38 /* VectorFloat3.swift */; };
 		75601BE022BFD09000436C38 /* VectorFloat4.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75601BDF22BFD09000436C38 /* VectorFloat4.swift */; };
-		75601BE422BFD84800436C38 /* Photons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75601BE322BFD84800436C38 /* Photons.swift */; };
-		75A8C6F122BD2B5C00C60729 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
-		75A8C6F222BD2B5C00C60729 /* VectorSCNVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* VectorSCNVector3.swift */; };
-		75A8C6F322BD2B5C00C60729 /* Photon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FCE22BD15AB00A8EB4D /* Photon.swift */; };
-		75A8C6F422BD2B5C00C60729 /* BulkMaterial.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE722BD182C00A8EB4D /* BulkMaterial.swift */; };
-		75A8C6F522BD2B5C00C60729 /* BulkHenyeyGreenstein.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FE622BD182B00A8EB4D /* BulkHenyeyGreenstein.swift */; };
+		75C05025240951B300B73AC1 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FC722BD155E00A8EB4D /* main.swift */; };
+		75C05026240951BF00B73AC1 /* Photons.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75601BE322BFD84800436C38 /* Photons.swift */; };
 		75E32FD122BD15D700A8EB4D /* VectorSCNVector3.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FD022BD15D700A8EB4D /* VectorSCNVector3.swift */; };
 		75E32FDB22BD166F00A8EB4D /* mcTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FDA22BD166F00A8EB4D /* mcTests.swift */; };
 		75E32FE122BD178A00A8EB4D /* Photon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75E32FCE22BD15AB00A8EB4D /* Photon.swift */; };
@@ -236,9 +232,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				75E32FE922BD182C00A8EB4D /* BulkMaterial.swift in Sources */,
+				75C05025240951B300B73AC1 /* main.swift in Sources */,
 				75E32FE122BD178A00A8EB4D /* Photon.swift in Sources */,
+				75C05026240951BF00B73AC1 /* Photons.swift in Sources */,
 				75E32FE822BD182C00A8EB4D /* BulkHenyeyGreenstein.swift in Sources */,
-				75E32FC822BD155E00A8EB4D /* main.swift in Sources */,
 				75E32FD122BD15D700A8EB4D /* VectorSCNVector3.swift in Sources */,
 				75601BDE22BFD08200436C38 /* VectorFloat3.swift in Sources */,
 				75601BE022BFD09000436C38 /* VectorFloat4.swift in Sources */,

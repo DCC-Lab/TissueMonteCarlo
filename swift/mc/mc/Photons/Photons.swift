@@ -8,9 +8,6 @@
 
 import Foundation
 
-typealias Scalars = [Scalar]
-typealias Vectors = [Vector]
-
 class Photons {
     var N:Int
     var r⃗:Vectors
@@ -112,7 +109,9 @@ class Photons {
     }
 
     func propagate(into material:BulkMaterial, for distance:Scalar = 0) throws {
-        while photons.isAlive() {
+        var i = 0
+        while isAlive() {
+            i = i + 1
             let (θ, φ) = material.randomScatteringAngles(photons:self)
             let distances = material.randomScatteringDistance(photons:self)
             let albedo = material.albedo(photons:self)
@@ -134,18 +133,29 @@ class Photons {
 
     func roulette() {
         let CHANCE:Scalar = 0.1
-        let threshold:Scalar = 1e-4
+        let threshold:Scalar = 0.0001
         
-        let belowThreshold = weight < threshold
-        let aboveThreshold = weight > threshold
-        let randomScalar = Scalars.random(in:CGFloat(0)...CGFloat(1.0), count:N)
-        let rouletteResult = randomScalar < CHANCE
-        let multiplier = Scalars(repeating: 1.0 / CHANCE, count: N) * rouletteResult
-        weight = weight * (multiplier * belowThreshold + 1.0 * aboveThreshold)
+        if weight.sum() < Scalar(N)*threshold {
+            if( Scalar.random(in:0...1)  < CHANCE) {
+                /* survived the roulette.*/
+                weight = weight * (1.0/CHANCE)
+            } else {
+                weight = Scalars(repeating: 0, count: N)
+            }
+        }
+
+//
+//        let belowThreshold = weight < threshold
+//        let aboveThreshold = weight > threshold
+//        let randomScalar = Scalars.random(in:CGFloat(0)...CGFloat(1.0), count:N)
+//        let rouletteResult = randomScalar < CHANCE
+//        let multiplier = Scalars(repeating: 1.0 / CHANCE, count: N) * rouletteResult
+//        weight = weight * (multiplier * belowThreshold + 1.0 * aboveThreshold)
+//        weight = weight * (1.0 * aboveThreshold)
         
-//        for (i,weight) in sef.weight.enumerated() {
+//        for (i,weight) in self.weight.enumerated() {
 //            if weight <= threshold {
-//                if( randomScalar < CHANCE) {
+//                if( Scalar.random(in:0...1)  < CHANCE) {
 //                    /* survived the roulette.*/
 //                    self.weight[i] *= 1.0 / CHANCE
 //                } else {
@@ -319,7 +329,7 @@ class Photons {
  op2 = getRandomScatteringDistance(N)
  op3 = getPropagationMatrix(d)
  op4 = getScatteringMatrix(θ, φ)
- op5 = getIntersection()
+ op5 = getIntersection()x
  }
  }
  */
