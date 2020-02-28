@@ -32,7 +32,7 @@ class Photons {
         r⃗ = positions
         û = directions
         û.normalize()
-        
+
         weight = Scalars(repeating: 1, count:N)
         λ = wavelengths
         
