@@ -8,16 +8,11 @@
 
 import Foundation
 
-typealias Vectors = [Vector]
-typealias Scalars = [Scalar]
-
 class Photons {
+    var N:Int
     var r⃗:Vectors
     var û:Vectors
     var êr:Vectors
-//    var êl:[Vector] {
-//        get { return êr.crossProduct(û) }
-//    }
     var weight:Scalars
     let λ:Scalars
     
@@ -28,28 +23,148 @@ class Photons {
     var statistics:[(Vectors,Scalars)]
     var distanceTraveled:Scalars
     
-    init(position:Vectors, direction:Vectors, wavelength:Scalars) {
-        r⃗ = position
-        û = direction
-        try? û.normalize()
-        weight = [1.0]
-        λ = wavelength
+    init?(positions:Vectors, directions:Vectors, wavelengths:Scalars) {
+        N = positions.count
         
-        r⃗ₒ = position
+        r⃗ = positions
+        û = directions
+        û.normalize()
+
+        weight = Scalars(repeating: 1, count:N)
+        λ = wavelengths
+        
+        r⃗ₒ = positions
         ûₒ = û
         
         keepingExtendedStatistics = false
-        distanceTraveled = 0.0
+        distanceTraveled = Scalars(repeating: 0, count:N)
         statistics = [(r⃗ₒ,weight)]
-        êr = Vector(0,0,0)
-        êrₒ = Vector(0,0,0)
-        if let vector = defaultEPerpendicular(direction: û) {
+        êr = Vectors( vector:Vector(0,0,0), count: N)
+        êrₒ = Vectors(vector:Vector(0,0,0), count: N)
+        if let vector = defaultEPerpendicular(directions: û) {
             êr = vector
         } else {
             return nil
         }
         êrₒ = êr
     }
+
+    convenience init?(position:Vector, direction:Vector, wavelength:Scalar, N:Int) {
+        let thePositions = Vectors(repeating: position, count: N)
+        let theDirections = Vectors(repeating: direction, count: N)
+        let theWavelength = Scalars(repeating: wavelength, count: N)
+        self.init(positions:thePositions, directions:theDirections, wavelengths:theWavelength)
+    }
+
+    var x̂:Vector {
+        get { return Vector(1,0,0) }
+    }
+    var ŷ:Vector {
+        get { return Vector(0,1,0) }
+    }
+    var ẑ:Vector {
+        get { return Vector(0,0,1) }
+    }
+    var ô:Vector {
+        get { return Vector(0,0,0) }
+    }
+
+    func defaultEPerpendicular(directions:Vectors) -> Vectors? {
+        var results = Vectors()
+        for û in directions {
+            if û.isParallelTo(ẑ) {
+                results.append(x̂)
+            } else if û.isParallelTo(x̂) {
+                results.append(ŷ)
+            } else if û.isParallelTo(ŷ) {
+                results.append(ẑ)
+            } else {
+                return nil
+            }
+        }
+        return results
+    }
+
+    func reset() {
+        r⃗ = r⃗ₒ
+        û = ûₒ
+        êr = êrₒ
+        weight = Scalars(repeating: 1, count: N)
+        keepingExtendedStatistics = false
+        distanceTraveled = Scalars(repeating: 0, count: N)
+        statistics = [(r⃗ₒ,weight)]
+    }
+    
+    func moveBy(_ distance:Scalars) {
+        r⃗ += û * distance
+        distanceTraveled += distance
+    }
+
+    func scatterBy(_ θ:Scalars,_ φ:Scalars ) {
+        êr.rotateAroundAxis(û, byAngle: φ)
+        û.rotateAroundAxis(êr, byAngle: θ)
+
+        êr.normalize()
+        û.normalize()
+    }
+
+    func propagate(into material:BulkMaterial, for distance:Scalar = 0) throws {
+        var i = 0
+        while isAlive() {
+            i = i + 1
+            let (θ, φ) = material.randomScatteringAngles(photons:self)
+            let distances = material.randomScatteringDistance(photons:self)
+            let albedo = material.albedo(photons:self)
+            scatterBy(θ, φ)
+            moveBy(distances)
+            decreaseWeightBy(albedo * weight)
+            roulette()
+        }
+    }
+
+    func isAlive() -> Bool {
+        let areAlive = (weight > 0)
+        return areAlive.sum() > 0
+    }
+    
+    func decreaseWeightBy(_ delta:Scalars) {
+        weight = weight - delta
+    }
+
+    func roulette() {
+        let CHANCE:Scalar = 0.1
+        let threshold:Scalar = 0.0001
+        
+        if weight.sum() < Scalar(N)*threshold {
+            if( Scalar.random(in:0...1)  < CHANCE) {
+                /* survived the roulette.*/
+                weight = weight * (1.0/CHANCE)
+            } else {
+                weight = Scalars(repeating: 0, count: N)
+            }
+        }
+
+//
+//        let belowThreshold = weight < threshold
+//        let aboveThreshold = weight > threshold
+//        let randomScalar = Scalars.random(in:CGFloat(0)...CGFloat(1.0), count:N)
+//        let rouletteResult = randomScalar < CHANCE
+//        let multiplier = Scalars(repeating: 1.0 / CHANCE, count: N) * rouletteResult
+//        weight = weight * (multiplier * belowThreshold + 1.0 * aboveThreshold)
+//        weight = weight * (1.0 * aboveThreshold)
+        
+//        for (i,weight) in self.weight.enumerated() {
+//            if weight <= threshold {
+//                if( Scalar.random(in:0...1)  < CHANCE) {
+//                    /* survived the roulette.*/
+//                    self.weight[i] *= 1.0 / CHANCE
+//                } else {
+//                    self.weight[i]  = 0
+//                }
+//            }
+//        }
+    }
+
 }
 //class PhotonSIMD4 {
 //
@@ -214,7 +329,7 @@ class Photons {
  op2 = getRandomScatteringDistance(N)
  op3 = getPropagationMatrix(d)
  op4 = getScatteringMatrix(θ, φ)
- op5 = getIntersection()
+ op5 = getIntersection()x
  }
  }
  */

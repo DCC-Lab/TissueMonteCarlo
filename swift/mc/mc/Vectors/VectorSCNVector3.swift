@@ -9,14 +9,6 @@
 import Foundation
 import SceneKit
 
-//typealias float = CGFloat
-//typealias Vector = SCNVector3
-//typealias float = Float
-//typealias Vector = float3
-
-//typealias Vector3D = Vector
-//typealias v⃗ = Vector
-
 enum Axis:Int {
     case X=0,Y=1,Z=2
 }
@@ -329,6 +321,9 @@ struct Matrix {
 extension Array where Element == SCNVector3 {
     // https://developer.apple.com/documentation/accelerate/simd/working_with_vectors
     
+    init(vector:SCNVector3, count:Int) {
+        self.init(repeating: vector, count: count)
+    }
     func norm() -> [CGFloat] {
         var results = [CGFloat](repeating: 0, count: self.count)
         for (i,v) in self.enumerated() {
@@ -345,7 +340,8 @@ extension Array where Element == SCNVector3 {
         return results
     }
     
-    mutating func normalize() throws -> [SCNVector3] {
+    @discardableResult
+    mutating func normalize() -> [SCNVector3] {
         for (i,v) in self.enumerated() {
             self[i] /= v.abs()
         }
@@ -446,5 +442,123 @@ extension Array where Element == SCNVector3 {
         return results
     }
 
+    static func * (left: [SCNVector3], scalar: [CGFloat]) -> [SCNVector3] {
+        var results = [SCNVector3](repeating: SCNVector3(0,0,0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar[i]
+        }
+        return results
+    }
+    
+    static func * (scalar: [CGFloat], left: [SCNVector3]) -> [SCNVector3] {
+        var results = [SCNVector3](repeating: SCNVector3(0,0,0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar[i]
+        }
+        return results
+    }
+
+    static func += ( left: inout [SCNVector3], right: [SCNVector3]) {
+        for (i,u) in right.enumerated() {
+            left[i] += u
+        }
+    }
+
+    mutating func  rotateAroundAxis(_ u:[SCNVector3], byAngle theta:[CGFloat]) {
+        for (i,_) in self.enumerated() {
+            self[i].rotateAround(u[i], by: theta[i])
+        }
+    }
 }
+
+extension Array where Element == Bool {
+    func sum() -> Int {
+        var sum:Int = 0
+        for value in self {
+            if value {
+                sum += 1
+            }
+        }
+        return sum
+    }
+}
+
+extension Array where Element == CGFloat {
+    static func random(in range:ClosedRange<CGFloat>, count:Int) -> [CGFloat]{
+        var results = [CGFloat]()
+        for _ in 0..<count {
+            results.append(CGFloat.random(in: range))
+        }
+        return results
+    }
+    
+    func sum() -> CGFloat {
+        var sum:CGFloat = 0
+        for value in self {
+            sum += value
+        }
+        return sum
+    }
+
+    static func + (left: [CGFloat], right: [CGFloat]) -> [CGFloat] {
+        var results = [CGFloat](repeating: CGFloat(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u + right[i]
+        }
+        return results
+    }
+
+    static func - (left: [CGFloat], right: [CGFloat]) -> [CGFloat] {
+        var results = [CGFloat](repeating: CGFloat(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u - right[i]
+        }
+        return results
+    }
+
+    static func * (left: [CGFloat], right: [CGFloat]) -> [CGFloat] {
+        var results = [CGFloat](repeating: CGFloat(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * right[i]
+        }
+        return results
+    }
+
+    static func * (left: [CGFloat], scalar: CGFloat) -> [CGFloat] {
+        var results = [CGFloat](repeating: CGFloat(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar
+        }
+        return results
+    }
+    static func * (scalar: CGFloat, left: [CGFloat]) -> [CGFloat] {
+        var results = [CGFloat](repeating: CGFloat(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar
+        }
+        return results
+    }
+
+    static func > (left: [CGFloat], scalar: CGFloat) -> [CGFloat] {
+        var results = [CGFloat](repeating: 0, count: left.count)
+        for (i,_) in left.enumerated() {
+            if left[i] > scalar {
+                results[i] = 1.0
+            }
+        }
+        return results
+    }
+
+    static func < (left: [CGFloat], scalar: CGFloat) -> [CGFloat] {
+        var results = [CGFloat](repeating: 0, count: left.count)
+        for (i,_) in left.enumerated() {
+            if left[i] < scalar {
+                results[i] = 1.0
+            }
+        }
+        return results
+    }
+
+}
+
 
