@@ -1,22 +1,41 @@
 import numpy as np
 from collections import namedtuple
+from scipy.spatial.transform import Rotation as R
 
-class Vector:
-    def __init__(self, x:float=0,y:float=0,z:float=0):
+class Vector(np.ndarray):
+    def __init__(self, x:float=0,y:float=0,z:float=0):        
         if isinstance(x, (int, float)):
-            self.x = x
-            self.y = y 
-            self.z = z
+            np.array.__init__([x,y,z])
         elif isinstance(x, Vector):
-            self.x = x.x
-            self.y = x.y 
-            self.z = x.z 
+            np.array.__init__([x.x, x.y, x.z])
         elif isinstance(x, np.ndarray):
-            self.x = x
-            self.y = y 
-            self.z = z
+            np.array.__init__(x)
         else:
             raise ValueError("No valid input for Vector")
+
+    @property
+    def x(self):
+        return self[0]
+
+    @x.setter
+    def x(self, value):
+        self[0] = value
+
+    @property
+    def y(self):
+        return self[1]
+
+    @y.setter
+    def y(self, value):
+        self[1] = value
+
+    @property
+    def z(self):
+        return self[2]
+
+    @z.setter
+    def z(self, value):
+        self[2] = value
 
     @property
     def isUnitary(self) -> bool:
@@ -106,11 +125,15 @@ class Vector:
         return phi
 
     def rotateAround(self, u, theta):
+        self.array = R.from_rotvec(theta * u.array).apply(self.array)
+
+    def rotateAroundSlow(self, u, theta):
         # This is the most expensive (and most common)
         # operation when performing Monte Carlo in tissue 
         # (40% of time spent here). It is difficult to optimize without
         # making it even less readable than it currently is
         # http://en.wikipedia.org/wiki/Rotation_matrix
+        
         u.normalize()
 
         cost = np.cos(theta)
@@ -125,13 +148,13 @@ class Vector:
         Y = self.y
         Z = self.z
         
-        self.x = (cost     + ux*ux    * one_cost ) * X \
+        self.array[0] = (cost     + ux*ux    * one_cost ) * X \
         +        (ux*uy    * one_cost - uz * sint) * Y \
         +        (ux * uz  * one_cost + uy * sint) * Z
-        self.y = (uy*ux    * one_cost + uz * sint) * X \
+        self.array[1] = (uy*ux    * one_cost + uz * sint) * X \
         +        (cost     + uy*uy    * one_cost ) * Y \
         +        (uy * uz  * one_cost - ux * sint) * Z
-        self.z = (uz*ux    * one_cost - uy * sint) * X \
+        self.array[2] = (uz*ux    * one_cost - uy * sint) * X \
         +        (uz * uy  * one_cost + ux * sint) * Y \
         +        (cost     + uz*uz    * one_cost ) * Z
 

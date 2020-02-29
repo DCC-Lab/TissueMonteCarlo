@@ -75,3 +75,5 @@ try photons.propagate(into: material)
 duration = -start.timeIntervalSinceNow
 rate = duration/TimeInterval(N)*1000000
 print(String(format: "Total %.1lf s, %.1lf µs per photon", duration, rate))
+
+MPSMatrixVectorMultiplication
