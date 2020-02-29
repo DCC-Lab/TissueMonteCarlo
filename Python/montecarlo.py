@@ -8,12 +8,11 @@ import time
 if __name__ == "__main__":
     N = 1000
     mat = Material(mu_s=30, mu_a = 0.5, g = 0)
-    mat.stats = Stats(min = (-2, -2, 0), max = (2, 2, 2), size = (41,41,21))
-    # try:
-    #     mat.stats.restore("output.json")
-    # except:
-    #     pass
-    #mat.stats = None
+    
+    try:
+        mat.stats.restore("output.json")
+    except:
+        mat.stats = Stats(min = (-2, -2, -2), max = (2, 2, 2), size = (41,41,41))
 
     startTime = time.time()
     for i in range(1,N+1):
@@ -36,5 +35,7 @@ if __name__ == "__main__":
     print('{0:.1f} s for {2} photons, {1:.1f} ms per photon'.format(elapsed, elapsed/N*1000, N))
 
     if mat.stats is not None:
+        #mat.stats.append("output.json")
         mat.stats.save("output.json")
+        mat.stats.show2D(plane='xz', integratedAlong='y', title="{0} photons".format(N), realtime=False)
         mat.stats.show1D(axis='z', integratedAlong='xy', title="{0} photons".format(N), realtime=False)

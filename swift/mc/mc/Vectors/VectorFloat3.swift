@@ -211,3 +211,235 @@ extension float3x3 {
         return rotate(radians: radians, axis: float3(0,0,1))
     }
 }
+
+extension Array where Element == float3 {
+    // https://developer.apple.com/documentation/accelerate/simd/working_with_vectors
+    
+    init(vector:float3, count:Int) {
+        self.init(repeating: vector, count: count)
+    }
+    func norm() -> [Float] {
+        var results = [Float](repeating: 0, count: self.count)
+        for (i,v) in self.enumerated() {
+            results[i] = v.norm()
+        }
+        return results
+    }
+    
+    func abs() -> [Float] {
+        var results = [Float](repeating: 0, count: self.count)
+        for (i,v) in self.enumerated() {
+            results[i] = v.abs()
+        }
+        return results
+    }
+    
+    @discardableResult
+    mutating func normalize() -> [float3] {
+        for (i,v) in self.enumerated() {
+            self[i] /= v.abs()
+        }
+        return self
+    }
+    
+//    mutating func addScaledVector(_ theVector:float4, scale theScale:Float) {
+//        self += theVector * theScale
+//    }
+    
+    func dotProduct(_ vectors : [float3] ) -> [Float] {
+        var results = [Float](repeating: 0, count: self.count)
+        for (i,v) in self.enumerated() {
+            results[i] = v•vectors[i]
+        }
+        return results
+    }
+    
+    func normalizedDotProduct(_ vectors : [float3] ) -> [Float] {
+        var results = [Float](repeating: 0, count: self.count)
+        for (i,u) in self.enumerated() {
+            let v = vectors[i]
+            var prod = u.dotProduct(v)
+            let norm_u = u.norm()
+            let norm_v = v.norm()
+            if norm_u != 0 && norm_v != 0 {
+                prod /= sqrt(norm_u * norm_v);
+            }
+            if prod > 1 {
+                prod = 1
+            } else if prod < -1 {
+                prod = -1
+            }
+            results[i] = prod
+        }
+        return results
+    }
+    
+    func crossProduct(_ vectors: [float3]) -> [float3] {
+        var results:[float3] = [float3](repeating: float3(0,0,0), count: self.count)
+
+        for (i,u) in self.enumerated() {
+            results[i] = u.crossProduct(vectors[i])
+        }
+        return results
+    }
+    
+    func normalizedCrossProduct(_ vectors: [float3]) -> [float3] {
+        var results:[float3] = [float3](repeating: float3(0,0,0), count: self.count)
+
+        for (i,u) in self.enumerated() {
+            let v = vectors[i]
+            var prod = u.crossProduct(v)
+            let norm_u = u.norm()
+            let norm_v = v.norm()
+
+            if norm_u != 0 && norm_v != 0 {
+                prod /= sqrt(norm_u * norm_v)
+            }
+            
+            let norm_t = prod.norm()
+            if norm_t > 1 {
+                prod /= sqrt(norm_t);
+            }
+
+            results[i] = prod
+        }
+        return results
+    }
+
+    func tripleProduct(v : [float3], w : [float3]) -> [Float] {
+        var results = [Float](repeating: 0, count: self.count)
+        for (i,u) in self.enumerated() {
+            let cp = u.crossProduct(v[i])
+            results[i] = cp.dotProduct(w[i])
+        }
+        return results
+    }
+
+    func orientedAngleWith(_ y:[float3] , aroundAxis r:[float3] ) -> [Float] {
+        var results = [Float](repeating: 0, count: self.count)
+        let sinɸ̂ = self.normalizedCrossProduct(y)
+        let sinɸ̂Dotr = sinɸ̂.dotProduct(r)
+        let uDoty = self.dotProduct(y)
+        for (i,_) in self.enumerated() {
+            var ɸ = asin(sinɸ̂[i].abs())
+
+            if uDoty[i] <= 0 {
+                ɸ = .pi - ɸ
+            }
+
+            if sinɸ̂Dotr[i] <= 0 {
+                ɸ = -ɸ
+            }
+            results[i] = ɸ
+        }
+        
+        return results
+    }
+
+    static func * (left: [float3], scalar: [Float]) -> [float3] {
+        var results = [float3](repeating: float3(0,0,0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar[i]
+        }
+        return results
+    }
+    
+    static func * (scalar: [Float], left: [float3]) -> [float3] {
+        var results = [float3](repeating: float3(0,0,0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar[i]
+        }
+        return results
+    }
+
+    static func += ( left: inout [float3], right: [float3]) {
+        for (i,u) in right.enumerated() {
+            left[i] += u
+        }
+    }
+
+    mutating func  rotateAroundAxis(_ u:[float3], byAngle theta:[Float]) {
+        for (i,_) in self.enumerated() {
+            self[i].rotateAround(u[i], by: theta[i])
+        }
+    }
+}
+
+extension Array where Element == Float {
+    static func random(in range:ClosedRange<Float>, count:Int) -> [Float]{
+        var results = [Float]()
+        for _ in 0..<count {
+            results.append(Float.random(in: range))
+        }
+        return results
+    }
+    
+    func sum() -> Float {
+        var sum:Float = 0
+        for value in self {
+            sum += value
+        }
+        return sum
+    }
+
+    static func + (left: [Float], right: [Float]) -> [Float] {
+        var results = [Float](repeating: Float(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u + right[i]
+        }
+        return results
+    }
+
+    static func - (left: [Float], right: [Float]) -> [Float] {
+        var results = [Float](repeating: Float(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u - right[i]
+        }
+        return results
+    }
+
+    static func * (left: [Float], right: [Float]) -> [Float] {
+        var results = [Float](repeating: Float(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * right[i]
+        }
+        return results
+    }
+
+    static func * (left: [Float], scalar: Float) -> [Float] {
+        var results = [Float](repeating: Float(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar
+        }
+        return results
+    }
+    static func * (scalar: Float, left: [Float]) -> [Float] {
+        var results = [Float](repeating: Float(0), count: left.count)
+        for (i,u) in left.enumerated() {
+            results[i] = u * scalar
+        }
+        return results
+    }
+
+    static func > (left: [Float], scalar: Float) -> [Float] {
+        var results = [Float](repeating: 0, count: left.count)
+        for (i,_) in left.enumerated() {
+            if left[i] > scalar {
+                results[i] = 1.0
+            }
+        }
+        return results
+    }
+
+    static func < (left: [Float], scalar: Float) -> [Float] {
+        var results = [Float](repeating: 0, count: left.count)
+        for (i,_) in left.enumerated() {
+            if left[i] < scalar {
+                results[i] = 1.0
+            }
+        }
+        return results
+    }
+
+}
+

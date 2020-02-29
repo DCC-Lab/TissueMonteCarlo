@@ -11,15 +11,28 @@ class Stats:
         self.photons = set()
         self.energy = np.zeros(size)
         self.figure = None
-        self.xCoords = []
-        self.yCoords = []
-        self.zCoords = []
-        for i in range(size[0]):
-            self.xCoords.append(self.min[0] + i * (self.max[0]-self.min[0])/size[0])
-        for i in range(size[1]):
-            self.yCoords.append(self.min[1] + i * (self.max[1]-self.min[1])/size[1])
-        for i in range(size[2]):
-            self.zCoords.append(self.min[2] + i * (self.max[2]-self.min[2])/size[2])
+
+    @property
+    def xCoords(self):
+        coords = []
+        for i in range(self.size[0]):
+            coords.append(self.min[0] + i * (self.max[0]-self.min[0])/self.size[0])
+        return coords
+
+    @property
+    def yCoords(self):
+        coords = []
+        for i in range(self.size[1]):
+            coords.append(self.min[1] + i * (self.max[1]-self.min[1])/self.size[1])
+        return coords
+
+    @property
+    def zCoords(self):
+        coords = []
+        for i in range(self.size[2]):
+            coords.append(self.min[2] + i * (self.max[2]-self.min[2])/self.size[2])
+
+        return coords
 
     def save(self, filepath="output.json"):
         data = {"min":self.min, "max":self.max, "L":self.L, "size":self.size,"energy":self.energy.tolist()}
@@ -36,6 +49,21 @@ class Stats:
         self.size = data["size"]
 #        self.photons = data["photons"]
         self.energy = np.array(data["energy"])
+
+    def append(self, filepath="output.json"):
+        with open(filepath, "r") as read_file:
+            data = json.load(read_file)
+
+        if self.min != data["min"]:
+            raise ValueError("To append, data must have same min")
+        if self.max != data["max"]:
+            raise ValueError("To append, data must have same max")
+        if self.L != data["L"]:
+            raise ValueError("To append, data must have same L")
+        if self.size != data["size"]:
+            raise ValueError("To append, data must have same size")
+
+        self.energy = np.add(self.energy, np.array(data["energy"]))
 
     def score(self, photon, delta):      
         self.photons.add(photon.uniqueId)
