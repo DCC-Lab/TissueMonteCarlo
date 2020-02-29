@@ -9,13 +9,16 @@ import Foundation
 import simd
 import SceneKit
 
-typealias Scalar = CGFloat
-typealias Vector = SCNVector3
+public typealias float3 = SIMD3<Float>
+public typealias float4 = SIMD4<Float>
+
+public typealias Scalar = CGFloat
+public typealias Vector = SCNVector3
 //typealias Scalar = Float
 //typealias Vector = float3
 //typealias Scalar = Float
 //typealias Vector = float4
-typealias v⃗ = Vector
+public typealias v⃗ = Vector
 
 let N = 100000
 var start = Date()
