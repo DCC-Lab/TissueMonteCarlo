@@ -15,6 +15,8 @@ enum Axis:Int {
 
 infix operator •: MultiplicationPrecedence
 infix operator ⨉: MultiplicationPrecedence
+infix operator ∥:MultiplicationPrecedence
+infix operator ⟂:MultiplicationPrecedence
 
 extension SCNVector3 {
     var x̂:SCNVector3 {
@@ -129,7 +131,7 @@ extension SCNVector3 {
     func distanceToPlaneWithOrigin(origin v0: SCNVector3, normal vn:SCNVector3, alongVector vd:SCNVector3 )-> CGFloat {
         return -(vn.x * (x - v0.x) + vn.y * (y - v0.y) + vn.z * (z - v0.z) ) / (vn.x * vd.x + vn.y * vd.y + vn.z * vd.z)
     }
-    
+        
     func isParallelTo(_ v:SCNVector3 ) -> Bool {
         let dp = dotProduct(v)
         
@@ -268,6 +270,15 @@ extension SCNVector3 {
     static func ⨉ (left: SCNVector3, right: SCNVector3 ) -> SCNVector3 {
         return left.crossProduct(right)
     }
+    
+    static func ∥(left: SCNVector3, right:SCNVector3 ) -> Bool {
+        return left.isParallelTo(right)
+    }
+
+    static func ⟂(left: SCNVector3, right:SCNVector3 ) -> Bool {
+        return left.isPerpendicularTo(right)
+    }
+
 }
 
 

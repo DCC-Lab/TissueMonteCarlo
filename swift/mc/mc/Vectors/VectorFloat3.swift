@@ -38,6 +38,7 @@ extension float3 {
         return simd.length(self)
     }
     
+    @discardableResult
     mutating func normalize() -> float3 {
         self = simd.normalize(self)
         return self
