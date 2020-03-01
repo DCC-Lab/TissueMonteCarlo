@@ -6,8 +6,8 @@ from photon import *
 import time
 
 if __name__ == "__main__":
-    N = 10000
-    mat = Material(mu_s=30, mu_a = 0.5, g = 0)
+    N = 1000
+    mat = Material(mu_s=30, mu_a = 0.5, g = 0.8)
     
     try:
         mat.stats.restore("output.json")

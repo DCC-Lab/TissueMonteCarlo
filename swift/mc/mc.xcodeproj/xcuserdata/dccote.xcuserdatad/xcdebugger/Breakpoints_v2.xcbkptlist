@@ -68,7 +68,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "450"
             endingLineNumber = "450"
-            landmarkName = "*(_:_:)"
+            landmarkName = "orientedAngleWith(_:aroundAxis:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -134,7 +134,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "524"
             endingLineNumber = "524"
-            landmarkName = "*(_:_:)"
+            landmarkName = "-(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

@@ -12,11 +12,11 @@ import SceneKit
 public typealias float3 = SIMD3<Float>
 public typealias float4 = SIMD4<Float>
 
-//public typealias Scalar = CGFloat
-//public typealias Vector = SCNVector3
+public typealias Scalar = CGFloat
+public typealias Vector = SCNVector3
 
-public typealias Scalar = Float
-public typealias Vector = float3
+//public typealias Scalar = Float
+//public typealias Vector = float3
 //public typealias Scalar = Float
 //public typealias Vector = float4
 public typealias v⃗ = Vector

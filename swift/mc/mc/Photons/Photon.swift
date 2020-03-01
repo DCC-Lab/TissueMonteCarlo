@@ -71,11 +71,11 @@ class PhotonBase {
     }
 
     func defaultEPerpendicular(direction û:Vector) -> Vector? {
-        if û.isParallelTo(ẑ) {
+        if û∥ẑ {
             return x̂
-        } else if û.isParallelTo(x̂) {
+        } else if û∥x̂ {
             return ŷ
-        } else if û.isParallelTo(ŷ) {
+        } else if û∥ŷ {
             return ẑ
         }
         return nil
