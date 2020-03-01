@@ -6,7 +6,7 @@ from photon import *
 import time
 
 if __name__ == "__main__":
-    N = 1000
+    N = 10000
     mat = Material(mu_s=30, mu_a = 0.5, g = 0)
     
     try:

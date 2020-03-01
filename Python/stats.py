@@ -9,6 +9,7 @@ class Stats:
         self.L = (self.max[0]-self.min[0],self.max[1]-self.min[1],self.max[2]-self.min[2])
         self.size = size
         self.photons = set()
+        self.photonCount = 0
         self.energy = np.zeros(size)
         self.figure = None
 
@@ -35,7 +36,10 @@ class Stats:
         return coords
 
     def save(self, filepath="output.json"):
-        data = {"min":self.min, "max":self.max, "L":self.L, "size":self.size,"energy":self.energy.tolist()}
+        data = {"min":self.min, "max":self.max, "L":self.L,
+                "size":self.size,"energy":self.energy.tolist(),
+                "photonCount":self.photonCount,"photons":list(self.photons)}
+
         with open(filepath, "w") as write_file:
             json.dump(data, write_file,indent=4, sort_keys=True)
 
@@ -47,7 +51,8 @@ class Stats:
         self.max = data["max"]
         self.L = data["L"]
         self.size = data["size"]
-#        self.photons = data["photons"]
+        self.photonCount = data["photonCount"]
+        self.photons = set(data["photons"])
         self.energy = np.array(data["energy"])
 
     def append(self, filepath="output.json"):
@@ -63,9 +68,11 @@ class Stats:
         if self.size != data["size"]:
             raise ValueError("To append, data must have same size")
 
+        self.photonCount += data["photonCount"]
+        self.photons.add(set(data["photons"]))
         self.energy = np.add(self.energy, np.array(data["energy"]))
 
-    def score(self, photon, delta):      
+    def score(self, photon, delta):
         self.photons.add(photon.uniqueId)
         position = photon.r
 
