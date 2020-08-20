@@ -25,7 +25,7 @@ public typealias Scalars = [Scalar]
 public typealias Vectors = [Vector]
 
 
-let N = 10000
+let N = 100000
 var start = Date()
 var material = BulkHenyeyGreenstein(mu_s: 30, mu_a: 0.5, index: 1.4, g: 0.8)
 let photon = Photon(position: v⃗(0,0,0), direction: v⃗(0,0,1), wavelength: 632)!
@@ -44,7 +44,7 @@ print(String(format: "Total %.1lf s, %.1lf µs per photon", duration, rate))
 var queue = OperationQueue()
 queue.maxConcurrentOperationCount = 10
 
-let M = 3 // number of cores
+let M = 6 // number of cores
 queue.maxConcurrentOperationCount = M
 let P = N/M
 start = Date()

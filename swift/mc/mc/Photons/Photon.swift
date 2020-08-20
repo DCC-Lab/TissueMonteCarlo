@@ -23,9 +23,9 @@ class PhotonBase {
     var weight:Scalar
     let λ:Scalar
 
-    let r⃗ₒ:Vector
-    let ûₒ:Vector
-    var êrₒ:Vector
+    let r⃗ᵢ:Vector
+    let ûᵢ:Vector
+    var êrᵢ:Vector
     var keepingExtendedStatistics:Bool
     var statistics:[(Vector,Scalar)]
     var distanceTraveled:Scalar
@@ -47,27 +47,27 @@ class PhotonBase {
         get { return Vector(0,0,0) }
     }
 
-    init?(position r⃗ᵢ:Vector, direction ûᵢ:Vector, wavelength:Scalar) {
-        r⃗ = r⃗ᵢ
-        û = ûᵢ
+    init?(position r⃗ₒ:Vector, direction ûₒ:Vector, wavelength:Scalar) {
+        r⃗ = r⃗ₒ
+        û = ûₒ
         û.normalize() // make sure normmalized
         weight = 1
         λ = wavelength
 
-        r⃗ₒ = r⃗ᵢ
-        ûₒ = û
+        r⃗ᵢ = r⃗ₒ
+        ûᵢ = û
 
         keepingExtendedStatistics = false
         distanceTraveled = 0
         statistics = [(r⃗ₒ,weight)]
         êr = Vector(0,0,0)
-        êrₒ = Vector(0,0,0)
+        êrᵢ = Vector(0,0,0)
         if let vector = defaultEPerpendicular(direction: û) {
             êr = vector
         } else {
             return nil
         }
-        êrₒ = êr
+        êrᵢ = êr
     }
 
     func defaultEPerpendicular(direction û:Vector) -> Vector? {
@@ -82,13 +82,13 @@ class PhotonBase {
     }
     
     func reset() {
-        r⃗ = r⃗ₒ
-        û = ûₒ
-        êr = êrₒ
+        r⃗ = r⃗ᵢ
+        û = ûᵢ
+        êr = êrᵢ
         weight = 1
         keepingExtendedStatistics = false
         distanceTraveled = 0
-        statistics = [(r⃗ₒ,weight)]
+        statistics = [(r⃗,weight)]
     }
     
     func propagate(into material:BulkMaterial, for distance:Scalar = 0) throws {
