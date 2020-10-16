@@ -1,4 +1,5 @@
-import math as np
+import numpy as np
+import math
 from collections import namedtuple
 
 class Vector:
@@ -62,7 +63,7 @@ class Vector:
         ux = self.x
         uy = self.y
         uz = self.z
-        return np.sqrt(ux*ux+uy*uy+uz*uz)
+        return math.sqrt(ux*ux+uy*uy+uz*uz)
 
     def normalize(self):
         length = self.abs()
@@ -86,19 +87,19 @@ class Vector:
 
     def normalizedCrossProduct(self, vector):
         productNorm = self.norm() * vector.norm()
-        return self.cross(vector) / np.sqrt(productNorm)
+        return self.cross(vector) / math.sqrt(productNorm)
 
     def normalizedDotProduct(self, vector):
         productNorm = self.norm() * vector.norm()
-        return self.dot(vector) / np.sqrt(productNorm)
+        return self.dot(vector) / math.sqrt(productNorm)
 
     def orientedAngleBetween(self, u, v, w):
         sinPhi = u.normalizedCrossProduct(v)
         sinPhiAbs = abs(sinPhi)
-        phi = np.arcsin(sinPhiAbs)
+        phi = math.arcsin(sinPhiAbs)
     
         if u.dot(v) <= 0:
-            phi = np.pi-phi
+            phi = math.pi-phi
 
         if sinPhi.dot(w) <= 0:
             phi = -phi
@@ -113,8 +114,8 @@ class Vector:
         # http://en.wikipedia.org/wiki/Rotation_matrix
         u.normalize()
 
-        cost = np.cos(theta)
-        sint = np.sin(theta)
+        cost = math.cos(theta)
+        sint = math.sin(theta)
         one_cost = 1 - cost
         
         ux = u.x
@@ -138,8 +139,8 @@ class Vector:
     def rotateAroundX(self, phi):
         v = Vector(self.x, self.y, self.z)
         
-        c = np.cos(phi);
-        s = np.sin(phi);
+        c = math.cos(phi);
+        s = math.sin(phi);
     
         self.y = c * v.y - s * v.z;
         self.z = s * v.y + c * v.z;
@@ -147,8 +148,8 @@ class Vector:
     def rotateAroundY(self, phi):
         v = Vector(self.x, self.y, self.z)
         
-        c = np.cos(phi)
-        s = np.sin(phi)
+        c = math.cos(phi)
+        s = math.sin(phi)
     
         self.x = c * v.x + s * v.z
         self.z = -s * v.x + c * v.z
@@ -156,8 +157,8 @@ class Vector:
     def rotateAroundZ(self, phi):
         v = Vector(self.x, self.y, self.z)
         
-        c = np.cos(phi)
-        s = np.sin(phi)
+        c = math.cos(phi)
+        s = math.sin(phi)
     
         self.x = c * v.x - s * v.y
         self.y = s * v.x + c * v.y
