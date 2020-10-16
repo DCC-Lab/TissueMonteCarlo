@@ -1,4 +1,4 @@
-import numpy as np
+import math as np
 from collections import namedtuple
 
 class Vector:
